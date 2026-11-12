@@ -103,5 +103,118 @@
   </div>
 </section>
 <script src="dashboard.js"></script>
+<!-- TELEPROMPTER FLOTANTE: encima de la página, no es otra página -->
+<style>
+#tpBtn{position:fixed;right:16px;bottom:16px;z-index:9999;background:#E85A24;color:#fff;border:none;border-radius:999px;padding:13px 20px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.28);font-family:system-ui,sans-serif}
+#tpBtn:hover{background:#C94A1A}
+#tpPanel{position:fixed;left:0;right:0;bottom:0;z-index:10000;background:#FAF7ED;border-top:3px solid #E85A24;box-shadow:0 -12px 40px rgba(0,0,0,.25);max-height:62vh;overflow:auto;display:none;font-family:Georgia,serif;color:#1B1A17}
+#tpPanel.open{display:block}
+#tpInner{max-width:820px;margin:0 auto;padding:16px 18px 22px}
+#tpInner .tp-k{font-size:12px;letter-spacing:.14em;color:#E85A24;font-family:system-ui,sans-serif;text-transform:uppercase}
+#tpInner h3{font-size:26px;font-weight:400;margin:6px 0 4px;line-height:1.15}
+#tpInner .tp-sub{font-size:13px;color:#5D574D;margin:0 0 12px;font-family:system-ui,sans-serif}
+#tpScript{font-size:21px;line-height:1.55;background:#fff;border:1px solid #E5DDC8;border-left:5px solid #E85A24;border-radius:12px;padding:18px 20px}
+#tpScript p{margin:0 0 12px}
+#tpScript p:last-child{margin:0}
+#tpTrans{margin-top:14px;background:#FFF3E8;border:1px dashed #E85A24;border-radius:12px;padding:12px 14px;font-size:16px;line-height:1.5}
+#tpTrans b{color:#E85A24;font-family:system-ui,sans-serif;font-size:12px;letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:3px}
+#tpNav{display:flex;gap:10px;margin-top:16px}
+#tpNav button{flex:1;border:none;border-radius:999px;padding:14px;font-size:16px;cursor:pointer;font-family:system-ui,sans-serif}
+#tpBack{background:#fff;border:1px solid #D8CDB2;color:#1B1A17}
+#tpNext{background:#E85A24;color:#fff}
+#tpMenuBtn{width:100%;margin-top:10px;background:none;border:none;color:#5D574D;font-size:14px;cursor:pointer;text-decoration:underline;font-family:system-ui,sans-serif}
+#tpClose{position:absolute;top:10px;right:14px;background:none;border:none;font-size:22px;cursor:pointer;color:#5D574D}
+#tpList .tp-pt{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:#fff;border:1px solid #E5DDC8;border-radius:12px;padding:13px 14px;margin:0 0 8px;cursor:pointer;font-family:Georgia,serif;color:#1B1A17}
+#tpList .tp-pt:hover{border-color:#E85A24}
+#tpList .tp-pt.cur{border-color:#E85A24;background:#FFF3E8}
+#tpList .tp-n{flex:0 0 36px;height:36px;border-radius:50%;background:#E85A24;color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;font-family:system-ui,sans-serif}
+#tpList .tp-t b{display:block;font-size:17px;font-weight:400}
+#tpList .tp-t span{font-size:12px;color:#5D574D;font-family:system-ui,sans-serif}
+</style>
+<button id="tpBtn" type="button">🎤 Teleprompter</button>
+<div id="tpPanel" role="dialog" aria-label="Teleprompter">
+  <div id="tpInner">
+    <button id="tpClose" type="button" aria-label="Cerrar">✕</button>
+    <div id="tpMenuWrap">
+      <div class="tp-k">Teleprompter · Ferreycorp</div>
+      <h3>¿Dónde vas?</h3>
+      <p class="tp-sub">Toca un punto y lee tal cual. Los 8 números: 102 años · S/ 7 590 M · 7 978 · 10 países · 77 % CAT · 58 % minería · EBITDA S/ 1 131 M · Utilidad S/ 489 M</p>
+      <div id="tpList"></div>
+    </div>
+    <div id="tpViewWrap" style="display:none">
+      <div class="tp-k" id="tpKick"></div>
+      <h3 id="tpTitle"></h3>
+      <p class="tp-sub" id="tpSub"></p>
+      <div id="tpScript"></div>
+      <div id="tpTrans"></div>
+      <div id="tpNav">
+        <button id="tpBack" type="button">← Atrás</button>
+        <button id="tpNext" type="button">Siguiente →</button>
+      </div>
+      <button id="tpMenuBtn" type="button">Ver todo el menú</button>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+var PTS=[
+{k:"PORTADA",t:"Portada — Juntos creamos desarrollo",s:"El video del edificio",b:["Ferreycorp es la corporación peruana que impulsa el desarrollo con maquinaria Caterpillar.","Hoy la voy a explicar como un edificio: cada piso es un nivel de su organización."],tr:"Empezamos desde arriba, desde donde se gobierna."},
+{k:"PISO 06 · DIRECTORIO",t:"Directorio — Quién gobierna",s:"9 miembros · 5 de 9 independientes · 6 997 accionistas",b:["El Directorio es el nivel más alto: 9 miembros que vigilan a la gerencia y cuidan a 6 997 accionistas.","5 de 9 son independientes, así que el gobierno no lo controla una sola mano. Su presidente es Andreas von Wedemeyer Knigge."],tr:"El Directorio fija el rumbo. Ahora bajamos a quien lo ejecuta día a día."},
+{k:"PISO 05 · GERENCIA GENERAL",t:"Gerencia General — La dirección general",s:"Mariela García Figari de Fabbri · desde 2008",b:["La Gerencia General es Mariela García Figari de Fabbri, gerente general desde 2008, con más de tres décadas en el grupo.","Ella fija la visión, decide los negocios, asigna los recursos y supervisa todo lo que baja a los 5 pisos de abajo."],tr:"Debajo de ella están las 9 gerencias corporativas."},
+{k:"PISO 04 · GERENCIAS CORPORATIVAS",t:"Gerencias Corporativas — 9 gerencias",s:"Deuda neta / EBITDA 1,90",b:["Son 9 gerencias corporativas: finanzas, recursos humanos, tecnología y las demás áreas que sostienen al grupo.","Su deuda neta sobre EBITDA es 1,90: un nivel prudente y en baja."],tr:"Y todo el apoyo se centraliza en un solo centro."},
+{k:"PISO 03 · SERVICIOS COMPARTIDOS",t:"Servicios Compartidos — 98,8 %",s:"Un solo centro de apoyo para todo el grupo",b:["El Centro de Servicios Compartidos centraliza finanzas, recursos humanos y tecnología para todas las subsidiarias, con 98,8 % de participación.","Es lo que hace que el grupo funcione como uno solo."],tr:"Ahora llegamos al corazón del negocio."},
+{k:"PISO 02 · PERÚ CAT Y EXTERIOR",t:"Perú CAT y Exterior — El núcleo que vende",s:"82 % · S/ 6 251 M · El globo: 10 países",b:["Este es el núcleo que vende: Perú CAT y aliadas concentran el 82 % de las ventas, 6 251 millones de soles. Ferreyros sola vende 5 444 millones.","Afuera, en 9 países más, está el 8 %. Aquí está el 90 % del negocio.","Este es el planeta: 10 países, y Perú es la sede principal. Pulsen un pin y verán la subsidiaria de ese país."],tr:"Pero no todo es CAT. Hay un bloque que debería diversificar."},
+{k:"PISO 01 · COMPLEMENTARIOS",t:"Complementarios — La pata débil",s:"9 % · S/ 699 M · Cayó 2,0 % en 2024",b:["Los complementarios son Soltrak, Fargoline, Ferrenergy y los demás: solo el 9 % de las ventas, 699 millones.","Es la pata débil: el bloque pensado para diversificar fue el que menos creció, cayó 2 % en 2024."],tr:"Y todo esto se sostiene sobre la operación, la planta baja."},
+{k:"PLANTA BAJA · OPERACIONES",t:"Operaciones — La red sostiene",s:">40 sucursales · 2 CRC · ~1 700 técnicos · La maquinaria",b:["La planta baja es la operación: más de 40 sucursales, 2 centros de reconstrucción de clase mundial, 15 talleres y unos 1 700 técnicos en las minas.","Aquí vive la maquinaria: el motor V8 y el cargador, que se desarman pieza por pieza. Cada máquina vendida se convierte en repuestos y servicios."],tr:"Con esto claro, viene la idea central."},
+{k:"LA TESIS",t:"Diagnóstico — Fortaleza y riesgo",s:"La doble concentración: CAT 77 % + minería 58 %",b:["La idea central es la doble concentración: Caterpillar es el 77 % de los ingresos y la minería el 58 % de las ventas.","Esa es su mayor fortaleza y su mayor riesgo a la vez. Si la minería se frena, todo se frena."],tr:"Por eso el plan no abandona Caterpillar: baja la vulnerabilidad."},
+{k:"EL PLAN",t:"Plan — 6 acciones, 3 años",s:"Bajar la vulnerabilidad sin soltar el liderazgo",b:["El plan es a 3 años: bajar la vulnerabilidad subiendo los ingresos recurrentes y los sectores no mineros, sin perder el liderazgo en la gran minería.","Seis acciones: venta cruzada, contratos de servicio recurrentes, electrificación, crecer fuera de minería, blindaje financiero y ampliar la cantera técnica."],tr:"Y para cerrar, las ideas que quedan."},
+{k:"CIERRE",t:"Cierre — Juntos creamos desarrollo",s:"6 ideas que quedan",b:["Ferreycorp es una gran empresa peruana, un holding divisional donde cada venta se convierte en flujo recurrente.","Su dificultad es la doble concentración, y su plan la afronta con sus propias fortalezas.","Juntos creamos desarrollo."],tr:"Gracias. Quedo atento a sus preguntas."}
+];
+var cur=-1;
+var btn=document.getElementById('tpBtn'), panel=document.getElementById('tpPanel'),
+    menuW=document.getElementById('tpMenuWrap'), viewW=document.getElementById('tpViewWrap'),
+    list=document.getElementById('tpList');
+function curIdx(){
+  var p=location.pathname;
+  if(/p06-directorio/.test(p)) return 1;
+  if(/p05-gerencia/.test(p)) return 2;
+  if(/p04-gerencias/.test(p)) return 3;
+  if(/p03-servicios/.test(p)) return 4;
+  if(/p02-peru-cat/.test(p)) return 5;
+  if(/p01-complementarios/.test(p)) return 6;
+  if(/pb-operaciones/.test(p)) return 7;
+  return 0;
+}
+PTS.forEach(function(pt,i){
+  var b=document.createElement('button');
+  b.type='button'; b.className='tp-pt'; b.dataset.i=i;
+  b.innerHTML='<span class="tp-n">'+(i+1)+'</span><span class="tp-t"><b>'+pt.t+'</b><span>'+pt.s+'</span></span>';
+  b.onclick=function(){ show(i); };
+  list.appendChild(b);
+});
+function show(i){
+  cur=i; var p=PTS[i];
+  menuW.style.display='none'; viewW.style.display='block';
+  document.getElementById('tpKick').textContent=(i+1)+' de '+PTS.length+' · '+p.k;
+  document.getElementById('tpTitle').textContent=p.t;
+  document.getElementById('tpSub').textContent=p.s;
+  document.getElementById('tpScript').innerHTML=p.b.map(function(x){return '<p>'+x+'</p>';}).join('');
+  document.getElementById('tpTrans').innerHTML='<b>'+(i+1<PTS.length?'Para pasar al siguiente punto':'Al terminar')+'</b>'+p.tr;
+  document.getElementById('tpBack').style.visibility=i>0?'visible':'hidden';
+  document.getElementById('tpNext').textContent=i+1<PTS.length?'Siguiente →':'Terminar';
+  Array.prototype.forEach.call(list.children,function(el){ el.classList.toggle('cur', +el.dataset.i===i); });
+}
+function showMenu(){ viewW.style.display='none'; menuW.style.display='block'; }
+btn.onclick=function(){
+  var open=panel.classList.toggle('open');
+  if(open){ showMenu(); var ci=curIdx(); Array.prototype.forEach.call(list.children,function(el){ el.classList.toggle('cur', +el.dataset.i===ci); }); }
+};
+document.getElementById('tpClose').onclick=function(){ panel.classList.remove('open'); };
+document.getElementById('tpMenuBtn').onclick=showMenu;
+document.getElementById('tpNext').onclick=function(){ if(cur+1<PTS.length) show(cur+1); else { panel.classList.remove('open'); showMenu(); } };
+document.getElementById('tpBack').onclick=function(){ if(cur>0) show(cur-1); };
+})();
+</script>
+
 </body>
 </html>
