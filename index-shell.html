@@ -1,0 +1,594 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Ferreycorp S.A.A. — Juntos creamos desarrollo · AA1 Administración de Negocios</title>
+<style>
+:root{
+  --cream:#FAF7ED; --cream2:#F5EEE0; --ink:#1B1A17; --ink-soft:#5D574D;
+  --orange:#E85A24; --orange-dark:#C74312; --panel-w:380px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--cream);color:var(--ink);
+  font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased}
+a{color:inherit}
+button{font-family:inherit}
+
+/* ============ (1) PORTADA: video puro, sin letras ============ */
+#coverTrack{height:200vh;position:relative}
+#cover{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:#0e0d0b}
+#coverMedia{position:absolute;inset:0;will-change:transform}
+#coverStill,#coverVideo{position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:68% 50%}
+#coverStill{opacity:0}
+#coverVideo{display:block}
+#btnSonido{position:absolute;top:20px;right:20px;z-index:5;width:46px;height:46px;
+  border-radius:50%;border:1px solid rgba(27,26,23,.25);
+  background:rgba(250,247,237,.88);color:var(--ink-soft);
+  font-size:21px;line-height:1;cursor:pointer}
+#btnSonido:hover{color:var(--ink)}
+#btnSonido[aria-pressed="true"]{color:var(--orange)}
+
+/* ============ (2) PÁGINA NORMAL: titular y datos ============ */
+#intro{padding:96px 48px 80px;max-width:1240px;margin:0 auto}
+.kicker{font-size:12px;font-weight:700;letter-spacing:.22em;color:var(--orange);text-transform:uppercase}
+.intro-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(280px,.75fr);
+  gap:48px;align-items:center;margin-top:18px}
+h1{font-family:Georgia,'Times New Roman',serif;font-weight:400;
+  font-size:clamp(56px,7.6vw,110px);line-height:1.06;letter-spacing:-.01em;margin:0}
+h1 em{font-style:italic}
+.sub{margin-top:28px;font-size:clamp(17px,1.5vw,21px);line-height:1.5;color:var(--ink-soft)}
+/* M-1: línea de contexto bajo el lede — cierra el vacío muerto entre el
+   titular y la tira de cifras (Georgia 20 px, datos del informe). */
+.intro-context{margin-top:22px;font-family:Georgia,'Times New Roman',serif;
+  font-size:20px;line-height:1.45;color:var(--ink);max-width:520px}
+.intro-context b{color:var(--orange-dark)}
+.btn-solid{display:inline-block;margin-top:30px;background:var(--orange);color:#fff;border-radius:999px;
+  padding:15px 30px;font-size:15.5px;font-weight:600;text-decoration:none;
+  box-shadow:0 10px 24px rgba(232,90,36,.30)}
+.btn-solid:hover{background:var(--orange-dark)}
+
+.nums{display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px 40px;
+  margin-top:28px;padding-top:18px;border-top:1px solid rgba(27,26,23,.12)}
+.nums span{font-family:Georgia,serif;font-size:clamp(22px,2.2vw,30px);font-weight:400}
+.nums span i{font-style:normal;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
+  font-size:.62em;color:var(--ink-soft);margin-left:2px}
+.nums span small{margin-left:6px;font-size:13px;color:var(--ink-soft)}
+.intro-lead{margin-top:44px;max-width:760px;font-size:17px;line-height:1.65;color:var(--ink-soft)}
+.intro-lead b{color:var(--ink)}
+
+/* ============ (2) EL EDIFICIO EN FOTO: la torre recortada por pisos ============ */
+#edificio{position:relative}
+#tourTrack{height:600vh;position:relative}
+.sticky-stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
+#stage{position:absolute;inset:0}
+/* Foto congelada del armado (poster.jpg = último fotograma): ES el tour.
+   La foto es el fondo y cada piso es una pieza recortada encima (estilo
+   PowerPoint): un botón por piso, posicionado por JS sobre la torre. */
+#tourStill{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  object-position:50% 50%;z-index:2;pointer-events:none;opacity:1}
+/* Piezas recortadas sobre la foto: invisibles hasta pasar el mouse o
+   enfocarlas; la pieza de la parada activa queda marcada. */
+.floor-band{position:absolute;z-index:3;background:transparent;border:1px solid transparent;border-radius:6px;cursor:pointer;padding:0}
+.floor-band:hover,.floor-band:focus-visible,.floor-band.on{border-color:#E85A24;background:rgba(250,247,237,.16);outline:none}
+.floor-band .band-label{position:absolute;left:8px;top:50%;transform:translateY(-50%);background:#1B1A17;color:#FAF7ED;font-size:12px;font-weight:600;padding:4px 10px;border-radius:999px;white-space:nowrap;opacity:0;pointer-events:none}
+.floor-band:hover .band-label,.floor-band:focus-visible .band-label,.floor-band.on .band-label{opacity:1}
+.btn-replay{background:var(--cream);color:var(--ink);border:1px solid rgba(27,26,23,.35)}
+.btn-replay:hover{background:#fff}
+#btnReplayEnd{position:absolute;left:50%;bottom:86px;transform:translateX(-50%);z-index:6;
+  background:var(--ink);color:var(--cream);border:none;border-radius:999px;
+  padding:10px 18px;font-size:13.5px;font-weight:600;cursor:pointer}
+#btnReplayEnd:hover{background:#000}
+.bigstat{justify-self:end;width:100%;max-width:340px}
+.bigstat .big{font-family:Georgia,serif;font-size:88px;line-height:1;font-weight:400}
+.bigstat .big small{font-size:52px;font-weight:400}
+.bigstat .cap{margin-top:14px;font-size:17px;line-height:1.5;color:var(--ink-soft)}
+.bigstat .cap b{color:var(--ink)}
+/* N-m3 (ronda 3): el CTA vive también en el hueco de la columna derecha,
+   bajo el texto del 77 % — no solo al final de la intro. */
+.bigstat .btn-solid{margin-top:22px;padding:12px 22px;font-size:14px}
+/* Secciones 1-7: cada una con SU fondo (tinte claro + banda de color propio) */
+.rep.tint-warm{background:#F5EEE0}
+.rep.tint-cool{background:#EDF1EC}
+.rep{box-shadow:inset 0 6px 0 var(--band,#E85A24)}
+/* Minipantalla: figura del informe, con pie de fuente */
+.fig{margin-top:28px;background:#FFFDF8;border:1px solid rgba(27,26,23,.10);
+  border-radius:14px;padding:18px}
+.fig img{width:100%;height:auto;display:block;border-radius:8px}
+.fig.tall img{max-width:520px;margin:0 auto}
+.fig figcaption{margin-top:12px;font-size:13px;line-height:1.55;color:var(--ink-soft)}
+.fig figcaption b{color:var(--ink)}
+/* M-3: Fig. 2 (Estructura) reducida ~15 % y con el pie pegado al gráfico,
+   para que figura completa + pie entren en el viewport 1280×800. */
+#estructura .fig{max-width:880px;margin:20px auto 0;padding:14px}
+#estructura .fig img{max-height:300px;object-fit:contain;background:#fff}
+#estructura .fig figcaption{margin-top:8px}
+/* Maquinaria: fondo grandioso (nave al amanecer) detrás de los visores oscuros.
+   G-4: velo rebajado de ~0.85 a ~0.35 de media — degradado 0.65 arriba (detrás
+   del texto) a 0.15 abajo — y lede claro #F5EEE0 a 17 px. */
+.rep-dark{background:linear-gradient(180deg,rgba(23,19,16,.65),rgba(23,19,16,.35) 45%,rgba(23,19,16,.15)),url('fondo-maquinaria.jpg') center/cover fixed;
+  color:#FAF7ED;box-shadow:inset 0 6px 0 #D99835}
+.rep-dark h2{color:#FAF7ED}
+/* OJO especificidad: `.rep .lede` (sección 4, posterior) pisa a `.rep-dark .lede`
+   a igualdad de especificidad — por eso el lede va con #maquinaria. */
+#maquinaria .lede{color:#F5EEE0;font-size:17px}
+#maquinaria .lede b{color:#FAF7ED}
+.rep-dark .viewer-cap h3{color:#FAF7ED}
+.rep-dark .viewer-cap p{color:#EFE6D2}
+.rep-dark .viewer-cap p b{color:#FAF7ED}
+.rep-dark .viewer-src{color:#D9CDB2!important}
+
+.topbar{position:absolute;top:0;left:0;right:0;z-index:30;display:flex;align-items:center;
+  gap:18px;padding:16px 28px;
+  background:linear-gradient(180deg,rgba(250,247,237,.96),rgba(250,247,237,.82) 70%,rgba(250,247,237,0));
+  pointer-events:none}
+.topbar>*{pointer-events:auto}
+.back{font-size:13.5px;font-weight:600;text-decoration:none;color:var(--ink-soft);
+  border:1px solid rgba(27,26,23,.25);border-radius:999px;padding:8px 14px;background:rgba(250,247,237,.85)}
+.back:hover{color:var(--ink);border-color:var(--ink)}
+.brand{font-size:13px;letter-spacing:.28em;color:var(--ink-soft);margin-left:2px}
+.topbar .spacer{flex:1}
+.btn-res{display:inline-block;background:var(--ink);color:var(--cream);border:none;border-radius:999px;
+  padding:9px 16px;font-size:13.5px;font-weight:600;cursor:pointer}
+.btn-res:hover{background:#000}
+/* Tarjeta corta del recorrido (una por piso, estilo AURUM) */
+#tourCard{position:absolute;right:28px;bottom:112px;z-index:7;width:min(340px,86vw);
+  background:rgba(255,253,248,.96);border:1px solid rgba(27,26,23,.12);border-radius:14px;
+  padding:18px 20px;box-shadow:0 14px 34px rgba(27,26,23,.12)}
+#tourCard[hidden]{display:none}
+#tourKicker{font-size:11px;font-weight:700;letter-spacing:.18em;color:var(--orange);text-transform:uppercase}
+#tourName{font-family:Georgia,serif;font-size:22px;line-height:1.2;margin-top:6px}
+#tourData{margin-top:8px;font-size:13.5px;line-height:1.5;color:var(--ink-soft)}
+#tourGo{margin-top:12px;border:1px solid rgba(27,26,23,.3);background:#fff;border-radius:999px;
+  padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer}
+#tourGo:hover{border-color:var(--ink)}
+#exploreBar{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);z-index:6;
+  display:flex;flex-direction:column;align-items:center;gap:10px;width:min(94vw,760px)}
+#exploreHint{font-size:12.5px;color:var(--ink-soft);background:rgba(250,247,237,.9);
+  border:1px solid rgba(27,26,23,.15);border-radius:999px;padding:8px 16px;text-align:center}
+#chips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.chip{border:1px solid rgba(27,26,23,.3);background:rgba(250,247,237,.92);color:var(--ink);
+  border-radius:999px;padding:8px 13px;font-size:13px;font-weight:600;cursor:pointer}
+.chip:hover{border-color:var(--ink)}
+.chip.on{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+
+
+
+/* ============ (4) SECCIONES DEL INFORME ============ */
+.rep{max-width:1080px;margin:0 auto;padding:76px 28px}
+.rep h2{font-family:Georgia,serif;font-weight:400;font-size:clamp(30px,3.6vw,44px);
+  line-height:1.12;margin:14px 0 0}
+.rep .lede{margin-top:16px;font-size:17px;line-height:1.65;color:var(--ink-soft);max-width:780px}
+.rep .lede b{color:var(--ink)}
+.strip{display:flex;flex-wrap:wrap;gap:16px 36px;margin-top:28px;padding:20px 0;
+  border-top:1px solid rgba(27,26,23,.12);border-bottom:1px solid rgba(27,26,23,.12)}
+.strip span{font-family:Georgia,serif;font-size:24px;line-height:1.15}
+.strip span i{font-style:normal;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
+  font-size:.6em;color:var(--ink-soft);margin-left:2px}
+.strip span small{display:block;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
+  font-size:12px;color:var(--ink-soft);margin-top:3px}
+.areas{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:28px}
+.area{background:#FFFDF8;border:1px solid rgba(27,26,23,.08);border-radius:12px;padding:16px}
+.area b{display:block;font-size:14px}
+.area span{display:block;margin-top:6px;font-size:13px;line-height:1.5;color:var(--ink-soft)}
+.fd{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:28px}
+.fd h3{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 10px}
+.fd ul{margin:0;padding-left:0;list-style:none}
+.fd li{padding:10px 0;border-top:1px solid rgba(27,26,23,.1);font-size:14.5px;line-height:1.55}
+.fd li b{font-family:Georgia,serif;font-size:17px}
+.plan{margin:28px 0 0;padding:0;list-style:none}
+.plan li{display:flex;gap:16px;padding:16px 0;border-top:1px solid rgba(27,26,23,.1)}
+.plan li::before{content:attr(data-n);font-family:Georgia,serif;font-size:26px;color:var(--orange);line-height:1}
+.plan li b{display:block;font-size:15.5px}
+.plan li span{display:block;margin-top:3px;font-size:13.5px;color:var(--ink-soft);line-height:1.5}
+.concl{margin:24px 0 0;padding-left:22px}
+.concl li{margin:12px 0;font-size:15.5px;line-height:1.6;color:var(--ink-soft)}
+.concl li b{color:var(--ink)}
+.src{margin-top:22px;font-size:12px;color:var(--ink-soft)}
+footer{padding:40px 28px 48px;text-align:center;font-size:12px;line-height:1.7;color:var(--ink-soft);
+  border-top:1px solid rgba(27,26,23,.12)}
+footer a{color:var(--ink-soft)}
+footer .up{display:inline-block;margin-top:14px;font-size:13px;font-weight:600;color:var(--ink);
+  text-decoration:none;border:1px solid rgba(27,26,23,.3);border-radius:999px;padding:8px 16px}
+
+/* ============ (3b) PLANTA BAJA · MAQUINARIA (ref. 8: luz dorada + macro + etiqueta) ============ */
+.rep-wide{max-width:1240px}
+.viewer{margin-top:48px}
+.viewer-frame{position:relative;border-radius:18px;overflow:hidden;background:#171310;
+  box-shadow:0 24px 60px rgba(27,26,23,.22);border:1px solid rgba(27,26,23,.2)}
+.viewer-frame iframe{display:block;width:100%;height:620px;border:0}
+#frameV8{background:#ECedef}
+#frameCargador{background:#F2E2C8}
+.viewer-glow{position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(120% 60% at 50% -10%, rgba(255,176,71,.20), rgba(255,176,71,0) 55%)}
+.viewer-tag{position:absolute;left:16px;bottom:30px;z-index:3;pointer-events:none;
+  background:rgba(23,19,16,.88);color:var(--cream);border-left:3px solid var(--orange);
+  padding:9px 12px;border-radius:4px}
+.viewer-tag b{display:block;font-size:12.5px;letter-spacing:.14em}
+.viewer-tag span{display:block;margin-top:3px;font-size:11.5px;letter-spacing:.08em;color:#E8D9B0}
+.viewer-tag.tag-right{left:auto;right:16px} /* el Cargador lleva su panel a la izquierda */
+.viewer-full{position:absolute;top:14px;right:14px;z-index:3;text-decoration:none;
+  background:rgba(23,19,16,.85);color:var(--cream);border:1px solid rgba(250,247,237,.35);
+  border-radius:999px;padding:8px 14px;font-size:12.5px;font-weight:600}
+.viewer-full:hover{border-color:var(--cream)}
+.viewer-cap{margin-top:18px;max-width:860px}
+.viewer-cap h3{font-family:Georgia,serif;font-weight:400;font-size:24px;margin:0}
+.viewer-cap p{margin:10px 0 0;font-size:15px;line-height:1.6;color:var(--ink-soft)}
+.viewer-cap p b{color:var(--ink)}
+.viewer-src{font-size:12.5px!important}
+
+@media (max-width:900px){
+  #coverStill,#coverVideo{object-position:72% 50%}
+  #intro{padding:64px 22px 56px}
+  .intro-grid{grid-template-columns:1fr;gap:26px}
+  .bigstat{justify-self:start;max-width:300px}
+  .bigstat .big{font-size:72px}
+  .bigstat .big small{font-size:44px}
+  .nums{display:grid;grid-template-columns:1fr 1fr;gap:14px 20px;padding:16px 0 0}
+  .topbar{padding:12px 16px;gap:10px}
+  .brand{display:none}
+  #tourCard{left:12px;right:12px;width:auto;bottom:14px;padding:14px 16px}
+  #tourName{font-size:19px}
+  #exploreBar{bottom:14px}
+  #exploreHint{font-size:12px}
+  .areas{grid-template-columns:1fr 1fr}
+  .fd{grid-template-columns:1fr}
+  .rep{padding:56px 22px}
+  .viewer-frame iframe{height:560px}
+  .viewer-tag{left:10px;bottom:10px;padding:7px 9px}
+  /* En móvil la etiqueta del Cargador taparía la flechita y los
+     botones del panel: se oculta (sus datos viven en el pie del visor). */
+  .viewer-tag.tag-right{display:none}
+  .viewer-tag b{font-size:11.5px}
+  .viewer-tag span{font-size:10.5px}
+  .viewer-full{top:10px;right:10px;padding:7px 11px;font-size:12px}
+}
+</style>
+</head>
+<body>
+<!-- (1) PORTADA: video puro, sin letras. Solo el botón de sonido. -->
+<section id="coverTrack">
+  <div id="cover">
+    <div id="coverMedia">
+      <img id="coverStill" src="poster.jpg" alt="Torre completa en la ciudad" />
+      <video id="coverVideo" src="hero.mp4" poster="cover-first.jpg"
+        autoplay muted playsinline preload="auto"></video>
+    </div>
+    <button id="btnSonido" aria-pressed="false" title="Activar la música de la portada">🔇</button>
+  </div>
+</section>
+
+<!-- (2) EL EDIFICIO INTEGRADO: torre 3D real sobre el fondo del entorno (lote de esquina) -->
+<style>
+  #edificio #stage{background:url('fondo_entorno_esquina.jpg') center/cover no-repeat;}
+  #edificio #tourTrack{height:100vh;}
+  #towerFrame{position:absolute;inset:0;width:100%;height:100%;border:0;background:transparent;display:block;}
+</style>
+<section id="edificio">
+  <div id="tourTrack">
+    <div class="sticky-stage">
+      <div id="stage">
+        <iframe id="towerFrame" src="torre_integrada.html" title="Torre 3D Ferreycorp — clic en un piso para ver su ficha" allowtransparency="true"></iframe>
+        <header class="topbar">
+          <a class="back" href="#coverTrack">← Portada</a>
+          <div class="brand">FERREYCORP &nbsp;·&nbsp; AA1</div>
+          <div class="spacer"></div>
+          <button class="btn-res" id="btnResultados" type="button">Resultados 2024</button>
+          <button class="btn-res btn-replay" id="btnReplay" type="button">↺ Ver el edificio de nuevo</button>
+        </header>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- (3) INTRO: titular, 77 % integrado, números y entrada a la maquinaria -->
+<section id="intro">
+  <p class="kicker">Ferreycorp S.A.A. · AA1 · Administración de Negocios</p>
+  <div class="intro-grid">
+    <div>
+      <h1>Juntos<br>creamos <em>desarrollo</em></h1>
+      <p class="sub">Ferreycorp S.A.A. por dentro.</p>
+      <p class="intro-context">La empresa que representa a <b>Caterpillar</b> en el Perú desde 1942 — y que convierte cada máquina vendida en repuestos y servicios.</p>
+    </div>
+    <div class="bigstat">
+      <div class="big">77<small> %</small></div>
+      <p class="cap">de los ingresos vienen de <b>Caterpillar</b> — la marca que Ferreycorp representa en exclusiva en el Perú desde 1942.</p>
+      <a class="btn-solid" href="#maquinaria">Ver la maquinaria ↓</a>
+    </div>
+  </div>
+  <div class="nums">
+    <span>102 <i>años</i></span>
+    <span>S/ 7 590 <i>M</i><small>ventas 2024 · +8,5 %</small></span>
+    <span>7 978 <i>colaboradores</i></span>
+    <span>10 <i>países</i></span>
+  </div>
+  <p class="intro-lead">Una empresa se entiende por <b>cómo está organizada por dentro</b>.
+    Este es el análisis organizacional de Ferreycorp S.A.A. como consultores junior,
+    con fuentes públicas: su estructura, sus áreas, sus recursos, su diagnóstico y su plan.
+    El edificio de arriba es la empresa: cada piso, un nivel del organigrama — y cada piso tiene su propia página.</p>
+  <a class="btn-solid" href="#maquinaria">Ver la maquinaria ↓</a>
+</section>
+
+
+<!-- (4) PLANTA BAJA · MAQUINARIA: motor V8 + cargador (teardown navegables, ref. 8) -->
+<section class="rep rep-wide rep-dark" id="maquinaria">
+  <div class="kicker">Planta baja · Maquinaria</div>
+  <h2>La máquina es el negocio.</h2>
+  <p class="lede">En planta baja vive la maquinaria: dos piezas desarmables, cada una en su escenario — piso, sombra de contacto y luz de estudio. El motor gira y el cargador se articula; el despiece muestra el circuito venta → soporte → repuesto.</p>
+
+  <article class="viewer" id="viewer-v8">
+    <div class="viewer-frame">
+      <iframe id="frameV8" src="maquinaria/v8.html" title="Motor V8 desarmable (ejemplo de la skill teardown, Elvar)" loading="lazy" allowfullscreen></iframe>
+      <div class="viewer-glow" aria-hidden="true"></div>
+      <div class="viewer-tag"><b>MOTOR V8 · FOUR-STROKE</b><span>90° CROSS-PLANE · 5.8 L</span></div>
+      <a class="viewer-full" href="maquinaria/v8.html" target="_blank" rel="noopener">Pantalla completa ↗</a>
+    </div>
+    <div class="viewer-cap">
+      <h3>Motor V8 — el ejemplo de la skill</h3>
+      <p>El motor V8 de Elvar, el ejemplo completo de la skill teardown: gira a 700 RPM con su orden de encendido 1-8-4-3-6-5-7-2 y se recorre pieza por pieza. Arrastra para orbitar, usa el tour automático, y cambia la vista (HERO · FRONT · SIDE · VALLEY · CYL) o el corte (GLASS · SECTION · SOLID). Pulsa H dentro del visor para ocultar los datos.</p>
+      <p class="viewer-src">Fuente: ejemplo original de la skill teardown (Elvar, MIT) — la copia solo añade la flechita para plegar el panel; el original sigue intacto.</p>
+    </div>
+  </article>
+
+  <article class="viewer" id="viewer-cargador">
+    <div class="viewer-frame">
+      <iframe id="frameCargador" src="maquinaria/cargador.html" title="Cargador de ruedas CAT WL-2, ensamblaje R2 de JEFE-2" loading="lazy" allowfullscreen></iframe>
+      <div class="viewer-glow" aria-hidden="true"></div>
+      <div class="viewer-tag tag-right"><b>CARGADOR · 1 792 PIEZAS</b><span>ARTICULACIÓN ±35° · LEVANTE 0–45° · DESPIECE 0–9</span></div>
+      <a class="viewer-full" href="maquinaria/cargador.html" target="_blank" rel="noopener">Pantalla completa ↗</a>
+    </div>
+    <div class="viewer-cap">
+      <h3>Cargador de ruedas CAT WL-2 — ensamblaje R2 de JEFE-2</h3>
+      <p>El cargador de JEFE-2: <b>1 792 componentes en 8 grupos</b>, con la cinemática cerrada (auditoría del cazador: 0 errores, sin colisiones). Articulación ±35°, levante 0–45°, inclinación −10°…+40° y despiece en 10 pasos, con botones DEMO, CINE y CÁMARA AUTO. El panel arranca plegado y se abre con la flechita dorada del borde.</p>
+      <p class="viewer-src">Fuente: cuartel, jefe-2/entregas/ferreycorp-web/CARGADOR-v2-ENSAMBLAJE-R2.html (commit 68aa3b8) — la copia solo añade la flechita para plegar el panel; el original sigue intacto.</p>
+    </div>
+  </article>
+</section>
+
+<!-- (5) SECCIONES DEL INFORME -->
+<section class="rep tint-warm" id="empresa" style="--band:#D99835">
+  <p class="kicker">1 · La empresa</p>
+  <h2>102 años creando desarrollo.</h2>
+  <p class="lede"><b>Ferreycorp S.A.A.</b> es una gran empresa peruana, comercial y de servicios,
+    privada y de capital difundido, con fines de lucro y forma de sociedad anónima abierta.
+    Representante único de Caterpillar en el Perú desde 1942, vende máquinas, motores y equipos,
+    y convierte cada venta en un flujo recurrente de repuestos y servicios.</p>
+  <div class="strip">
+    <span>S/ 7 590 <i>M</i><small>ventas 2024 · +8,5 %</small></span>
+    <span>7 978<small>colaboradores · 1 614 mujeres (20 %)</small></span>
+    <span>10 <i>países</i><small>Perú y 9 operaciones fuera</small></span>
+    <span>6 997<small>accionistas · ninguno con más del 10 %</small></span>
+  </div>
+  <p class="src">Fuente: §1.1, p. 5 · §1.3, p. 8 · Anexo 2, p. 40.</p>
+</section>
+
+<section class="rep tint-cool" id="estructura" style="--band:#2E6E8C">
+  <p class="kicker">2 · Estructura</p>
+  <h2>Un holding divisional, una doble concentración.</h2>
+  <p class="lede">La matriz fija la estrategia y asigna los recursos; las subsidiarias operan con
+    autonomía; un centro de servicios compartidos estandariza el apoyo. La autoridad fluye por
+    niveles claros —Junta, Directorio, Gerencia General, gerencias corporativas y subsidiarias— y
+    la coordinación se refuerza con directorios cruzados, comités y objetivos alineados en cascada.
+    La tesis del edificio: <b>la doble concentración es fortaleza y riesgo a la vez</b>.</p>
+  <div class="strip">
+    <span>77 %<small>Caterpillar de los ingresos</small></span>
+    <span>58 %<small>minería de las ventas</small></span>
+    <span>82 %<small>Perú CAT y aliadas · S/ 6 251 M</small></span>
+    <span>8 %<small>exterior · S/ 639 M</small></span>
+    <span>9 %<small>complementarios · S/ 699 M</small></span>
+  </div>
+  <figure class="fig">
+    <img src="figuras/grafico_bloques.png" alt="Figura 2 del informe: bloques de subsidiarias por ventas 2024" />
+    <figcaption><b>Figura 2 · Bloques de subsidiarias por ventas 2024.</b> Perú CAT y aliadas 82 % · exterior 8 % · complementarios 9 % (los bloques suman 99 % por redondeo). Fuente: informe AA1, p. 14.</figcaption>
+  </figure>
+</section>
+
+<section class="rep tint-warm" id="areas" style="--band:#7A9B6E">
+  <p class="kicker">3 · Áreas funcionales</p>
+  <h2>Ocho áreas, un solo circuito.</h2>
+  <p class="lede">Las áreas no se entienden una por una, sino por sus circuitos: el comercial–posventa–logística
+    convierte cada venta de máquinas en un flujo recurrente de repuestos y servicios.</p>
+  <div class="areas">
+    <div class="area"><b>Comercial / ventas</b><span>Máquinas, motores y equipos nuevos y usados, y alquiler — Gran Minería, Cuentas Nacionales, Regionales y Energía.</span></div>
+    <div class="area"><b>Soporte al producto</b><span>Posventa: repuestos, servicio técnico y reconstrucción — el negocio recurrente, 53 % de las ventas en 2025.</span></div>
+    <div class="area"><b>Logística y cadena</b><span>2 CRC de clase mundial (Lima y La Joya) · centro de distribución automatizado · inventarios S/ 2 509 M.</span></div>
+    <div class="area"><b>Finanzas y administración</b><span>Deuda neta/EBITDA 1,90 (2023: 2,25) · 43 % de la deuda a largo plazo.</span></div>
+    <div class="area"><b>Recursos humanos</b><span>99,7 % de evaluación · 286 913 h de capacitación · ThinkBIG 107 en 2024.</span></div>
+    <div class="area"><b>Tecnología e innovación</b><span>Ciberseguridad al 100 % · &gt;6 500 máquinas conectadas · Innovation Week &gt;600.</span></div>
+    <div class="area"><b>Marketing y comunicaciones</b><span>Repuestos digitales &gt;US$ 100 M · 62 % de clientes online · lanzó Maquinet.</span></div>
+    <div class="area"><b>Gobierno corporativo</b><span>Asuntos corporativos, auditoría y cumplimiento — ISO 37001 en 8 empresas.</span></div>
+  </div>
+  <p class="src">Fuente: §1.5, pp. 15–17.</p>
+</section>
+
+<section class="rep tint-cool" id="recursos" style="--band:#3E7C6B">
+  <p class="kicker">4 · Recursos</p>
+  <h2>La red que sostiene la máquina.</h2>
+  <p class="lede">La ventaja competitiva no nace de un solo recurso, sino de su combinación:
+    representación exclusiva, red de soporte de clase mundial, talento técnico residente,
+    logística automatizada y capital reputacional.</p>
+  <div class="strip">
+    <span>&gt;40<small>sucursales entre las tres distribuidoras peruanas</small></span>
+    <span>2 <i>CRC</i><small>de clase mundial · más de 50 000 m²</small></span>
+    <span>15<small>talleres Cinco Estrellas</small></span>
+    <span>~1 700<small>técnicos residentes en las minas</small></span>
+    <span>&gt;6 500<small>máquinas conectadas</small></span>
+    <span>S/ 2 509 <i>M</i><small>inventarios · rotación 154 días</small></span>
+  </div>
+  <p class="src">Fuente: §1.6, pp. 19–22.</p>
+</section>
+
+<section class="rep tint-warm" id="diagnostico" style="--band:#B4552D">
+  <p class="kicker">5 · Diagnóstico</p>
+  <h2>Seis fortalezas, cinco debilidades.</h2>
+  <div class="fd">
+    <div>
+      <h3>Fortalezas</h3>
+      <ul>
+        <li><b>F1 · Liderazgo con representación exclusiva.</b> Único de Caterpillar en el Perú desde 1942 · 43 % de la marca en importaciones FOB.</li>
+        <li><b>F2 · Negocio recurrente de repuestos y servicios.</b> La línea de mayor margen · 53 % de las ventas en 2025.</li>
+        <li><b>F3 · Red de soporte de clase mundial.</b> 2 CRC certificados · centro de distribución automatizado · &gt;40 sucursales.</li>
+        <li><b>F4 · Solidez financiera.</b> Récord de ventas y utilidad · EBITDA S/ 1 131 M (+18,9 %) · deuda neta/EBITDA 1,90.</li>
+        <li><b>F5 · Capital humano comprometido.</b> Clima 83 % · compromiso 88 % · 286 913 h de capacitación.</li>
+        <li><b>F6 · Gobierno corporativo e intangibles.</b> Directorio plural · DJSI MILA 8 años · calificación Oro de Caterpillar.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Debilidades</h3>
+      <ul>
+        <li><b>D1 · Concentración sectorial.</b> La minería concentró el 58 % de las ventas de 2024.</li>
+        <li><b>D2 · Dependencia de una representada.</b> Caterpillar equivale al 77 % de los ingresos.</li>
+        <li><b>D3 · Sensibilidad cambiaria.</b> Pérdida por diferencia de cambio de S/ 43 M en 2024 · gasto financiero +12,5 %.</li>
+        <li><b>D4 · Complementarios desiguales.</b> El bloque cayó 2,0 % en 2024 — el pensado para diversificar fue el de menor dinamismo.</li>
+        <li><b>D5 · Presión competitiva por precio.</b> Maquinaria china desde 2008 · repuestos no genuinos en la posventa.</li>
+      </ul>
+    </div>
+  </div>
+  <figure class="fig">
+    <img src="figuras/grafico_sectores.png" alt="Figura 4 del informe: composición sectorial de las ventas 2024" />
+    <figcaption><b>Figura 4 · Composición sectorial de las ventas 2024.</b> Minería 58 % — tajo abierto 48 % · construcción 22 % · subterránea 10 % · industria, comercio y servicios 9 %. Fuente: informe AA1, p. 26.</figcaption>
+  </figure>
+  <p class="src">Fuente: §1.8, pp. 25–27.</p>
+</section>
+
+<section class="rep tint-cool" id="plan" style="--band:#2E6E8C">
+  <p class="kicker">6 · Plan de acción</p>
+  <h2>Reducir la vulnerabilidad, sin soltar el liderazgo.</h2>
+  <p class="lede"><b>Objetivo general:</b> reducir la vulnerabilidad frente a la doble concentración
+    en un horizonte de tres años, elevando el peso de los ingresos recurrentes y de los sectores
+    y negocios no mineros, sin sacrificar el liderazgo en la gran minería.</p>
+  <ol class="plan">
+    <li data-n="01"><div><b>Venta cruzada one stop shop</b><span>Programa corporativo con metas por subsidiaria y tablero de clientes compartidos — 0–12 meses.</span></div></li>
+    <li data-n="02"><div><b>Contratos de servicio recurrentes</b><span>Convertir el parque de máquinas conectadas en CVA con monitoreo predictivo y gemelos digitales — 6–24 meses.</span></div></li>
+    <li data-n="03"><div><b>Electrificación y reconstrucción certificada</b><span>Electrification Rebuild Center y CRC como línea comercial activa para flotas en transición energética — 6–36 meses.</span></div></li>
+    <li data-n="04"><div><b>Crecimiento sectorial no minero</b><span>Metas de participación para energía, agricultura e infraestructura, con equipos comerciales dedicados — 12–36 meses.</span></div></li>
+    <li data-n="05"><div><b>Blindaje financiero permanente</b><span>Calce de monedas, coberturas cambiarias y al menos 40 % de deuda a largo plazo — permanente, con revisión anual.</span></div></li>
+    <li data-n="06"><div><b>Ampliar la cantera técnica</b><span>ThinkBIG, DreamBIG y Aprendizaje Dual según la demanda de técnicos, priorizando regiones mineras — 0–36 meses.</span></div></li>
+  </ol>
+  <p class="src">Fuente: §1.9.3, Tabla 2, pp. 28–30.</p>
+</section>
+
+<section class="rep tint-warm" id="conclusiones" style="--band:#E85A24">
+  <p class="kicker">7 · Conclusiones</p>
+  <h2>Seis ideas que quedan.</h2>
+  <ol class="concl">
+    <li><b>Gran empresa peruana, comercial y de servicios, privada, S.A.A. con fines de lucro.</b> Su clasificación determina su supervisión por la SMV, su disciplina de gobierno y la transparencia que hace posible analizarla con fuentes públicas.</li>
+    <li><b>Holding divisional por productos-mercado, con autonomía operativa y coherencia estratégica.</b> La autoridad fluye Junta → Directorio → Gerencia General → gerencias → subsidiarias, reforzada por directorios cruzados y objetivos en cascada.</li>
+    <li><b>Las áreas forman un sistema, no una lista.</b> El circuito comercial–posventa–logística convierte cada venta en flujo recurrente, sostenido por talento formado en casa y más de 6 500 máquinas conectadas.</li>
+    <li><b>Relaciones internas medidas y consistentes:</b> clima 83 %, compromiso 88 %, respuesta de 99 % a la encuesta, y una cultura centenaria con manifestaciones verificables en integridad y equidad.</li>
+    <li><b>La dificultad central es la doble concentración</b> —minería 58 % y Caterpillar 77 %—, fuente de su liderazgo y principal vulnerabilidad, agravada por la sensibilidad cambiaria y el retroceso del bloque complementario.</li>
+    <li><b>El plan afronta esa dificultad con las fortalezas propias</b> —negocio recurrente, red certificada, solidez financiera y cantera técnica—, en seis acciones con responsables, plazos e indicadores, en tres años.</li>
+  </ol>
+  <p class="src">Fuente: §3, pp. 35–36.</p>
+</section>
+
+<footer>
+  Fuente única: Informe AA1 — Análisis organizacional de Ferreycorp S.A.A. (Memoria Anual 2024, BVL).<br />
+  El organigrama es una reconstrucción del equipo consultor, no el gráfico oficial. Los bloques de subsidiarias suman 99 % por redondeo.<br />
+  Música: «Meanwhile» de Scott Buckley — CC-BY 4.0 · scottbuckley.com.au<br />
+  <a class="up" href="#coverTrack">↑ Volver a la portada</a>
+</footer>
+
+<audio id="musica" src="musica.mp3" loop preload="none"></audio>
+<script>
+// PORTADA: video puro que ATERRIZA en su último fotograma (truco Bullpadel:
+// el movimiento frena hasta cero y el último fotograma ES la foto).
+// hero.mp4 lleva la cola frenada (0.6x, luego 0.3x) + 0.8 s congelado al
+// final; poster.jpg es el último fotograma exacto, así que el fundido
+// durante el congelado es invisible. La foto NUNCA se funde sobre metraje
+// en movimiento: si el visitante baja antes de que el video aterrice, el
+// video salta al inicio del congelado y aterriza ahí.
+(function(){
+  var track = document.getElementById('coverTrack');
+  var video = document.getElementById('coverVideo');
+  var still = document.getElementById('coverStill');
+  var media = document.getElementById('coverMedia');
+  var HOLD = 0.8; /* segundos finales congelados en hero.mp4 */
+  function clamp(v,a,b){ return Math.max(a, Math.min(b, v)); }
+  function smooth(a,b,x){ var t = clamp((x-a)/(b-a),0,1); return t*t*(3-2*t); }
+  function landing(){
+    var d = video.duration;
+    if (!d || isNaN(d)) return 0;
+    if (video.ended) return 1;
+    var t = video.currentTime;
+    if (t >= d - HOLD) return clamp((t - (d - HOLD)) / HOLD, 0, 1);
+    return 0;
+  }
+  var ticking = false;
+  function update(){
+    ticking = false;
+    var r = track.getBoundingClientRect();
+    var vh = window.innerHeight;
+    var p = clamp(-r.top / Math.max(1, r.height - vh), 0, 1);
+    var want = smooth(0.12, 0.55, p); /* cuánto fundido pide el scroll */
+    var d = video.duration;
+    if (want > 0 && d && !isNaN(d) && !video.ended && video.currentTime < d - HOLD){
+      try { video.currentTime = d - HOLD; } catch (e) {} /* bajar = aterrizar */
+    }
+    var land = landing();
+    var f = video.ended ? 1 : land * want;
+    still.style.opacity = f.toFixed(3);
+    video.style.opacity = (1 - f).toFixed(3);
+    media.style.transform = 'scale(' + (1 + 0.05 * p).toFixed(4) + ')';
+    if (f >= 1 && !video.paused) video.pause();
+    if (f <= 0 && video.paused && !video.ended && d && video.currentTime < d - 0.1){
+      video.play().catch(function(){});
+    }
+  }
+  function onScroll(){ if (!ticking){ ticking = true; requestAnimationFrame(update); } }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  window.addEventListener('resize', onScroll);
+  video.addEventListener('timeupdate', onScroll); /* el aterrizaje también funde solo */
+  video.addEventListener('ended', function(){ still.style.opacity = 1; video.style.opacity = 0; });
+  video.addEventListener('error', function(){ video.style.display = 'none'; still.style.opacity = 1; });
+  update();
+})();
+// La música NUNCA suena sola: solo suena si el visitante pulsa el icono de sonido.
+// Es SOLO de la portada: al bajar fuera de ella, se apaga sola.
+(function(){
+  var btn = document.getElementById('btnSonido');
+  var audio = document.getElementById('musica');
+  var cover = document.getElementById('cover');
+  audio.volume = 0.7;
+  btn.addEventListener('click', function(){
+    if (audio.paused) {
+      audio.play().then(function(){
+        btn.setAttribute('aria-pressed', 'true');
+        btn.textContent = '🔊';
+      }).catch(function(){ /* el navegador bloqueó el audio: queda en silencio */ });
+    } else {
+      audio.pause();
+      btn.setAttribute('aria-pressed', 'false');
+      btn.textContent = '🔇';
+    }
+  });
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function(entries){
+      if (!entries[0].isIntersecting && !audio.paused) {
+        audio.pause();
+        btn.setAttribute('aria-pressed', 'false');
+        btn.textContent = '🔇';
+      }
+    }, {threshold: 0.15}).observe(cover);
+  }
+})();
+</script>
+<!-- MAQUINARIA: el pliegue vive dentro de cada visor (flechita dorada en web/maquinaria/); sin botón «Controles» en el envoltorio. -->
+<script>
+// INTEGRADA: la interacción vive en el iframe (torre 3D, raycasting por piso).
+// Aquí solo quedan los botones de la barra superior.
+(function(){
+  var res = document.getElementById('btnResultados');
+  if (res) res.addEventListener('click', function(){ location.href = 'pisos/resultados-2024.html'; });
+  var rep = document.getElementById('btnReplay');
+  if (rep) rep.addEventListener('click', function(){
+    var ed = document.getElementById('edificio');
+    if (ed) ed.scrollIntoView({behavior:'smooth'});
+  });
+})();
+</script>
+</body>
+</html>

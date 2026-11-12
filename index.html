@@ -261,13 +261,17 @@ footer .up{display:inline-block;margin-top:14px;font-size:13px;font-weight:600;c
   </div>
 </section>
 
-<!-- (2) EL EDIFICIO EN FOTO: la torre recortada por pisos, cada piso una pieza que se visita -->
+<!-- (2) EL EDIFICIO INTEGRADO: torre 3D real sobre el fondo del entorno (lote de esquina) -->
+<style>
+  #edificio #stage{background:url('fondo_entorno_esquina.jpg') center/cover no-repeat;}
+  #edificio #tourTrack{height:100vh;}
+  #towerFrame{position:absolute;inset:0;width:100%;height:100%;border:0;background:transparent;display:block;}
+</style>
 <section id="edificio">
   <div id="tourTrack">
     <div class="sticky-stage">
       <div id="stage">
-        <img id="tourStill" src="poster.jpg" alt="Último fotograma del armado: la torre completa en la ciudad" />
-
+        <iframe id="towerFrame" src="torre_integrada.html" title="Torre 3D Ferreycorp — clic en un piso para ver su ficha" allowtransparency="true"></iframe>
         <header class="topbar">
           <a class="back" href="#coverTrack">← Portada</a>
           <div class="brand">FERREYCORP &nbsp;·&nbsp; AA1</div>
@@ -275,27 +279,9 @@ footer .up{display:inline-block;margin-top:14px;font-size:13px;font-weight:600;c
           <button class="btn-res" id="btnResultados" type="button">Resultados 2024</button>
           <button class="btn-res btn-replay" id="btnReplay" type="button">↺ Ver el edificio de nuevo</button>
         </header>
-
-        <div id="tourCard" hidden>
-          <div id="tourKicker"></div>
-          <div id="tourName"></div>
-          <div id="tourData"></div>
-          <button id="tourGo" type="button"></button>
-        </div>
-
-        <div id="exploreBar">
-          <div id="exploreHint">Scroll recorre los pisos · clic en un piso de la foto o en los botones para visitar su página.</div>
-          <div id="chips"></div>
-        </div>
-        <button id="btnReplayEnd" type="button" hidden>↺ Ver el edificio de nuevo</button>
-
-
-
-
       </div>
     </div>
   </div>
-
 </section>
 
 <!-- (3) INTRO: titular, 77 % integrado, números y entrada a la maquinaria -->
@@ -592,190 +578,16 @@ footer .up{display:inline-block;margin-top:14px;font-size:13px;font-weight:600;c
 </script>
 <!-- MAQUINARIA: el pliegue vive dentro de cada visor (flechita dorada en web/maquinaria/); sin botón «Controles» en el envoltorio. -->
 <script>
-// TOUR EN FOTO: la foto congelada (poster.jpg = último fotograma del video)
-// ES el edificio. La foto es el fondo y cada piso es una pieza recortada
-// encima (estilo PowerPoint): un botón por piso, posicionado por JS sobre la
-// torre con las medidas de la tabla FLOOR_BANDS — para mover un piso se edita
-// UNA línea de esa tabla, sin tocar la imagen. El scroll recorre las 8
-// paradas (la torre completa, planta baja, pisos 01–06) y la tarjeta muestra
-// la ficha corta; el clic en una pieza, en un chip o en el botón de la
-// tarjeta NAVEGA a la página de ese piso.
+// INTEGRADA: la interacción vive en el iframe (torre 3D, raycasting por piso).
+// Aquí solo quedan los botones de la barra superior.
 (function(){
-  var track = document.getElementById('tourTrack');
-  var still = document.getElementById('tourStill');
-  var stage = document.getElementById('stage');
-  var tourCard = document.getElementById('tourCard');
-  function clamp(v,a,b){ return Math.max(a, Math.min(b, v)); }
-  function $(id){ return document.getElementById(id); }
-
-  /* --- Datos: UNA sola fuente (mismos textos y enlaces que las fichas) --- */
-  var PAGE_URL = {
-    'PB': 'pisos/pb-operaciones.html',
-    0: 'pisos/p01-complementarios.html',
-    1: 'pisos/p02-peru-cat-exterior.html',
-    2: 'pisos/p03-servicios-compartidos.html',
-    3: 'pisos/p04-gerencias-corporativas.html',
-    4: 'pisos/p05-gerencia-general.html',
-    5: 'pisos/p06-directorio.html',
-    'RES': 'pisos/resultados-2024.html'
-  };
-  var TOUR_STOPS = ['TOWER', 'PB', 0, 1, 2, 3, 4, 5];
-  var TOUR_DATA = {
-    'TOWER': {k:'LA TORRE', n:'La torre, completa.', d:'7 niveles del organigrama, de la planta baja al directorio.', c:''},
-    'PB': {k:'PB · PLANTA BAJA', n:'Planta baja · Operaciones', d:'Más de 40 sucursales · 2 CRC de clase mundial · ~1 700 técnicos residentes.', c:'Visitar la planta baja'},
-    0: {k:'PISO 01', n:'Subsidiarias · Complementarios', d:'9 % · S/ 699 M — cayó 2,0 % en 2024.', c:'Visitar su página'},
-    1: {k:'PISO 02', n:'Subsidiarias · Perú CAT + Exterior', d:'82 % · S/ 6 251 M en el Perú · 8 % · S/ 639 M fuera.', c:'Visitar su página'},
-    2: {k:'PISO 03', n:'Centro de Servicios Compartidos', d:'98,8 % de colaboradores con objetivos alineados.', c:'Visitar su página'},
-    3: {k:'PISO 04', n:'Gerencias Corporativas', d:'Una planta, 9 oficinas — todas cuelgan de la Gerencia General.', c:'Visitar su página'},
-    4: {k:'PISO 05', n:'Gerencia General', d:'Mariela García Figari de Fabbri — gerente general desde 2008.', c:'Visitar su página'},
-    5: {k:'PISO 06', n:'Directorio', d:'9 miembros · 5 de 9 independientes · 6 997 accionistas.', c:'Visitar su página'}
-  };
-  /* --- TABLA EDITABLE de las piezas recortadas sobre la foto ---
-     BAND_X0/BAND_X1: ancho de la torre en la foto (fracción del ancho 1280).
-     y0/y1: cada piso en la foto (fracción de la altura 720), de arriba abajo:
-     P06 corona, P05, P04, P03, P02, P01, PB base. Medido sobre poster.jpg. */
-  var BAND_X0 = 0.375, BAND_X1 = 0.578;
-  var FLOOR_BANDS = [
-    {key:'5',  y0:0.0625, y1:0.1806, label:'Piso 06 · Directorio'},
-    {key:'4',  y0:0.1806, y1:0.2986, label:'Piso 05 · Gerencia General'},
-    {key:'3',  y0:0.2986, y1:0.4167, label:'Piso 04 · Gerencias Corporativas'},
-    {key:'2',  y0:0.4167, y1:0.5347, label:'Piso 03 · Centro de Servicios Compartidos'},
-    {key:'1',  y0:0.5347, y1:0.6528, label:'Piso 02 · Subsidiarias Perú CAT + Exterior'},
-    {key:'0',  y0:0.6528, y1:0.7708, label:'Piso 01 · Subsidiarias Complementarios'},
-    {key:'PB', y0:0.7708, y1:0.8889, label:'Planta baja · Operaciones'}
-  ];
-  function goTo(target){
-    var url = null;
-    if (typeof target === 'number') url = PAGE_URL[target];
-    else if (typeof target === 'string'){
-      if (PAGE_URL[target]) url = PAGE_URL[target];
-      else { var n = parseInt(target, 10); if (!isNaN(n) && n >= 1 && n <= 6) url = PAGE_URL[n - 1]; }
-    }
-    if (url) location.href = url;
-  }
-
-  /* --- Chips (explorar): clic = visitar la página del piso --- */
-  var chipsBox = $('chips');
-  [['06','Piso 06'],['05','Piso 05'],['04','Piso 04'],['03','Piso 03'],
-   ['02','Piso 02'],['01','Piso 01'],['PB','Planta baja']].forEach(function(c){
-    var b = document.createElement('button');
-    b.className = 'chip'; b.type = 'button'; b.textContent = c[1];
-    b.dataset.key = c[0];
-    b.addEventListener('click', function(){ goTo(c[0]); });
-    chipsBox.appendChild(b);
-  });
-
-  /* --- Piezas recortadas sobre la foto --- */
-  var bands = [];
-  FLOOR_BANDS.forEach(function(f){
-    var b = document.createElement('button');
-    b.className = 'floor-band'; b.type = 'button';
-    b.dataset.key = f.key;
-    b.setAttribute('aria-label', f.label + ' — visitar su página');
-    var lab = document.createElement('span');
-    lab.className = 'band-label'; lab.textContent = f.label;
-    b.appendChild(lab);
-    b.addEventListener('click', function(){ goTo(f.key); });
-    stage.appendChild(b);
-    bands.push({el:b, data:f});
-  });
-  /* La foto se muestra con object-fit:cover: el mapeo imagen→pantalla se
-     recalcula en cada resize para que las piezas sigan a la torre. */
-  function positionBands(){
-    if (!still || !stage) return;
-    var r = stage.getBoundingClientRect();
-    var cw = r.width, ch = r.height;
-    if (!cw || !ch) return;
-    var iw = still.naturalWidth || 1280, ih = still.naturalHeight || 720;
-    var s = Math.max(cw / iw, ch / ih);
-    var pos = (window.getComputedStyle(still).objectPosition || '50% 50%').split(/\s+/);
-    var px = parseFloat(pos[0]) / 100 || 0.5, py = parseFloat(pos[1]) / 100 || 0.5;
-    var ox = (cw - iw * s) * px, oy = (ch - ih * s) * py;
-    bands.forEach(function(band){
-      var f = band.data;
-      band.el.style.left = (ox + BAND_X0 * iw * s).toFixed(1) + 'px';
-      band.el.style.top = (oy + f.y0 * ih * s).toFixed(1) + 'px';
-      band.el.style.width = ((BAND_X1 - BAND_X0) * iw * s).toFixed(1) + 'px';
-      band.el.style.height = ((f.y1 - f.y0) * ih * s).toFixed(1) + 'px';
-    });
-  }
-  if (still.complete) positionBands();
-  else still.addEventListener('load', positionBands);
-  window.addEventListener('resize', positionBands);
-
-  /* --- Recorrido por scroll: 8 paradas, tarjeta corta por parada --- */
-  var tourStop = -1;
-  var tourGoTarget = null;
-  function applyTourStop(pos){
-    tourStop = pos;
-    if (!tourCard) return;
-    var stop = pos < 0 ? null : TOUR_STOPS[pos];
-    document.querySelectorAll('.chip').forEach(function(c){
-      c.classList.toggle('on', stop !== null && stop !== 'TOWER' &&
-        ((stop === 'PB' && c.dataset.key === 'PB') || (stop !== 'PB' && parseInt(c.dataset.key, 10) - 1 === stop)));
-    });
-    bands.forEach(function(band){
-      band.el.classList.toggle('on', stop !== null && stop !== 'TOWER' &&
-        ((stop === 'PB' && band.el.dataset.key === 'PB') || (stop !== 'PB' && parseInt(band.el.dataset.key, 10) === stop)));
-    });
-    if (window.innerWidth <= 900){ $('exploreBar').style.visibility = stop === null ? '' : 'hidden'; }
-    var replayEnd = $('btnReplayEnd');
-    if (replayEnd) replayEnd.hidden = (pos !== TOUR_STOPS.length - 1);
-    if (stop === null){ tourCard.hidden = true; tourGoTarget = null; return; }
-    var d = TOUR_DATA[stop];
-    $('tourKicker').textContent = d.k + ' · ' + (pos + 1) + '/' + TOUR_STOPS.length;
-    $('tourName').textContent = d.n;
-    $('tourData').textContent = d.d;
-    var go = $('tourGo');
-    if (d.c){ go.textContent = d.c + ' →'; go.style.display = ''; tourGoTarget = stop; }
-    else { go.style.display = 'none'; tourGoTarget = null; }
-    tourCard.hidden = false;
-  }
-  if (tourCard){
-    $('tourGo').addEventListener('click', function(){
-      if (tourGoTarget !== null && tourGoTarget !== undefined) goTo(tourGoTarget);
-    });
-  }
-  var ticking = false;
-  function update(){
-    ticking = false;
-    if (!track) return;
-    var r = track.getBoundingClientRect();
-    var vh = window.innerHeight;
-    var active = (r.top <= 0 && r.bottom >= vh);
-    var stop = -1;
-    if (active){
-      var p = clamp(-r.top / Math.max(1, r.height - vh), 0, 1);
-      stop = Math.min(TOUR_STOPS.length - 1, Math.floor(p * TOUR_STOPS.length));
-    }
-    if (stop !== tourStop) applyTourStop(stop);
-  }
-  function onScroll(){ if (!ticking){ ticking = true; requestAnimationFrame(update); } }
-  window.addEventListener('scroll', onScroll, {passive:true});
-  window.addEventListener('resize', onScroll);
-  update();
-  function replay(){
+  var res = document.getElementById('btnResultados');
+  if (res) res.addEventListener('click', function(){ location.href = 'pisos/resultados-2024.html'; });
+  var rep = document.getElementById('btnReplay');
+  if (rep) rep.addEventListener('click', function(){
     var ed = document.getElementById('edificio');
     if (ed) ed.scrollIntoView({behavior:'smooth'});
-  }
-  ['btnReplay','btnReplayEnd'].forEach(function(id){
-    var b = document.getElementById(id);
-    if (b) b.addEventListener('click', replay);
   });
-  $('btnResultados').addEventListener('click', function(){ goTo('RES'); });
-
-  /* API para pruebas (Playwright). */
-  window.__edificio = {
-    tour:function(){ return tourStop; },
-    tourCard:function(){ return tourCard && !tourCard.hidden ? $('tourName').textContent : null; },
-    bands:function(){ return bands.length; },
-    bandRect:function(key){
-      var band = bands.filter(function(b){ return b.el.dataset.key === String(key); })[0];
-      if (!band) return null;
-      var r = band.el.getBoundingClientRect();
-      return {x:+r.x.toFixed(1), y:+r.y.toFixed(1), w:+r.width.toFixed(1), h:+r.height.toFixed(1)};
-    }
-  };
 })();
 </script>
 </body>
