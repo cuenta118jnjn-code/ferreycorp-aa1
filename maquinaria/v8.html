@@ -4892,5 +4892,57 @@ html,body{background:#ecedef;overflow:hidden}
 `;function ld(){let i=Number(document.body.dataset.top||0),t=document.createElement("style");t.textContent=zx(i),document.head.appendChild(t);let e=document.getElementById("app"),n=document.createElement("canvas");n.id="gl",e.appendChild(n);let s=$c({canvas:n}),r=Vc(e),a=rd(r),o=ad(r,s),c=[{samples:8,ao:!0,shadow:4096,pr:2},{samples:4,ao:!1,shadow:2048,pr:1.5},{samples:2,ao:!1,shadow:1024,pr:1}],h=matchMedia("(pointer: coarse)").matches||Math.min(innerWidth,innerHeight)<700?2:0,d=1,u=()=>{let B=innerHeight-i;d=Math.min(innerWidth/ll,B/cl),e.style.transform=`translate(${(innerWidth-ll*d)/2}px, ${i+(B-cl*d)/2}px) scale(${d})`,s.resize(ll,cl,Kn((devicePixelRatio||1)*d,.75,c[h].pr))},f=()=>{let{pr:B,...ot}=c[h];s.setQuality(ot),u()};f(),addEventListener("resize",u);let g=(B,ot)=>{let U=e.getBoundingClientRect();return[(B-U.left)/d,(ot-U.top)/d]},M=document.createElement("div");M.className="tourchip",r.root.appendChild(M);let m=document.createElement("div");m.className="turn",m.textContent="Turn your phone sideways for the full console",document.body.appendChild(m);let p=0,w=12,A=700,v=700,E=2,S=!1,C="hero",_=0,b=1,R="glass",P={callouts:1,charge:1,arrows:1,isolate:0,refract:1,charts:1},D={az:0,el:0,k:1},k={...Gr.open(0)},L={t:-9,x:0,y:0},H=!1,Q=(B,ot)=>L={t:p,x:B,y:ot},Z=B=>Q(...r.spots[B]),ct={on:!0,t0:0,loop:0},X=0,rt=()=>{ct.on=!0,ct.t0=p,ct.loop=0,S=!1,E=2,R="glass",Object.assign(P,{callouts:1,charge:1,arrows:1,isolate:0,refract:1,charts:1}),Object.assign(D,{az:0,el:0,k:1})},tt=()=>{if(X=p,!ct.on)return;ct.on=!1;let B=(p-ct.t0)%As;C=Yc(B),_=p-(B-Jn.filter(ot=>ot.cam&&ot.t<=B).pop().t),C==="hero"&&B<3.5&&(_=p-6),P.isolate=C==="cyl"?1:0};M.addEventListener("pointerdown",B=>{B.stopPropagation(),X=p,ct.on?tt():rt()}),addEventListener("pointerdown",B=>{B.target!==M&&tt()});let dt=B=>{C=B,_=p,Object.assign(D,{az:0,el:0,k:1}),P.isolate=B==="cyl"?1:0};for(let B of Ss)r.btn[B].addEventListener("click",()=>{tt(),Z(B),dt(B)});for(let B of Nr)r.btn[B].addEventListener("click",()=>{tt(),Z(B),R=B});for(let B of Ur)r.btn[B].addEventListener("click",()=>{tt(),Z(B),P[B]=P[B]?0:1});r.btn.pause.addEventListener("click",()=>{tt(),Z("pause"),S=!S});for(let[B,ot]of[["back",-15],["fwd",15]])r.btn[B].addEventListener("click",()=>{tt(),Z(B),S=!0,w+=ot});Oi.forEach((B,ot)=>{let[U,j]=r.foSpot(ot),lt=document.createElement("div");lt.className="hit",Object.assign(lt.style,{left:`${U-14}px`,top:`${j-14}px`,width:"28px",height:"28px",borderRadius:"50%"}),lt.addEventListener("click",()=>{tt(),Q(U,j),b=B,C==="cyl"&&(_=p-.01)}),r.root.appendChild(lt)});let xt=(B,ot)=>{let[U,j]=B(0),[lt]=B(1),N=document.createElement("div");N.className="hit ew",Object.assign(N.style,{left:`${U-8}px`,top:`${j-11}px`,width:`${lt-U+16}px`,height:"22px"});let J=G=>{let[it]=g(G.clientX,G.clientY);ot(Kn((it-U)/(lt-U),0,1)),X=p};N.addEventListener("pointerdown",G=>{tt(),N.setPointerCapture(G.pointerId);let it=()=>{removeEventListener("pointermove",J),removeEventListener("pointerup",it)};addEventListener("pointermove",J),addEventListener("pointerup",it),J(G)}),r.root.appendChild(N)};xt(r.speedKnob,B=>v=Kn(B*Sn,300,Sn)),xt(r.playKnob,B=>E=Math.round(B*(ol.length-1))),addEventListener("keydown",B=>{if(B.altKey||B.ctrlKey||B.metaKey)return;let ot=B.key.toLowerCase(),U={1:"hero",2:"front",3:"side",4:"valley",5:"cyl"}[ot];if(tt(),U)dt(U);else if(ot===" ")S=!S;else if(ot==="h")H=!H;else if(ot==="arrowleft")S=!0,w-=15;else if(ot==="arrowright")S=!0,w+=15;else if(ot==="arrowup")v=Kn(v+300,300,Sn);else if(ot==="arrowdown")v=Kn(v-300,300,Sn);else return;B.preventDefault()});let qt=null;n.addEventListener("pointerdown",B=>{qt={x:B.clientX,y:B.clientY},n.setPointerCapture(B.pointerId),n.classList.add("drag")}),n.addEventListener("pointermove",B=>{qt&&(D.az+=(B.clientX-qt.x)/d*.3,D.el=Kn(D.el+(B.clientY-qt.y)/d*.2,-20,60),qt={x:B.clientX,y:B.clientY},X=p)});let Ht=()=>{qt=null,n.classList.remove("drag")};n.addEventListener("pointerup",Ht),n.addEventListener("pointercancel",Ht),n.addEventListener("wheel",B=>{B.preventDefault(),tt(),D.k=Kn(D.k*Math.exp(B.deltaY*.0012),.45,2.2)},{passive:!1}),rt();let Gt=performance.now(),$={n:0,sum:0,slow:0,age:0},st=B=>{let ot=Math.min(.1,Math.max(0,(B-Gt)/1e3));Gt=B,p+=ot,h<c.length-1&&($.age+=ot,$.age>.6&&($.sum+=ot,$.n++,$.sum>=.5&&$.n>=6&&($.slow=$.sum/$.n>.022?$.slow+1:0,$.sum=0,$.n=0,$.slow>=($.age<6?1:2)&&(h++,f(),Object.assign($,{age:0,slow:0})))));let U,j,lt,N;if(ct.on){let G=p-ct.t0,it=Math.floor(G/As),pt=G-it*As;it>ct.loop&&(ct.loop=it),C=Yc(pt),b=rl(pt),v=al(pt),U=sd(pt);let Et=Jn.filter(Ct=>Ct.cam&&Ct.t<=pt).pop().t;lt=pt-Et;let bt=Jn.filter(Ct=>Ct.cam),Lt=bt.findIndex(Ct=>Ct.t===Et);if(N=C==="cyl"&&lt>1.25||Lt>0&&bt[Lt-1].cam==="cyl"&&lt<.6,P.isolate=N?1:0,j=a(pt),ct.loop>0&&pt<.8){let Ct=a(As-.01),I=Fx(0,.8,pt);j={...j,x:Ct.x+(j.x-Ct.x)*I,y:Ct.y+(j.y-Ct.y)*I}}}else p-X>Nx&&rt(),lt=p-_,U=Gr[C](lt,b),U.az+=D.az,U.el=Kn(U.el+D.el,-10,80),U.d*=D.k,N=!!P.isolate,j={x:-99,y:-99,press:!1,ring:Math.max(0,1-(p-L.t)/.55),ringX:L.x,ringY:L.y};A+=(v-A)*(1-Math.exp(-ot/.35)),S||(w+=A/60*360*ot*ol[E]);let J=1-Math.exp(-ot/(ct.on?.18:.45));k.az+=Ox(U.az-k.az)*J;for(let G of["tx","ty","tz","el","d","sx","sy"])k[G]+=(U[G]-k[G])*J;s.setCut(R,Ke[b-1].z*.001),s.eng.setRefract(!!P.refract),s.frame(w,{...k,az:k.az*od,el:k.el*od},{solo:N?b-1:-1,charge:P.charge,arrows:P.arrows}),r.root.style.display=H?"none":"";for(let G of r.root.querySelectorAll('[data-g="charts"]'))G.style.visibility=P.charts?"":"hidden";o(p,{th:w,cam:C,cyl:b,rpm:A,cursor:j,since:lt,live:{solo:N,overlays:{...P},cut:R,paused:S,playText:Bx(ol[E]),playK:E/(ol.length-1)}}),(M.classList.contains("on")!==ct.on||!M.firstChild)&&(M.classList.toggle("on",ct.on),M.innerHTML=ct.on?"<i></i>AUTO TOUR \xB7 CLICK TO TAKE OVER":"\u25B6 RESUME TOUR"),window.SIM_SHOWN||(window.SIM_SHOWN=!0,dispatchEvent(new Event("simframe"))),requestAnimationFrame(st)};$u(s.renderer,s.composer,s.scene,s.camera).then(()=>requestAnimationFrame(st)),window.LIVE={st:s,cam:k,startTour:rt,takeOver:tt,get tier(){return h},get T(){return p}}}ld();
 
 </script>
+
+<!-- ═══ PLEGADO DEL OVERLAY (JEFE-1, 2026-11-11 · orden de Jerzon 18:10) ═══
+     Solo PRESENTACIÓN: el overlay se oculta por defecto para que el motor
+     se vea completo; la flecha del borde derecho lo muestra/oculta usando
+     la propia tecla H de la app (la app ya trae «H HIDES THE OVERLAY»).
+     NINGUNA función fue tocada. El original vive en
+     your_files/teardown_ejemplos_originales/V8_original_de_Elvar.html. -->
+<style>
+#maqFoldTabV8{position:fixed;top:50%;right:0;transform:translateY(-50%);z-index:9999;
+  width:34px;height:64px;border-radius:16px 0 0 16px;background:rgba(20,20,20,.88);color:#fff;
+  border:1px solid rgba(255,255,255,.35);border-right:none;font:700 20px/1 sans-serif;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;}
+</style>
+<script>
+(function(){
+  var shown=false, ready=false;
+  function pressH(){
+    window.dispatchEvent(new KeyboardEvent('keydown',{key:'h',bubbles:true,cancelable:true}));
+  }
+  function render(){
+    var b=document.getElementById('maqFoldTabV8'); if(!b) return;
+    b.textContent = shown ? '\u203A' : '\u2039'; /* › oculta (el panel sale a la derecha) · ‹ muestra (entra desde la derecha) */
+    b.title = shown ? 'Ocultar panel' : 'Mostrar panel';
+    b.setAttribute('aria-label', b.title);
+  }
+  function init(){
+    if(ready) return; ready=true;
+    var b=document.createElement('button');
+    b.id='maqFoldTabV8'; b.type='button';
+    b.addEventListener('click',function(){ pressH(); shown=!shown; render(); });
+    document.body.appendChild(b);
+    /* Sincroniza si el usuario pulsa H de verdad en el teclado
+       (los eventos sintéticos de pressH no cuentan: isTrusted=false). */
+    window.addEventListener('keydown',function(e){
+      if(e.isTrusted && e.key && e.key.toLowerCase()==='h' && !e.altKey && !e.ctrlKey && !e.metaKey){
+        shown=!shown; render();
+      }
+    });
+    render();
+    pressH(); /* plegado por defecto: la app arranca con el overlay visible */
+    shown=false; render();
+  }
+  /* La app es un módulo diferido: el overlay aparece al montar. Sondeo. */
+  var tries=0;
+  var t=setInterval(function(){
+    tries++;
+    if((document.body.innerText||'').indexOf('DRAG TO ORBIT')!==-1 || tries>150){
+      clearInterval(t); init();
+    }
+  },200);
+})();
+</script>
 </body>
 </html>
