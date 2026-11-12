@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Teleprompter flotante — Ferreycorp</title>
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Georgia,serif;background:#FAF7ED;color:#1B1A17}
+  /* Caja flotante: pensada para una ventana pequeña aparte */
+  .box{max-width:560px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column}
+  header{background:#1B1A17;color:#FAF7ED;padding:12px 16px;display:flex;align-items:center;gap:10px}
+  header .dot{width:10px;height:10px;border-radius:50%;background:#E85A24;flex:0 0 10px}
+  header h1{margin:0;font-size:15px;font-weight:400;font-family:system-ui,sans-serif;letter-spacing:.06em}
+  header select{margin-left:auto;background:#2A2521;color:#FAF7ED;border:1px solid #555;padding:7px 9px;border-radius:8px;font-size:14px;max-width:170px}
+  #partsBtn{margin:12px 18px 0;background:#fff;border:1px solid #D8CDB2;border-radius:999px;padding:10px 16px;font-size:15px;cursor:pointer;font-family:system-ui,sans-serif;color:#1B1A17}
+  #parts{display:none;margin:10px 18px 0;background:#fff;border:1px solid #E5DDC8;border-radius:12px;padding:10px}
+  #parts.open{display:block}
+  #parts button{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:none;border:none;border-bottom:1px solid #F0EAD9;padding:11px 8px;cursor:pointer;font-family:Georgia,serif;font-size:16px;color:#1B1A17}
+  #parts button:last-child{border-bottom:none}
+  #parts button.cur{background:#FFF3E8}
+  #parts .n{flex:0 0 30px;height:30px;border-radius:50%;background:#E85A24;color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-family:system-ui,sans-serif}
+  main{flex:1;padding:18px 18px 12px}
+  .k{font-size:12px;letter-spacing:.14em;color:#E85A24;font-family:system-ui,sans-serif;text-transform:uppercase}
+  h2{font-size:26px;font-weight:400;margin:8px 0 4px;line-height:1.15}
+  .sub{font-size:13px;color:#5D574D;margin:0 0 14px;font-family:system-ui,sans-serif}
+  .script{font-size:22px;line-height:1.55;background:#fff;border:1px solid #E5DDC8;border-left:5px solid #E85A24;border-radius:12px;padding:18px 20px}
+  .script p{margin:0 0 12px}
+  .script p:last-child{margin:0}
+  .trans{margin-top:14px;background:#FFF3E8;border:1px dashed #E85A24;border-radius:12px;padding:12px 14px;font-size:16px;line-height:1.5}
+  .trans b{color:#E85A24;font-family:system-ui,sans-serif;font-size:12px;letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:3px}
+  footer{padding:0 18px 18px;display:flex;gap:10px}
+  footer button{flex:1;border:none;border-radius:999px;padding:15px;font-size:16px;cursor:pointer;font-family:system-ui,sans-serif}
+  #prev{background:#fff;border:1px solid #D8CDB2;color:#1B1A17}
+  #next{background:#E85A24;color:#fff}
+  .nums{padding:0 18px 18px;font-size:13px;line-height:1.6;color:#5D574D;font-family:system-ui,sans-serif}
+  .nums b{color:#E85A24}
+</style>
+</head>
+<body>
+<div class="box">
+  <header>
+    <span class="dot"></span>
+    <h1>TELEPROMPTER · FERREYCORP</h1>
+    <select id="jump" aria-label="Ir al punto"></select>
+  </header>
+  <button id="partsBtn" type="button">☰ Partes — Portada, Directorio, Gerencia…</button>
+  <div id="parts"></div>
+  <main>
+    <div class="k" id="k"></div>
+    <h2 id="t"></h2>
+    <p class="sub" id="s"></p>
+    <div class="script" id="script"></div>
+    <div class="trans" id="trans"></div>
+  </main>
+  <footer>
+    <button id="prev" type="button">← Atrás</button>
+    <button id="next" type="button">Siguiente →</button>
+  </footer>
+  <div class="nums"><b>8 números:</b> 102 años · S/ 7 590 M · 7 978 · 10 países · 77 % CAT · 58 % minería · EBITDA S/ 1 131 M · Utilidad S/ 489 M</div>
+</div>
+<script>
+var PTS=[
+{k:"PORTADA",t:"Portada — Juntos creamos desarrollo",s:"El video del edificio",b:["Buenos días con todos. Yo escogí la empresa Ferreycorp, la corporación peruana que impulsa el desarrollo con maquinaria Caterpillar.","Hoy la voy a explicar como un edificio: cada piso es un nivel de su organización."],tr:"Empezamos desde arriba, desde donde se gobierna."},
+{k:"PISO 06 · DIRECTORIO",t:"Directorio — Quién gobierna",s:"9 miembros · 5 de 9 independientes · 6 997 accionistas",b:["Empezamos desde arriba. Este es el Directorio, el nivel más alto: son 9 miembros que vigilan a la gerencia y cuidan a 6 997 accionistas.","5 de 9 son independientes, así que el gobierno no lo controla una sola mano. Su presidente es Andreas von Wedemeyer Knigge."],tr:"El Directorio fija el rumbo. Ahora bajamos a quien lo ejecuta día a día."},
+{k:"PISO 05 · GERENCIA GENERAL",t:"Gerencia General — La dirección general",s:"Mariela García Figari de Fabbri · desde 2008",b:["Ahora bajamos a la Gerencia General. Ella es Mariela García Figari de Fabbri, gerente general desde 2008, con más de tres décadas en el grupo.","Ella fija la visión, decide los negocios, asigna los recursos y supervisa todo lo que baja a los 5 pisos de abajo."],tr:"Debajo de ella están las 9 gerencias corporativas."},
+{k:"PISO 04 · GERENCIAS CORPORATIVAS",t:"Gerencias Corporativas — 9 gerencias",s:"Deuda neta / EBITDA 1,90",b:["Debajo de ella están las 9 gerencias corporativas: finanzas, recursos humanos, tecnología y las demás áreas que sostienen al grupo.","Les cuento un dato: su deuda neta sobre EBITDA es 1,90, un nivel prudente y en baja."],tr:"Y todo el apoyo se centraliza en un solo centro."},
+{k:"PISO 03 · SERVICIOS COMPARTIDOS",t:"Servicios Compartidos — 98,8 %",s:"Un solo centro de apoyo para todo el grupo",b:["Y todo el apoyo se centraliza en un solo centro: el Centro de Servicios Compartidos, que junta finanzas, recursos humanos y tecnología para todas las subsidiarias, con 98,8 % de participación.","Es lo que hace que el grupo funcione como uno solo."],tr:"Ahora llegamos al corazón del negocio."},
+{k:"PISO 02 · PERÚ CAT Y EXTERIOR",t:"Perú CAT y Exterior — El núcleo que vende",s:"82 % · S/ 6 251 M · El globo: 10 países",b:["Ahora llegamos al corazón del negocio. Este es el núcleo que vende: Perú CAT y aliadas concentran el 82 % de las ventas, 6 251 millones de soles. Ferreyros sola vende 5 444 millones.","Afuera, en 9 países más, está el 8 %. Aquí está el 90 % del negocio.","Miren el planeta: son 10 países, y Perú es la sede principal. Si pulsan un pin, ven la subsidiaria de ese país."],tr:"Pero no todo es CAT. Hay un bloque que debería diversificar."},
+{k:"PISO 01 · COMPLEMENTARIOS",t:"Complementarios — La pata débil",s:"9 % · S/ 699 M · Cayó 2,0 % en 2024",b:["Pero no todo es CAT. Estos son los complementarios: Soltrak, Fargoline, Ferrenergy y los demás. Solo el 9 % de las ventas, 699 millones.","Es la pata débil: el bloque pensado para diversificar fue el que menos creció, cayó 2 % en 2024."],tr:"Y todo esto se sostiene sobre la operación, la planta baja."},
+{k:"PLANTA BAJA · OPERACIONES",t:"Operaciones — La red sostiene",s:">40 sucursales · 2 CRC · ~1 700 técnicos · La maquinaria",b:["Y todo esto se sostiene sobre la operación, la planta baja: más de 40 sucursales, 2 centros de reconstrucción de clase mundial, 15 talleres y unos 1 700 técnicos en las minas.","Aquí vive la maquinaria: el motor V8 y el cargador, que se desarman pieza por pieza. Cada máquina vendida se convierte en repuestos y servicios."],tr:"Con esto claro, les digo la idea central."},
+{k:"LA TESIS",t:"Diagnóstico — Fortaleza y riesgo",s:"La doble concentración: CAT 77 % + minería 58 %",b:["Con esto claro, les digo la idea central: la doble concentración. Caterpillar es el 77 % de los ingresos y la minería el 58 % de las ventas.","Esa es su mayor fortaleza y su mayor riesgo a la vez. Si la minería se frena, todo se frena."],tr:"Por eso el plan no abandona Caterpillar: baja la vulnerabilidad."},
+{k:"EL PLAN",t:"Plan — 6 acciones, 3 años",s:"Bajar la vulnerabilidad sin soltar el liderazgo",b:["Por eso el plan no abandona Caterpillar: baja la vulnerabilidad. Es a 3 años: subir los ingresos recurrentes y los sectores no mineros, sin perder el liderazgo en la gran minería.","Son seis acciones: venta cruzada, contratos de servicio recurrentes, electrificación, crecer fuera de minería, blindaje financiero y ampliar la cantera técnica."],tr:"Y para cerrar, las ideas que quedan."},
+{k:"CIERRE",t:"Cierre — Juntos creamos desarrollo",s:"6 ideas que quedan",b:["Para cerrar: Ferreycorp es una gran empresa peruana, un holding divisional donde cada venta se convierte en flujo recurrente.","Su dificultad es la doble concentración, y su plan la afronta con sus propias fortalezas.","Juntos creamos desarrollo. Gracias, quedo atento a sus preguntas."],tr:"Gracias. Quedo atento a sus preguntas."}
+];
+var cur=0, jump=document.getElementById('jump'), partsBox=document.getElementById('parts');
+PTS.forEach(function(p,i){
+  var o=document.createElement('option'); o.value=i; o.textContent=(i+1)+'. '+p.t; jump.appendChild(o);
+  var b=document.createElement('button'); b.type='button';
+  b.innerHTML='<span class="n">'+(i+1)+'</span><span>'+p.t+'</span>';
+  b.onclick=function(){ show(i); partsBox.classList.remove('open'); };
+  partsBox.appendChild(b);
+});
+document.getElementById('partsBtn').onclick=function(){ partsBox.classList.toggle('open'); };
+function show(i){
+  cur=i; var p=PTS[i];
+  document.getElementById('k').textContent=(i+1)+' de '+PTS.length+' · '+p.k;
+  document.getElementById('t').textContent=p.t;
+  document.getElementById('s').textContent=p.s;
+  document.getElementById('script').innerHTML=p.b.map(function(x){return '<p>'+x+'</p>';}).join('');
+  document.getElementById('trans').innerHTML='<b>'+(i+1<PTS.length?'Para pasar al siguiente punto':'Al terminar')+'</b>'+p.tr;
+  document.getElementById('prev').style.visibility=i>0?'visible':'hidden';
+  document.getElementById('next').textContent=i+1<PTS.length?'Siguiente →':'Terminar';
+  jump.value=i; window.scrollTo(0,0);
+  Array.prototype.forEach.call(partsBox.children,function(el,idx){ el.classList.toggle('cur', idx===i); });
+}
+jump.onchange=function(){ show(+jump.value); };
+document.getElementById('next').onclick=function(){ if(cur+1<PTS.length) show(cur+1); };
+document.getElementById('prev').onclick=function(){ if(cur>0) show(cur-1); };
+document.addEventListener('keydown',function(e){
+  if(e.key==='ArrowRight'&&cur+1<PTS.length) show(cur+1);
+  if(e.key==='ArrowLeft'&&cur>0) show(cur-1);
+});
+show(0);
+</script>
+</body>
+</html>
