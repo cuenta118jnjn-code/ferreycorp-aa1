@@ -179,6 +179,25 @@ document.getElementById('tpNext').onclick=function(){ if(cur+1<PTS.length) show(
 document.getElementById('tpBack').onclick=function(){ if(cur>0) show(cur-1); };
 })();
 </script>
+<script>
+// Pantalla completa EN LA MISMA PESTAÑA (no abre otra): los botones
+// «Pantalla completa» de los visores (V8, Cargador, globo) usan la API
+// de fullscreen sobre el marco, así al compartir pestaña se sigue viendo.
+(function(){
+  function fs(el){
+    if(!el) return;
+    if(el.requestFullscreen) el.requestFullscreen();
+    else if(el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+  }
+  document.addEventListener('click', function(e){
+    var b = e.target.closest('.viewer-full, .globo-full');
+    if(!b) return;
+    e.preventDefault();
+    var frame = b.closest('.viewer-frame, .globo-frame');
+    fs(frame);
+  });
+})();
+</script>
 
 </body>
 </html>

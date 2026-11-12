@@ -14,7 +14,7 @@
 .globo-frame{position:relative;border-radius:18px;overflow:hidden;background:#FAF6ED;
   box-shadow:0 24px 60px rgba(27,26,23,.22);border:1px solid rgba(27,26,23,.2)}
 .globo-frame iframe{display:block;width:100%;height:620px;border:0}
-.globo-full{position:absolute;top:14px;right:14px;z-index:3;text-decoration:none;
+.globo-full{position:absolute;top:14px;right:14px;z-index:3;text-decoration:none;font-family:system-ui,sans-serif;cursor:pointer;
   background:rgba(23,19,16,.85);color:#FAF7ED;border:1px solid rgba(250,247,237,.35);
   border-radius:999px;padding:8px 14px;font-size:12.5px;font-weight:600}
 .globo-full:hover{border-color:#FAF7ED}
@@ -82,7 +82,7 @@
     <p class="lede">El planeta gira: arrastra para girar y pulsa un pin para ver la subsidiaria de ese país. Perú, destacado, es la sede principal.</p>
     <div class="globo-frame">
       <iframe src="globo-ferreycorp-americas.html" title="Globo 3D: los 10 países donde opera Ferreycorp" loading="lazy" allowfullscreen></iframe>
-      <a class="globo-full" href="globo-ferreycorp-americas.html" target="_blank" rel="noopener">Pantalla completa ↗</a>
+      <button class="globo-full" type="button">Pantalla completa ⛶</button>
     </div>
     <div class="globo-cap">
       <p>Perú — Ferreyros (sede principal, Lima, 1922; 82 % de los ingresos) · Guatemala y Belice — Gentrac · El Salvador — Cogesa, Transpesa, Motored · Nicaragua — Mercalsa · Panamá — INTI · Honduras — Motored · Chile, Colombia y Ecuador — Trex · EE. UU. — Forbis Logistics Corp.</p>
@@ -213,6 +213,25 @@ document.getElementById('tpClose').onclick=function(){ panel.classList.remove('o
 document.getElementById('tpMenuBtn').onclick=showMenu;
 document.getElementById('tpNext').onclick=function(){ if(cur+1<PTS.length) show(cur+1); else { panel.classList.remove('open'); showMenu(); } };
 document.getElementById('tpBack').onclick=function(){ if(cur>0) show(cur-1); };
+})();
+</script>
+<script>
+// Pantalla completa EN LA MISMA PESTAÑA (no abre otra): los botones
+// «Pantalla completa» de los visores (V8, Cargador, globo) usan la API
+// de fullscreen sobre el marco, así al compartir pestaña se sigue viendo.
+(function(){
+  function fs(el){
+    if(!el) return;
+    if(el.requestFullscreen) el.requestFullscreen();
+    else if(el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+  }
+  document.addEventListener('click', function(e){
+    var b = e.target.closest('.viewer-full, .globo-full');
+    if(!b) return;
+    e.preventDefault();
+    var frame = b.closest('.viewer-frame, .globo-frame');
+    fs(frame);
+  });
 })();
 </script>
 
