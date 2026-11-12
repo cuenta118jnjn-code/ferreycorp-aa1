@@ -24,11 +24,17 @@
   .k{font-size:12px;letter-spacing:.14em;color:#E85A24;font-family:system-ui,sans-serif;text-transform:uppercase}
   h2{font-size:26px;font-weight:400;margin:8px 0 4px;line-height:1.15}
   .sub{font-size:13px;color:#5D574D;margin:0 0 14px;font-family:system-ui,sans-serif}
-  .script{font-size:22px;line-height:1.55;background:#fff;border:1px solid #E5DDC8;border-left:5px solid #E85A24;border-radius:12px;padding:18px 20px}
+  .script{font-size:22px;line-height:1.55;background:#fff;border:1px solid #E5DDC8;border-left:5px solid #E85A24;border-radius:12px;padding:18px 20px;max-height:300px;overflow-y:auto}
   .script p{margin:0 0 12px}
   .script p:last-child{margin:0}
   .trans{margin-top:14px;background:#FFF3E8;border:1px dashed #E85A24;border-radius:12px;padding:12px 14px;font-size:16px;line-height:1.5}
   .trans b{color:#E85A24;font-family:system-ui,sans-serif;font-size:12px;letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:3px}
+  .controls{display:flex;align-items:center;gap:10px;margin-top:14px;background:#1B1A17;border-radius:12px;padding:10px 12px}
+  .controls button{border:none;border-radius:999px;padding:10px 16px;font-size:15px;cursor:pointer;font-family:system-ui,sans-serif}
+  #playBtn{background:#E85A24;color:#fff}
+  #restartBtn{background:#2A2521;color:#FAF7ED}
+  .controls label{color:#FAF7ED;font-size:13px;font-family:system-ui,sans-serif;white-space:nowrap}
+  .controls input[type=range]{flex:1;accent-color:#E85A24}
   footer{padding:0 18px 18px;display:flex;gap:10px}
   footer button{flex:1;border:none;border-radius:999px;padding:15px;font-size:16px;cursor:pointer;font-family:system-ui,sans-serif}
   #prev{background:#fff;border:1px solid #D8CDB2;color:#1B1A17}
@@ -52,6 +58,12 @@
     <p class="sub" id="s"></p>
     <div class="script" id="script"></div>
     <div class="trans" id="trans"></div>
+    <div class="controls">
+      <button id="playBtn" type="button">▶ Reproducir</button>
+      <button id="restartBtn" type="button">Reiniciar</button>
+      <label>Velocidad</label>
+      <input id="speed" type="range" min="1" max="10" value="4" />
+    </div>
   </main>
   <footer>
     <button id="prev" type="button">← Atrás</button>
@@ -94,9 +106,28 @@ function show(i){
   jump.value=i; window.scrollTo(0,0);
   Array.prototype.forEach.call(partsBox.children,function(el,idx){ el.classList.toggle('cur', idx===i); });
 }
-jump.onchange=function(){ show(+jump.value); };
-document.getElementById('next').onclick=function(){ if(cur+1<PTS.length) show(cur+1); };
-document.getElementById('prev').onclick=function(){ if(cur>0) show(cur-1); };
+jump.onchange=function(){ stopScroll(); show(+jump.value); };
+document.getElementById('next').onclick=function(){ stopScroll(); if(cur+1<PTS.length) show(cur+1); };
+document.getElementById('prev').onclick=function(){ stopScroll(); if(cur>0) show(cur-1); };
+// Auto-scroll estilo floating teleprompter: el texto baja solo, pausa y reinicio
+var scrollTimer=null, playing=false;
+var scriptBox=document.getElementById('script');
+var playBtn=document.getElementById('playBtn');
+function speedPx(){ return +document.getElementById('speed').value * 0.6; }
+function tick(){
+  if(!playing) return;
+  scriptBox.scrollTop += speedPx();
+  if(scriptBox.scrollTop + scriptBox.clientHeight >= scriptBox.scrollHeight - 2){
+    stopScroll();
+    if(cur+1<PTS.length){ show(cur+1); startScroll(); }
+    return;
+  }
+  scrollTimer=setTimeout(tick, 50);
+}
+function startScroll(){ playing=true; playBtn.textContent='⏸ Pausa'; tick(); }
+function stopScroll(){ playing=false; playBtn.textContent='▶ Reproducir'; if(scrollTimer){ clearTimeout(scrollTimer); scrollTimer=null; } }
+playBtn.onclick=function(){ playing ? stopScroll() : startScroll(); };
+document.getElementById('restartBtn').onclick=function(){ stopScroll(); scriptBox.scrollTop=0; show(0); };
 document.addEventListener('keydown',function(e){
   if(e.key==='ArrowRight'&&cur+1<PTS.length) show(cur+1);
   if(e.key==='ArrowLeft'&&cur>0) show(cur-1);
