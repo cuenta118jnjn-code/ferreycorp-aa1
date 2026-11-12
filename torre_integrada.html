@@ -50,11 +50,16 @@ a{color:inherit}
 .floor-lbl.dim{opacity:.35}
 
 /* ---------- Stage caption (assembly story) ---------- */
-#stageCaption{position:absolute;left:28px;top:84px;z-index:5;max-width:430px;pointer-events:none}
-#stageKicker{font-size:12px;font-weight:700;letter-spacing:.22em;color:var(--orange);text-transform:uppercase}
+/* Panel de vidrio oscuro: el título va DENTRO del iframe (transparente) y
+   detrás está la foto aérea del lote — sin panel, el texto oscuro se pierde
+   sobre la foto. El backdrop-filter NO cruza el iframe, así que el fondo
+   va opaco (rgba .68) para que el texto blanco lea siempre. */
+#stageCaption{position:absolute;left:28px;top:84px;z-index:5;max-width:430px;pointer-events:none;
+  background:rgba(16,16,20,.68);border:1px solid rgba(255,255,255,.28);border-radius:22px;padding:22px 24px}
+#stageKicker{font-size:12px;font-weight:700;letter-spacing:.22em;color:#FF8A3D;text-transform:uppercase}
 #stageTitle{font-family:Georgia,'Times New Roman',serif;font-size:clamp(30px,3.4vw,46px);
-  line-height:1.08;font-weight:400;margin-top:8px}
-#stageSub{margin-top:10px;font-size:15px;line-height:1.5;color:var(--ink-soft);max-width:340px}
+  line-height:1.08;font-weight:400;margin-top:8px;color:#FFFFFF}
+#stageSub{margin-top:10px;font-size:15px;line-height:1.5;color:rgba(255,255,255,.88);max-width:340px}
 
 /* ---------- Progress rail ---------- */
 #progressRail{position:absolute;right:26px;top:50%;transform:translateY(-50%);z-index:5;
