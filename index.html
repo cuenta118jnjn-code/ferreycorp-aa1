@@ -41,38 +41,80 @@ h1{font-family:Georgia,'Times New Roman',serif;font-weight:400;
   font-size:clamp(56px,7.6vw,110px);line-height:1.06;letter-spacing:-.01em;margin:0}
 h1 em{font-style:italic}
 .sub{margin-top:28px;font-size:clamp(17px,1.5vw,21px);line-height:1.5;color:var(--ink-soft)}
+/* M-1: línea de contexto bajo el lede — cierra el vacío muerto entre el
+   titular y la tira de cifras (Georgia 20 px, datos del informe). */
+.intro-context{margin-top:22px;font-family:Georgia,'Times New Roman',serif;
+  font-size:20px;line-height:1.45;color:var(--ink);max-width:520px}
+.intro-context b{color:var(--orange-dark)}
 .btn-solid{display:inline-block;margin-top:30px;background:var(--orange);color:#fff;border-radius:999px;
   padding:15px 30px;font-size:15.5px;font-weight:600;text-decoration:none;
   box-shadow:0 10px 24px rgba(232,90,36,.30)}
 .btn-solid:hover{background:var(--orange-dark)}
-.card{justify-self:end;background:#FFFDF8;border-radius:16px;padding:34px 40px 30px;width:100%;max-width:300px;
-  box-shadow:0 16px 40px rgba(27,26,23,.10);border:1px solid rgba(27,26,23,.06)}
-.card .big{font-family:Georgia,serif;font-size:88px;line-height:1;font-weight:400}
-.card .big small{font-size:52px;font-weight:400}
-.card .cap{margin-top:14px;font-size:17px}
+
 .nums{display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px 40px;
-  margin-top:56px;padding-top:28px;border-top:1px solid rgba(27,26,23,.12)}
+  margin-top:28px;padding-top:18px;border-top:1px solid rgba(27,26,23,.12)}
 .nums span{font-family:Georgia,serif;font-size:clamp(22px,2.2vw,30px);font-weight:400}
 .nums span i{font-style:normal;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
   font-size:.62em;color:var(--ink-soft);margin-left:2px}
+.nums span small{margin-left:6px;font-size:13px;color:var(--ink-soft)}
 .intro-lead{margin-top:44px;max-width:760px;font-size:17px;line-height:1.65;color:var(--ink-soft)}
 .intro-lead b{color:var(--ink)}
 
 /* ============ (3) EL EDIFICIO-MAQUETA: recorrido AURUM ============ */
 #edificio{position:relative}
-#tourTrack{height:800vh;position:relative}
+#tourTrack{height:600vh;position:relative}
 .sticky-stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
 #stage{position:absolute;inset:0}
 #c{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:pan-y}
-#labels{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:4}
-.floor-lbl{position:absolute;transform:translate(-100%,-50%);display:flex;align-items:baseline;gap:6px;
-  pointer-events:auto;cursor:pointer;background:rgba(250,247,237,.92);
-  border:1px solid rgba(27,26,23,.35);border-left:3px solid var(--orange);color:var(--ink);
-  font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;
-  padding:4px 8px;white-space:nowrap}
-.floor-lbl b{font-variant-numeric:tabular-nums}
-.floor-lbl.on{background:var(--ink);color:var(--cream)}
-.floor-lbl.on b{color:var(--orange)}
+/* Foto congelada del armado (poster.jpg = último fotograma): cubre el tour
+   al inicio y se funde en el primer 12 % del recorrido. Sin eventos. */
+#tourStill{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  object-position:68% 50%;z-index:2;pointer-events:none;opacity:1}
+.btn-replay{background:var(--cream);color:var(--ink);border:1px solid rgba(27,26,23,.35)}
+.btn-replay:hover{background:#fff}
+#btnReplayEnd{position:absolute;left:50%;bottom:86px;transform:translateX(-50%);z-index:6;
+  background:var(--ink);color:var(--cream);border:none;border-radius:999px;
+  padding:10px 18px;font-size:13.5px;font-weight:600;cursor:pointer}
+#btnReplayEnd:hover{background:#000}
+.bigstat{justify-self:end;width:100%;max-width:340px}
+.bigstat .big{font-family:Georgia,serif;font-size:88px;line-height:1;font-weight:400}
+.bigstat .big small{font-size:52px;font-weight:400}
+.bigstat .cap{margin-top:14px;font-size:17px;line-height:1.5;color:var(--ink-soft)}
+.bigstat .cap b{color:var(--ink)}
+/* N-m3 (ronda 3): el CTA vive también en el hueco de la columna derecha,
+   bajo el texto del 77 % — no solo al final de la intro. */
+.bigstat .btn-solid{margin-top:22px;padding:12px 22px;font-size:14px}
+/* Secciones 1-7: cada una con SU fondo (tinte claro + banda de color propio) */
+.rep.tint-warm{background:#F5EEE0}
+.rep.tint-cool{background:#EDF1EC}
+.rep{box-shadow:inset 0 6px 0 var(--band,#E85A24)}
+/* Minipantalla: figura del informe, con pie de fuente */
+.fig{margin-top:28px;background:#FFFDF8;border:1px solid rgba(27,26,23,.10);
+  border-radius:14px;padding:18px}
+.fig img{width:100%;height:auto;display:block;border-radius:8px}
+.fig.tall img{max-width:520px;margin:0 auto}
+.fig figcaption{margin-top:12px;font-size:13px;line-height:1.55;color:var(--ink-soft)}
+.fig figcaption b{color:var(--ink)}
+/* M-3: Fig. 2 (Estructura) reducida ~15 % y con el pie pegado al gráfico,
+   para que figura completa + pie entren en el viewport 1280×800. */
+#estructura .fig{max-width:880px;margin:20px auto 0;padding:14px}
+#estructura .fig img{max-height:300px;object-fit:contain;background:#fff}
+#estructura .fig figcaption{margin-top:8px}
+/* Maquinaria: fondo grandioso (nave al amanecer) detrás de los visores oscuros.
+   G-4: velo rebajado de ~0.85 a ~0.35 de media — degradado 0.65 arriba (detrás
+   del texto) a 0.15 abajo — y lede claro #F5EEE0 a 17 px. */
+.rep-dark{background:linear-gradient(180deg,rgba(23,19,16,.65),rgba(23,19,16,.35) 45%,rgba(23,19,16,.15)),url('fondo-maquinaria.jpg') center/cover fixed;
+  color:#FAF7ED;box-shadow:inset 0 6px 0 #D99835}
+.rep-dark h2{color:#FAF7ED}
+/* OJO especificidad: `.rep .lede` (sección 4, posterior) pisa a `.rep-dark .lede`
+   a igualdad de especificidad — por eso el lede va con #maquinaria. */
+#maquinaria .lede{color:#F5EEE0;font-size:17px}
+#maquinaria .lede b{color:#FAF7ED}
+.rep-dark .viewer-cap h3{color:#FAF7ED}
+.rep-dark .viewer-cap p{color:#EFE6D2}
+.rep-dark .viewer-cap p b{color:#FAF7ED}
+.rep-dark .viewer-src{color:#D9CDB2!important}
+
 .topbar{position:absolute;top:0;left:0;right:0;z-index:30;display:flex;align-items:center;
   gap:18px;padding:16px 28px;
   background:linear-gradient(180deg,rgba(250,247,237,.96),rgba(250,247,237,.82) 70%,rgba(250,247,237,0));
@@ -86,11 +128,6 @@ h1 em{font-style:italic}
 .btn-res{display:inline-block;background:var(--ink);color:var(--cream);border:none;border-radius:999px;
   padding:9px 16px;font-size:13.5px;font-weight:600;cursor:pointer}
 .btn-res:hover{background:#000}
-#stageCaption{position:absolute;left:28px;top:84px;z-index:5;max-width:430px;pointer-events:none}
-#stageKicker{font-size:12px;font-weight:700;letter-spacing:.22em;color:var(--orange);text-transform:uppercase}
-#stageTitle{font-family:Georgia,'Times New Roman',serif;font-size:clamp(30px,3.4vw,46px);
-  line-height:1.08;font-weight:400;margin-top:8px}
-#stageSub{margin-top:10px;font-size:15px;line-height:1.5;color:var(--ink-soft);max-width:340px}
 /* Tarjeta corta del recorrido (una por piso, estilo AURUM) */
 #tourCard{position:absolute;right:28px;bottom:112px;z-index:7;width:min(340px,86vw);
   background:rgba(255,253,248,.96);border:1px solid rgba(27,26,23,.12);border-radius:14px;
@@ -104,61 +141,15 @@ h1 em{font-style:italic}
 #tourGo:hover{border-color:var(--ink)}
 #exploreBar{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);z-index:6;
   display:flex;flex-direction:column;align-items:center;gap:10px;width:min(94vw,760px)}
-#exploreHint{font-size:13.5px;color:var(--ink-soft);background:rgba(250,247,237,.9);
+#exploreHint{font-size:12.5px;color:var(--ink-soft);background:rgba(250,247,237,.9);
   border:1px solid rgba(27,26,23,.15);border-radius:999px;padding:8px 16px;text-align:center}
-@media (min-width:901px){ #exploreHint{display:none} }
 #chips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
 .chip{border:1px solid rgba(27,26,23,.3);background:rgba(250,247,237,.92);color:var(--ink);
   border-radius:999px;padding:8px 13px;font-size:13px;font-weight:600;cursor:pointer}
 .chip:hover{border-color:var(--ink)}
 .chip.on{background:var(--ink);color:var(--cream);border-color:var(--ink)}
-#pbControls{position:absolute;left:28px;bottom:22px;z-index:6;width:min(92vw,360px);
-  background:rgba(255,253,248,.95);border:1px solid rgba(27,26,23,.12);border-radius:14px;
-  padding:14px 16px;box-shadow:0 14px 34px rgba(27,26,23,.12)}
-#pbControls h3{margin:0 0 2px;font-family:Georgia,serif;font-size:18px;font-weight:400}
-#pbControls p{margin:0 0 10px;font-size:13px;line-height:1.45;color:var(--ink-soft)}
-#pbControls input[type=range]{width:100%;accent-color:var(--orange)}
-.pb-steps{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
-.pb-step{border:1px solid rgba(27,26,23,.3);background:#fff;border-radius:999px;
-  padding:6px 10px;font-size:12px;font-weight:600;cursor:pointer}
-.pb-step.on{background:var(--orange);border-color:var(--orange);color:#fff}
-#pbStepName{margin-top:8px;font-size:12.5px;color:var(--ink-soft);min-height:16px}
-#panel{position:absolute;top:0;right:0;bottom:0;width:min(var(--panel-w),100vw);z-index:40;
-  background:#FFFDF8;border-left:1px solid rgba(27,26,23,.12);
-  box-shadow:-18px 0 44px rgba(27,26,23,.14);overflow:visible;padding:26px 26px 30px}
-#panel[hidden]{display:none}
-#pScroll{overflow-y:auto;height:100%}
-#panelClose{position:absolute;top:16px;right:16px;border:1px solid rgba(27,26,23,.3);
-  background:#fff;border-radius:50%;width:34px;height:34px;font-size:16px;cursor:pointer;line-height:1}
-#pNum{font-family:Georgia,serif;font-size:64px;line-height:1;color:var(--ink)}
-#pName{font-family:Georgia,serif;font-size:26px;line-height:1.15;margin-top:10px}
-#pSub{margin-top:6px;font-size:14.5px;line-height:1.5;color:var(--ink-soft)}
-#pRule{border:none;border-top:2px solid var(--orange);width:44px;margin:16px 0}
-#pBody{font-size:14.5px;line-height:1.55}
-#pBody ul{margin:10px 0;padding-left:18px}
-#pBody li{margin:7px 0}
-#pBody li b{font-weight:700}
-#pHard{margin-top:14px;background:var(--cream);border-left:3px solid var(--orange);
-  padding:12px 14px;font-size:14px;line-height:1.5}
-#pHard b{display:block;font-size:11px;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--ink-soft);margin-bottom:4px}
-#pSrc{margin-top:16px;font-size:11.5px;line-height:1.5;color:var(--ink-soft)}
-/* Etiqueta técnica de la máquina (ref. 8): píldora con acento naranja, sigue al cucharón */
-#pbTag{position:absolute;z-index:4;transform:translate(-50%,-50%);pointer-events:none;
-  background:rgba(23,19,16,.88);color:var(--cream);border-left:3px solid var(--orange);
-  padding:7px 10px;border-radius:4px;white-space:nowrap}
-#pbTag b{display:block;font-size:12px;letter-spacing:.14em}
-#pbTag span{display:block;margin-top:2px;font-size:10.5px;letter-spacing:.08em;color:#E8D9B0}
-/* CTA de la ficha de PB: bajar a la maquinaria */
-#pCtaBtn{margin-top:16px;width:100%;background:var(--orange);color:#fff;border:none;
-  border-radius:999px;padding:13px 18px;font-size:14px;font-weight:600;cursor:pointer}
-#pCtaBtn:hover{background:var(--orange-dark)}
-#pFoot{margin-top:18px;font-size:11.5px;line-height:1.5;color:var(--ink-soft);
-  border-top:1px solid rgba(27,26,23,.12);padding-top:12px}
-.p-office{border-top:1px solid rgba(27,26,23,.1);padding:9px 0}
-.p-office:first-of-type{border-top:none}
-.p-office b{font-size:14px}
-.p-office span{display:block;font-size:13px;color:var(--ink-soft);margin-top:2px;line-height:1.45}
+
+
 
 /* ============ (4) SECCIONES DEL INFORME ============ */
 .rep{max-width:1080px;margin:0 auto;padding:76px 28px}
@@ -207,7 +198,7 @@ footer .up{display:inline-block;margin-top:14px;font-size:13px;font-weight:600;c
 #frameCargador{background:#F2E2C8}
 .viewer-glow{position:absolute;inset:0;pointer-events:none;
   background:radial-gradient(120% 60% at 50% -10%, rgba(255,176,71,.20), rgba(255,176,71,0) 55%)}
-.viewer-tag{position:absolute;left:16px;bottom:16px;z-index:3;pointer-events:none;
+.viewer-tag{position:absolute;left:16px;bottom:30px;z-index:3;pointer-events:none;
   background:rgba(23,19,16,.88);color:var(--cream);border-left:3px solid var(--orange);
   padding:9px 12px;border-radius:4px}
 .viewer-tag b{display:block;font-size:12.5px;letter-spacing:.14em}
@@ -227,23 +218,14 @@ footer .up{display:inline-block;margin-top:14px;font-size:13px;font-weight:600;c
   #coverStill,#coverVideo{object-position:72% 50%}
   #intro{padding:64px 22px 56px}
   .intro-grid{grid-template-columns:1fr;gap:26px}
-  .card{justify-self:start;max-width:300px;padding:26px 30px 24px}
-  .card .big{font-size:72px}
-  .card .big small{font-size:44px}
+  .bigstat{justify-self:start;max-width:300px}
+  .bigstat .big{font-size:72px}
+  .bigstat .big small{font-size:44px}
   .nums{display:grid;grid-template-columns:1fr 1fr;gap:14px 20px;padding:16px 0 0}
   .topbar{padding:12px 16px;gap:10px}
   .brand{display:none}
-  #stageCaption{left:16px;top:66px;max-width:78vw}
-  #stageSub{display:none}
-  .floor-lbl span{display:none}
-  .floor-lbl{font-size:11px;padding:3px 7px}
   #tourCard{left:12px;right:12px;width:auto;bottom:14px;padding:14px 16px}
   #tourName{font-size:19px}
-  #panel{top:auto;left:0;right:0;bottom:0;width:100%;max-height:54vh;border-left:none;
-    border-top:1px solid rgba(27,26,23,.15);box-shadow:0 -18px 44px rgba(27,26,23,.18)}
-  #pScroll{height:calc(54vh - 56px)}
-  #pNum{font-size:48px}
-  #pbControls{left:12px;bottom:86px}
   #exploreBar{bottom:14px}
   #exploreHint{font-size:12px}
   .areas{grid-template-columns:1fr 1fr}
@@ -251,7 +233,7 @@ footer .up{display:inline-block;margin-top:14px;font-size:13px;font-weight:600;c
   .rep{padding:56px 22px}
   .viewer-frame iframe{height:560px}
   .viewer-tag{left:10px;bottom:10px;padding:7px 9px}
-  /* En móvil la etiqueta del Cargador taparía el botón «Controles» y los
+  /* En móvil la etiqueta del Cargador taparía la flechita y los
      botones del panel: se oculta (sus datos viven en el pie del visor). */
   .viewer-tag.tag-right{display:none}
   .viewer-tag b{font-size:11.5px}
@@ -273,53 +255,21 @@ footer .up{display:inline-block;margin-top:14px;font-size:13px;font-weight:600;c
   </div>
 </section>
 
-<!-- (2) PÁGINA NORMAL: titular, datos y entrada al edificio -->
-<section id="intro">
-  <p class="kicker">Ferreycorp S.A.A. · AA1 · Administración de Negocios</p>
-  <div class="intro-grid">
-    <div>
-      <h1>Juntos<br>creamos <em>desarrollo</em></h1>
-      <p class="sub">Ferreycorp S.A.A. por dentro.</p>
-      <a class="btn-solid" href="#edificio">Entrar al edificio</a>
-    </div>
-    <aside class="card">
-      <div class="big">77<small> %</small></div>
-      <div class="cap">Caterpillar</div>
-    </aside>
-  </div>
-  <div class="nums">
-    <span>102 <i>años</i></span>
-    <span>S/ 7 590 <i>M</i></span>
-    <span>7 978</span>
-    <span>10 <i>países</i></span>
-  </div>
-  <p class="intro-lead">Una empresa se entiende por <b>cómo está organizada por dentro</b>.
-    Este es el análisis organizacional de Ferreycorp S.A.A. como consultores junior,
-    con fuentes públicas: su estructura, sus áreas, sus recursos, su diagnóstico y su plan.
-    El edificio de abajo es la empresa: cada piso, un nivel del organigrama.</p>
-</section>
-
-<!-- (3) EL EDIFICIO-MAQUETA: recorrido piso por piso con tarjeta corta -->
+<!-- (2) EL EDIFICIO-MAQUETA: recorrido piso por piso con tarjeta corta -->
 <section id="edificio">
   <div id="tourTrack">
     <div class="sticky-stage">
       <div id="stage">
         <canvas id="c"></canvas>
-        <div id="labels"></div>
-        <div id="pbTag" hidden><b>DESPIECE</b><span>12 PIEZAS · 6 PASOS</span></div>
+        <img id="tourStill" src="poster.jpg" alt="Último fotograma del armado: la torre completa en la ciudad" />
 
         <header class="topbar">
           <a class="back" href="#coverTrack">← Portada</a>
           <div class="brand">FERREYCORP &nbsp;·&nbsp; AA1</div>
           <div class="spacer"></div>
           <button class="btn-res" id="btnResultados" type="button">Resultados 2024</button>
+          <button class="btn-res btn-replay" id="btnReplay" type="button">↺ Ver el edificio de nuevo</button>
         </header>
-
-        <div id="stageCaption">
-          <div id="stageKicker">EL EDIFICIO</div>
-          <div id="stageTitle">La torre, completa.</div>
-          <div id="stageSub">7 niveles del organigrama, de la planta baja al directorio. El scroll recorre los pisos · pasa el mouse para separarlos · clic para entrar en su ficha.</div>
-        </div>
 
         <div id="tourCard" hidden>
           <div id="tourKicker"></div>
@@ -329,40 +279,51 @@ footer .up{display:inline-block;margin-top:14px;font-size:13px;font-weight:600;c
         </div>
 
         <div id="exploreBar">
-          <div id="exploreHint">Torre completa. Pasa el mouse por un piso para separarlo · clic para entrar en su ficha.</div>
+          <div id="exploreHint">Scroll recorre los pisos · pasa el mouse para separarlos · clic para visitar su página.</div>
           <div id="chips"></div>
         </div>
+        <button id="btnReplayEnd" type="button" hidden>↺ Ver el edificio de nuevo</button>
 
-        <div id="pbControls" hidden>
-          <h3>La excavadora se desarma</h3>
-          <p>La máquina es el negocio: su despiece muestra el circuito venta → soporte → repuesto.</p>
-          <input id="explodeRange" type="range" min="0" max="100" value="0" step="1" aria-label="Despiece de la excavadora" />
-          <div class="pb-steps" id="pbSteps"></div>
-          <div id="pbStepName">Armada · lista para trabajar</div>
-        </div>
 
-<aside id="panel" hidden>
-            <button id="panelClose" type="button" aria-label="Cerrar ficha">✕</button>
-            <div id="pScroll">
-              <div id="pNum"></div>
-              <div id="pName"></div>
-              <div id="pSub"></div>
-              <hr id="pRule" />
-              <div id="pCta"></div>
-              <div id="pBody"></div>
-              <div id="pHard"></div>
-              <div id="pSrc"></div>
-              <div id="pFoot">El organigrama es una reconstrucción del equipo consultor, no el gráfico oficial de la empresa. Los bloques de subsidiarias suman 99 % por redondeo. Datos del informe AA1 Ferreycorp (Memoria Anual 2024).</div>
-            </div>
-        </aside>
+
+
       </div>
     </div>
   </div>
 
 </section>
 
-<!-- (3b) PLANTA BAJA · MAQUINARIA: motor V8 + cargador (teardown navegables, ref. 8) -->
-<section class="rep rep-wide" id="maquinaria">
+<!-- (3) INTRO: titular, 77 % integrado, números y entrada a la maquinaria -->
+<section id="intro">
+  <p class="kicker">Ferreycorp S.A.A. · AA1 · Administración de Negocios</p>
+  <div class="intro-grid">
+    <div>
+      <h1>Juntos<br>creamos <em>desarrollo</em></h1>
+      <p class="sub">Ferreycorp S.A.A. por dentro.</p>
+      <p class="intro-context">La empresa que representa a <b>Caterpillar</b> en el Perú desde 1942 — y que convierte cada máquina vendida en repuestos y servicios.</p>
+    </div>
+    <div class="bigstat">
+      <div class="big">77<small> %</small></div>
+      <p class="cap">de los ingresos vienen de <b>Caterpillar</b> — la marca que Ferreycorp representa en exclusiva en el Perú desde 1942.</p>
+      <a class="btn-solid" href="#maquinaria">Ver la maquinaria ↓</a>
+    </div>
+  </div>
+  <div class="nums">
+    <span>102 <i>años</i></span>
+    <span>S/ 7 590 <i>M</i><small>ventas 2024 · +8,5 %</small></span>
+    <span>7 978 <i>colaboradores</i></span>
+    <span>10 <i>países</i></span>
+  </div>
+  <p class="intro-lead">Una empresa se entiende por <b>cómo está organizada por dentro</b>.
+    Este es el análisis organizacional de Ferreycorp S.A.A. como consultores junior,
+    con fuentes públicas: su estructura, sus áreas, sus recursos, su diagnóstico y su plan.
+    El edificio de arriba es la empresa: cada piso, un nivel del organigrama — y cada piso tiene su propia página.</p>
+  <a class="btn-solid" href="#maquinaria">Ver la maquinaria ↓</a>
+</section>
+
+
+<!-- (4) PLANTA BAJA · MAQUINARIA: motor V8 + cargador (teardown navegables, ref. 8) -->
+<section class="rep rep-wide rep-dark" id="maquinaria">
   <div class="kicker">Planta baja · Maquinaria</div>
   <h2>La máquina es el negocio.</h2>
   <p class="lede">En planta baja vive la maquinaria: dos piezas desarmables, cada una en su escenario — piso, sombra de contacto y luz de estudio. El motor gira y el cargador se articula; el despiece muestra el circuito venta → soporte → repuesto.</p>
@@ -377,7 +338,7 @@ footer .up{display:inline-block;margin-top:14px;font-size:13px;font-weight:600;c
     <div class="viewer-cap">
       <h3>Motor V8 — el ejemplo de la skill</h3>
       <p>El motor V8 de Elvar, el ejemplo completo de la skill teardown: gira a 700 RPM con su orden de encendido 1-8-4-3-6-5-7-2 y se recorre pieza por pieza. Arrastra para orbitar, usa el tour automático, y cambia la vista (HERO · FRONT · SIDE · VALLEY · CYL) o el corte (GLASS · SECTION · SOLID). Pulsa H dentro del visor para ocultar los datos.</p>
-      <p class="viewer-src">Fuente: ejemplo original de la skill teardown (Elvar, MIT) — archivo intacto, sin modificar.</p>
+      <p class="viewer-src">Fuente: ejemplo original de la skill teardown (Elvar, MIT) — la copia solo añade la flechita para plegar el panel; el original sigue intacto.</p>
     </div>
   </article>
 
@@ -390,14 +351,14 @@ footer .up{display:inline-block;margin-top:14px;font-size:13px;font-weight:600;c
     </div>
     <div class="viewer-cap">
       <h3>Cargador de ruedas CAT WL-2 — ensamblaje R2 de JEFE-2</h3>
-      <p>El cargador de JEFE-2: <b>1 792 componentes en 8 grupos</b>, con la cinemática cerrada (auditoría del cazador: 0 errores, sin colisiones). Articulación ±35°, levante 0–45°, inclinación −10°…+40° y despiece en 10 pasos, con botones DEMO, CINE y CÁMARA AUTO. En pantallas estrechas los controles se pliegan con «Controles».</p>
-      <p class="viewer-src">Fuente: cuartel, jefe-2/entregas/ferreycorp-web/CARGADOR-v2-ENSAMBLAJE-R2.html (commit 68aa3b8) — archivo intacto, sin modificar.</p>
+      <p>El cargador de JEFE-2: <b>1 792 componentes en 8 grupos</b>, con la cinemática cerrada (auditoría del cazador: 0 errores, sin colisiones). Articulación ±35°, levante 0–45°, inclinación −10°…+40° y despiece en 10 pasos, con botones DEMO, CINE y CÁMARA AUTO. El panel arranca plegado y se abre con la flechita dorada del borde.</p>
+      <p class="viewer-src">Fuente: cuartel, jefe-2/entregas/ferreycorp-web/CARGADOR-v2-ENSAMBLAJE-R2.html (commit 68aa3b8) — la copia solo añade la flechita para plegar el panel; el original sigue intacto.</p>
     </div>
   </article>
 </section>
 
-<!-- (4) SECCIONES DEL INFORME -->
-<section class="rep" id="empresa">
+<!-- (5) SECCIONES DEL INFORME -->
+<section class="rep tint-warm" id="empresa" style="--band:#D99835">
   <p class="kicker">1 · La empresa</p>
   <h2>102 años creando desarrollo.</h2>
   <p class="lede"><b>Ferreycorp S.A.A.</b> es una gran empresa peruana, comercial y de servicios,
@@ -413,7 +374,7 @@ footer .up{display:inline-block;margin-top:14px;font-size:13px;font-weight:600;c
   <p class="src">Fuente: §1.1, p. 5 · §1.3, p. 8 · Anexo 2, p. 40.</p>
 </section>
 
-<section class="rep" id="estructura">
+<section class="rep tint-cool" id="estructura" style="--band:#2E6E8C">
   <p class="kicker">2 · Estructura</p>
   <h2>Un holding divisional, una doble concentración.</h2>
   <p class="lede">La matriz fija la estrategia y asigna los recursos; las subsidiarias operan con
@@ -428,10 +389,13 @@ footer .up{display:inline-block;margin-top:14px;font-size:13px;font-weight:600;c
     <span>8 %<small>exterior · S/ 639 M</small></span>
     <span>9 %<small>complementarios · S/ 699 M</small></span>
   </div>
-  <p class="src">Fuente: Figura 2, p. 14 · §1.4, pp. 9–14.</p>
+  <figure class="fig">
+    <img src="figuras/grafico_bloques.png" alt="Figura 2 del informe: bloques de subsidiarias por ventas 2024" />
+    <figcaption><b>Figura 2 · Bloques de subsidiarias por ventas 2024.</b> Perú CAT y aliadas 82 % · exterior 8 % · complementarios 9 % (los bloques suman 99 % por redondeo). Fuente: informe AA1, p. 14.</figcaption>
+  </figure>
 </section>
 
-<section class="rep" id="areas">
+<section class="rep tint-warm" id="areas" style="--band:#7A9B6E">
   <p class="kicker">3 · Áreas funcionales</p>
   <h2>Ocho áreas, un solo circuito.</h2>
   <p class="lede">Las áreas no se entienden una por una, sino por sus circuitos: el comercial–posventa–logística
@@ -449,7 +413,7 @@ footer .up{display:inline-block;margin-top:14px;font-size:13px;font-weight:600;c
   <p class="src">Fuente: §1.5, pp. 15–17.</p>
 </section>
 
-<section class="rep" id="recursos">
+<section class="rep tint-cool" id="recursos" style="--band:#3E7C6B">
   <p class="kicker">4 · Recursos</p>
   <h2>La red que sostiene la máquina.</h2>
   <p class="lede">La ventaja competitiva no nace de un solo recurso, sino de su combinación:
@@ -466,7 +430,7 @@ footer .up{display:inline-block;margin-top:14px;font-size:13px;font-weight:600;c
   <p class="src">Fuente: §1.6, pp. 19–22.</p>
 </section>
 
-<section class="rep" id="diagnostico">
+<section class="rep tint-warm" id="diagnostico" style="--band:#B4552D">
   <p class="kicker">5 · Diagnóstico</p>
   <h2>Seis fortalezas, cinco debilidades.</h2>
   <div class="fd">
@@ -492,10 +456,14 @@ footer .up{display:inline-block;margin-top:14px;font-size:13px;font-weight:600;c
       </ul>
     </div>
   </div>
+  <figure class="fig">
+    <img src="figuras/grafico_sectores.png" alt="Figura 4 del informe: composición sectorial de las ventas 2024" />
+    <figcaption><b>Figura 4 · Composición sectorial de las ventas 2024.</b> Minería 58 % — tajo abierto 48 % · construcción 22 % · subterránea 10 % · industria, comercio y servicios 9 %. Fuente: informe AA1, p. 26.</figcaption>
+  </figure>
   <p class="src">Fuente: §1.8, pp. 25–27.</p>
 </section>
 
-<section class="rep" id="plan">
+<section class="rep tint-cool" id="plan" style="--band:#2E6E8C">
   <p class="kicker">6 · Plan de acción</p>
   <h2>Reducir la vulnerabilidad, sin soltar el liderazgo.</h2>
   <p class="lede"><b>Objetivo general:</b> reducir la vulnerabilidad frente a la doble concentración
@@ -512,7 +480,7 @@ footer .up{display:inline-block;margin-top:14px;font-size:13px;font-weight:600;c
   <p class="src">Fuente: §1.9.3, Tabla 2, pp. 28–30.</p>
 </section>
 
-<section class="rep" id="conclusiones">
+<section class="rep tint-warm" id="conclusiones" style="--band:#E85A24">
   <p class="kicker">7 · Conclusiones</p>
   <h2>Seis ideas que quedan.</h2>
   <ol class="concl">
@@ -596,57 +564,43 @@ footer .up{display:inline-block;margin-top:14px;font-size:13px;font-weight:600;c
   }
 })();
 </script>
+<!-- MAQUINARIA: el pliegue vive dentro de cada visor (flechita dorada en web/maquinaria/); sin botón «Controles» en el envoltorio. -->
 <script>
-// MAQUINARIA: los visores son piezas completas en iframe (mismo origen).
-// En pantallas estrechas, el panel de controles del Cargador taparía la
-// máquina: se pliega por defecto y se abre con «Controles». En escritorio
-// el panel queda tal como JEFE-2 lo aprobó.
-// OJO: el iframe es loading="lazy" y su 'load' puede disparar antes de que
-// este script se ejecute (o recargar al entrar en vista): el pliegue se
-// intenta en tres momentos (load, inmediato y al entrar en vista).
+// TOUR: la foto congelada (poster.jpg = último fotograma del video) cubre el
+// escenario al inicio del recorrido y se funde en el primer 6 %: el 3D que
+// aparece detrás es la misma torre, ciudad y luz (silueta alineada a ≤4 px,
+// medida 2026-11-12). Fundido corto a propósito: la foto tiene ~15 pisos y la
+// 3D 6 losas, así que a mitad de fundido el interior dobla su ritmo; al 6 % la
+// fase doble es breve y el ojo lee una sola torre. Al volver arriba, vuelve sola.
 (function(){
-  var frame = document.getElementById('frameCargador');
-  if (!frame) return;
-  function fold(){
-    try {
-      var doc = frame.contentDocument;
-      if (!doc) return false;
-      if (frame.clientWidth >= 720) return true; /* escritorio: nada que plegar */
-      if (doc.getElementById('maqToggle')) return true; /* ya aplicado */
-      var panel = doc.getElementById('panel');
-      if (!panel) return false; /* aún cargando: reintentar */
-      var st = doc.createElement('style');
-      st.textContent = '#panel{transition:transform .3s ease;}' +
-        '#panel.maq-hidden{transform:translateX(calc(-100% - 14px));}' +
-        '#maqToggle{position:fixed;left:14px;bottom:14px;z-index:6;background:#211D18;color:#F2EDE3;' +
-        'border:1px solid #D99835;border-radius:999px;padding:10px 16px;font-size:13px;font-weight:700;cursor:pointer;}';
-      doc.head.appendChild(st);
-      panel.classList.add('maq-hidden');
-      var btn = doc.createElement('button');
-      btn.id = 'maqToggle'; btn.type = 'button'; btn.textContent = '☰ Controles';
-      btn.addEventListener('click', function(){
-        var hidden = panel.classList.toggle('maq-hidden');
-        btn.textContent = hidden ? '☰ Controles' : '✕ Cerrar controles';
-      });
-      doc.body.appendChild(btn);
-      return true;
-    } catch (e) { return false; }
+  var track = document.getElementById('tourTrack');
+  var still = document.getElementById('tourStill');
+  function clamp(v,a,b){ return Math.max(a, Math.min(b, v)); }
+  function smooth(a,b,x){ var t = clamp((x-a)/(b-a),0,1); return t*t*(3-2*t); }
+  var ticking = false;
+  function update(){
+    ticking = false;
+    if (!track || !still) return;
+    var r = track.getBoundingClientRect();
+    var vh = window.innerHeight;
+    var p = clamp(-r.top / Math.max(1, r.height - vh), 0, 1);
+    var f = smooth(0, 0.06, p);
+    still.style.opacity = (1 - f).toFixed(3);
+    still.style.visibility = f >= 1 ? 'hidden' : 'visible';
   }
-  frame.addEventListener('load', fold);
-  fold(); /* si el iframe ya cargó antes que este script */
-  if ('IntersectionObserver' in window){
-    new IntersectionObserver(function(entries, obs){
-      if (entries[0].isIntersecting && fold()) obs.disconnect();
-    }, {threshold: 0.05}).observe(frame);
+  function onScroll(){ if (!ticking){ ticking = true; requestAnimationFrame(update); } }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  window.addEventListener('resize', onScroll);
+  update();
+  // «Ver el edificio de nuevo»: vuelve suave al inicio del tour; el fundido vuelve solo.
+  function replay(){
+    var ed = document.getElementById('edificio');
+    if (ed) ed.scrollIntoView({behavior:'smooth'});
   }
-  /* Red de seguridad: el 'load' del iframe puede disparar tarde (sus scripts
-     síncronos pesan) o el documento puede recargar al entrar en vista; el
-     sondeo reintenta hasta que el pliegue pega y lo repone si desaparece. */
-  var tries = 0;
-  var timer = setInterval(function(){
-    if (fold()){ /* pega: seguir vigilando un rato por si el documento recarga */ }
-    if (++tries > 360){ clearInterval(timer); }
-  }, 500);
+  ['btnReplay','btnReplayEnd'].forEach(function(id){
+    var b = document.getElementById(id);
+    if (b) b.addEventListener('click', replay);
+  });
 })();
 </script>
 <script>/**
@@ -81219,7 +81173,7 @@ var LEVELS = [
 var PB = {
   key:'PB', num:'PB', name:'Planta baja · Operaciones',
   role:'El despiece ES el análisis',
-  sub:'La excavadora desarmable: la máquina es el negocio. Su circuito venta → soporte → repuesto convierte cada venta en flujo recurrente.',
+  sub:'La máquina es el negocio: el motor V8 y el cargador, dos piezas desarmables. Su circuito venta → soporte → repuesto convierte cada venta en flujo recurrente.',
   body:[
     'La red que la sostiene: <b>más de 40 sucursales</b> · 2 CRC de clase mundial (Lima y La Joya, más de 50 000 m², ampliación S/ 35 M) · 15 talleres Cinco Estrellas.',
     'CDR automatizado: 65 % de extracciones; más de 30 unidades/día; inventarios S/ 2 509 M, rotación 154 días.',
@@ -81228,7 +81182,7 @@ var PB = {
   ],
   hard:'Dato duro', hardText:'2 CRC de clase mundial, más de 50 000 m².',
   src:'Fuente: §1.5.2–1.5.3, p. 15–16 · §1.6.3–1.6.4, p. 21–22 · §1.6.1, p. 19 · §1.7.4, p. 24–25.',
-  cta:'Ver el motor V8 y el cargador ↓'
+  cta:'Ver el motor V8 y el cargador'
 };
 
 var RESULTADOS = {
@@ -81251,10 +81205,14 @@ var RESULTADOS = {
 var FLOOR_H = 3.2, FLOOR_W = 10.0, PLINTH_H = 1.2, CROWN_H = 0.8;
 var TOWER_TOP = PLINTH_H + 6 * FLOOR_H + CROWN_H; /* 21.2 */
 var COL = { cream:0xFAF7ED, ink:0x1B1A17, orange:0xE85A24, cat:0xFFCD11,
-  slab:0xF1EBDD, slabEdge:0xDDD5C2, glass:0x9DB8C6, mullion:0x3A3A38,
-  column:0xE8E2D5, core:0xD8D2C4, ground:0xEFE9DB, lot:0xE7DFCE,
+  slab:0xE3D3B4, slabEdge:0xB7A98A, glass:0x6E97AC, mullion:0x2A2A2A,
+  column:0xE8E2D5, core:0xD8D2C4, ground:0xEAE2CF, lot:0xE7DFCE,
   street:0x6E6A63, neighbor:0x9FB2BE, neighborSlab:0xDDD8CC,
   yellow:0xFFCD11, dark:0x33312E, steel:0x8A8D91 };
+/* G-2 ronda 3: vidrio #6E97AC opacidad 0.80; losas #E3D3B4 con borde inferior
+   oscuro #6B5B3E marcado + AO bajo cada losa; montantes #2A2A2A;
+   sombra de contacto bajo la base 0.75; suelo algo más oscuro (#EAE2CF)
+   para que la base no flote sobre blanco. */
 
 /* ---------------- Escena ---------------- */
 var canvas = document.getElementById('c');
@@ -81265,12 +81223,24 @@ renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.05;
 
 var scene = new THREE.Scene();
-var SKY_DAWN = new THREE.Color(0xF3EAD9), SKY_DAY = new THREE.Color(0xE7EDF0);
+var SKY_DAWN = new THREE.Color(0xF3EAD9), SKY_DAY = new THREE.Color(0xDCE5EA);
 scene.background = SKY_DAWN.clone();
+/* G-2 ronda 3: SKY_DAY algo menos luminoso (0xE7EDF0 -> 0xDCE5EA) para que el
+   vidrio #6E97AC no se lave contra el cielo. Solo el cielo del tour: la
+   portada es video/poster, no esta escena. */
 
 var camera = new THREE.PerspectiveCamera(40, 1, 0.1, 400);
 var CAM_BASE = {dist:36, height:17, targetY:10.5, az:-0.62};
-var CAM_END  = {dist:30, height:13.5, targetY:11.5, az:-0.48};
+var CAM_END  = {dist:41.5, height:12.5, targetY:10.0, targetX:0.7, az:-0.12};
+/* G-1 ronda 3 (medido, no a ojo): la foto TAL COMO SE MUESTRA (cover 68 %,
+   1280x800) tiene silueta L=510, FL=510, FR=759, CX=634, corona 59, base 708;
+   la 3D con (targetX 1.2, planta 0.88) daba L=489, FL=493, FR=751, CX=620:
+   deltas L +21, CX +16 (la foto está a la derecha y es más estrecha).
+   Barrido en vivo (az, targetX, planta) + refino: (az -0.12, tx 0.7, 0.85)
+   -> L=506, FL=510, FR=758, CX=632, corona 59, base 706: todo ≤4 px.
+   (El primer objetivo FL=542 era un montante interior mal leído; las
+   muestras de poster.jpg fila 200 —(540)=cielo, (545)=oscuro, (550)=claro—
+   muestran que la cara lateral es ~0-5 px: FL_foto ≈ L_foto.) */
 
 var pmrem = new THREE.PMREMGenerator(renderer);
 scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
@@ -81283,12 +81253,7 @@ scene.add(sun);
 var fill = new THREE.DirectionalLight(0xE8F0F5, 0.35);
 fill.position.set(-14, 10, -18);
 scene.add(fill);
-/* Luz de cine (ref. 8 @francobeltramella): dorada y baja, solo sobre la
-   maquinaria de planta baja. Su intensidad sube con focusPB y baja al salir. */
-var movieLight = new THREE.DirectionalLight(0xFFB347, 0);
-movieLight.position.set(22, 5, 18);
-movieLight.target.position.set(10, 2, 8.5);
-scene.add(movieLight); scene.add(movieLight.target);
+
 
 function mat(color, opts){
   var o = Object.assign({color:color, roughness:0.85, metalness:0.0}, opts || {});
@@ -81319,6 +81284,12 @@ function contactShadow(w, d, opacity){
 
 /* ---------------- La torre (7 pisos + plinto + corona) ---------------- */
 var tower = new THREE.Group(); scene.add(tower);
+/* G-1 ronda 3: la planta es un 15 % más estrecha de lo que la foto muestra
+   (10 u de ancho × 21,5 u de alto = ratio 0,465; la torre de poster.jpg
+   mide 269×652 px = 0,413). Escala de planta 0.85 (ancho 8,5 u) + targetX
+   0.7: silueta medida L=506 FL=510 FR=758 CX=632 (foto 510/510/759/634),
+   todo ≤4 px; la altura y los pisos no cambian. */
+tower.scale.set(0.85, 1, 0.85);
 var floorGroups = [];   /* index 0 = P01 abajo ... 6 = P06 arriba */
 var floorMats = [];     /* materiales por piso, para aparecer/desvanecer */
 var plinthGroup = new THREE.Group(); tower.add(plinthGroup);
@@ -81339,14 +81310,27 @@ function buildFloor(i){
   function reg(mesh){ mats.push(mesh.material); return mesh; }
   var slabB = reg(new THREE.Mesh(new THREE.BoxGeometry(FLOOR_W, 0.5, FLOOR_W), mat(COL.slab)));
   slabB.position.y = 0.25; g.add(slabB);
-  var glass = reg(new THREE.Mesh(new THREE.BoxGeometry(9.6, 2.2, 9.6), glassMat(COL.glass, 0.38)));
+  var glass = reg(new THREE.Mesh(new THREE.BoxGeometry(9.6, 2.2, 9.6), glassMat(COL.glass, 0.80)));
   glass.position.y = 0.5 + 1.1; g.add(glass);
   var slabT = reg(new THREE.Mesh(new THREE.BoxGeometry(FLOOR_W, 0.5, FLOOR_W), mat(COL.slab)));
   slabT.position.y = 2.7 + 0.25; g.add(slabT);
+  /* G-2 ronda 3: tira oscura bajo la losa superior — el borde inferior de
+     cada planta — más gruesa y oscura (#6B5B3E, 0.16); y AO: un ribete
+     oscuro bajo la losa inferior (sobresale 0.06 u de la cara y se lee
+     como línea de sombra en cada junta entre pisos). */
+  var edge = reg(new THREE.Mesh(new THREE.BoxGeometry(FLOOR_W + 0.12, 0.16, FLOOR_W + 0.12), mat(0x6B5B3E)));
+  edge.position.y = 2.64; g.add(edge);
+  var ao = reg(new THREE.Mesh(new THREE.BoxGeometry(FLOOR_W + 0.12, 0.12, FLOOR_W + 0.12), mat(0x6E5F45)));
+  ao.position.y = -0.06; g.add(ao);
+  /* G-2: sombra de contacto elíptica bajo la planta; solo se ve al separarla
+     (opacidad 0 apilada, la anima el bucle según hoverOffset). */
+  var fsh = contactShadow(13, 13, 0);
+  fsh.position.y = -0.02; fsh.userData.noGhost = true;
+  g.add(fsh); g.userData.floorShadow = fsh;
   for (var s = 0; s < 4; s++){
     var a = s * Math.PI/2;
     for (var k = -1; k <= 1; k++){
-      var mull = reg(new THREE.Mesh(new THREE.BoxGeometry(0.12, 2.2, 0.12), mat(COL.mullion)));
+      var mull = reg(new THREE.Mesh(new THREE.BoxGeometry(0.18, 2.2, 0.18), mat(COL.mullion)));
       var px = k * 3.2, pz = 4.8;
       mull.position.set(Math.cos(a)*px - Math.sin(a)*pz, 1.6, Math.sin(a)*px + Math.cos(a)*pz);
       g.add(mull);
@@ -81382,16 +81366,20 @@ var crownGroup = new THREE.Group();
 /* Línea de luz naranja: marca el piso bajo el mouse / seleccionado. */
 var lightLine = new THREE.Mesh(new THREE.BoxGeometry(FLOOR_W + 0.6, 0.14, FLOOR_W + 0.6),
   new THREE.MeshBasicMaterial({color:COL.orange, toneMapped:false, transparent:true, opacity:0}));
+lightLine.scale.set(0.85, 1, 0.85); /* sigue el ancho de la planta (G-1 ronda 3) */
 lightLine.position.y = -10; scene.add(lightLine);
 
 /* ---------------- El suelo: lote, calle, ciudad ---------------- */
 var city = new THREE.Group(); scene.add(city);
-var ground = new THREE.Mesh(new THREE.PlaneGeometry(260, 260), mat(COL.ground, {roughness:1}));
+var ground = new THREE.Mesh(new THREE.PlaneGeometry(400, 400), mat(COL.ground, {roughness:1}));
 ground.rotation.x = -Math.PI/2; ground.position.y = -0.01; city.add(ground);
 
 var lot = new THREE.Mesh(new THREE.BoxGeometry(16, 0.24, 16), mat(COL.lot));
 lot.position.y = 0.12; city.add(lot);
 var lotShadow = contactShadow(26, 26, 0.9); lotShadow.position.set(0, 0.26, 0); city.add(lotShadow);
+/* G-2 ronda 3: sombra de contacto oscura y ceñida bajo la base de la torre
+   (opacidad 0.75, elipse 16 u): la base ya no flota sobre blanco. */
+var plinthShadow = contactShadow(16, 16, 0.75); plinthShadow.position.set(0, 0.27, 0); city.add(plinthShadow);
 
 /* Marco del lote: línea naranja discontinua (el lote vacío, al inicio). */
 var lotFrame;
@@ -81406,33 +81394,75 @@ var lotFrame;
 
 /* Calle + vereda (aparecen con el armado). */
 var streetGroup = new THREE.Group(); city.add(streetGroup);
+/* N-m2 ronda 3: la cuña gris de la esquina inferior derecha era el borde
+   lejano de la calle (z=12) asomando en el encuadre — medida: diagonal de
+   (1280,~766) a (~560,800), color gris calle ~(183,178,168), no el plano
+   de suelo (que es crema y sus bordes quedan fuera de cuadro). La banda
+   de calle se aleja +6 u hacia la cámara (calle z 16.5 -> 22.5, acera
+   lejana 22 -> 28.5, autos 16.5 -> 22.5, árboles delanteros 24 -> 31)
+   para que su borde lejano caiga bajo el encuadre; el plano de suelo
+   además se extiende a 400 u. */
 (function(){
   var road = new THREE.Mesh(new THREE.BoxGeometry(260, 0.1, 9), mat(COL.street, {roughness:1}));
-  road.position.set(0, 0.05, 16.5); streetGroup.add(road);
+  road.position.set(0, 0.05, 22.5); streetGroup.add(road);
   for (var x = -120; x <= 120; x += 12){
     var dash = new THREE.Mesh(new THREE.BoxGeometry(5, 0.06, 0.35),
       new THREE.MeshBasicMaterial({color:0xF5F2E8}));
-    dash.position.set(x, 0.11, 16.5); streetGroup.add(dash);
+    dash.position.set(x, 0.11, 22.5); streetGroup.add(dash);
   }
   var walk = new THREE.Mesh(new THREE.BoxGeometry(260, 0.12, 3), mat(0xE3DCCB, {roughness:1}));
   walk.position.set(0, 0.06, 11); streetGroup.add(walk);
-  var walk2 = walk.clone(); walk2.position.z = 22; streetGroup.add(walk2);
+  var walk2 = walk.clone(); walk2.position.z = 28.5; streetGroup.add(walk2);
 })();
 streetGroup.traverse(function(o){ if (o.material){ o.material.transparent = true; o.material.opacity = 0; } });
 streetGroup.userData = {appearStart:0.14, appearDur:0.08};
 
-/* Ventanas de los vecinos: textura de rejilla dibujada en canvas. */
-function windowsTexture(){
+/* Ventanas de los vecinos: DOS texturas de rejilla dibujadas en canvas.
+   M-2 ronda 3: cada vecino tiene su tinte (azul grisáceo, beige cálido, gris
+   verdoso, en ciclo) desaturado ~20 % respecto a la torre para que
+   retroceda; las ventanas varían de tamaño y brillo por planta (semilla);
+   y hay DOS familias: A = rejilla de ventanas cuadradas, B = bandas
+   horizontales con antepecho. Los remates de cubierta también varían
+   (losa plana / pretil / caseta / cornisa, en ciclo). */
+function windowsTexture(seed){
   var cv = document.createElement('canvas'); cv.width = 128; cv.height = 256;
   var g = cv.getContext('2d');
-  g.fillStyle = '#8FA6B3'; g.fillRect(0,0,128,256);
-  g.fillStyle = '#DCE8EC';
-  for (var y = 12; y < 250; y += 24) for (var x = 10; x < 120; x += 22) g.fillRect(x, y, 14, 14);
+  var s = seed * 7919 + 13;
+  function rnd(){ s = (s * 1103515245 + 12345) & 0x7fffffff; return s / 0x7fffffff; }
+  g.fillStyle = '#9AA7AD'; g.fillRect(0,0,128,256);
+  for (var y = 12; y < 250; y += 24) for (var x = 10; x < 120; x += 22){
+    var w = 11 + rnd() * 5, h = 11 + rnd() * 5;
+    var lit = rnd();
+    g.fillStyle = lit < 0.18 ? 'rgba(70,84,92,0.85)' :
+      'rgba(220,232,236,' + (0.45 + rnd() * 0.5).toFixed(2) + ')';
+    g.fillRect(x, y, w, h);
+  }
   var t = new THREE.CanvasTexture(cv);
   t.wrapS = t.wrapT = THREE.RepeatWrapping; t.colorSpace = THREE.SRGBColorSpace;
   return t;
 }
-var WIN_TEX = windowsTexture();
+function windowsTextureB(seed){
+  var cv = document.createElement('canvas'); cv.width = 128; cv.height = 256;
+  var g = cv.getContext('2d');
+  var s = seed * 104729 + 7;
+  function rnd(){ s = (s * 1103515245 + 12345) & 0x7fffffff; return s / 0x7fffffff; }
+  g.fillStyle = '#A8B0B4'; g.fillRect(0,0,128,256);
+  for (var y = 10; y < 250; y += 36){
+    g.fillStyle = 'rgba(90,100,106,0.55)'; g.fillRect(0, y + 22, 128, 6);
+    for (var x = 8; x < 120; x += 30){
+      var w = 19 + rnd() * 4, h = 11 + rnd() * 3;
+      var lit = rnd();
+      g.fillStyle = lit < 0.22 ? 'rgba(64,76,84,0.85)' :
+        'rgba(226,236,240,' + (0.5 + rnd() * 0.45).toFixed(2) + ')';
+      g.fillRect(x, y, w, h);
+    }
+  }
+  var t = new THREE.CanvasTexture(cv);
+  t.wrapS = t.wrapT = THREE.RepeatWrapping; t.colorSpace = THREE.SRGBColorSpace;
+  return t;
+}
+var NEIGHBOR_TINTS = [0xAEB9C0, 0xC4B89E, 0xA9B8AC, 0xB5B0A6,
+                      0x9FB4BE, 0xC0B49C, 0xA3B0A8, 0xB8B2A4];
 var neighbors = [];
 var NEIGHBOR_DEFS = [
   {x:-22, z:-14, w:12, h:14, d:12, at:0.22}, {x:24, z:-10, w:10, h:18, d:10, at:0.30},
@@ -81440,15 +81470,46 @@ var NEIGHBOR_DEFS = [
   {x:-14, z:-26, w:13, h:16, d:10, at:0.54}, {x:16, z:-28, w:10, h:12, d:12, at:0.62},
   {x:-34, z:-2,  w:9,  h:20, d:9,  at:0.70}, {x:34, z:-2,  w:9,  h:15, d:9,  at:0.78}
 ];
-NEIGHBOR_DEFS.forEach(function(d){
+NEIGHBOR_DEFS.forEach(function(d, ni){
   var g = new THREE.Group();
-  var tex = WIN_TEX.clone(); tex.needsUpdate = true;
-  tex.repeat.set(Math.max(1, Math.round(d.w/6)), Math.max(1, Math.round(d.h/6)));
+  var banded = (ni % 2 === 1);
+  var tex = banded ? windowsTextureB(ni + 1) : windowsTexture(ni + 1);
+  tex.repeat.set(Math.max(1, Math.round(d.w / (banded ? 8 : 6))),
+    Math.max(1, Math.round(d.h / (banded ? 8 : 6))));
   var body = new THREE.Mesh(new THREE.BoxGeometry(d.w, d.h, d.d),
-    new THREE.MeshStandardMaterial({map:tex, roughness:0.4, metalness:0.1}));
+    new THREE.MeshStandardMaterial({map:tex, color:NEIGHBOR_TINTS[ni % NEIGHBOR_TINTS.length],
+      roughness:0.55, metalness:0.05}));
   body.position.y = d.h/2; g.add(body);
-  var roof = new THREE.Mesh(new THREE.BoxGeometry(d.w+0.3, 0.4, d.d+0.3), mat(COL.neighborSlab));
-  roof.position.y = d.h + 0.2; g.add(roof);
+  /* M-2 ronda 3: remate de cubierta distinto por vecino (ciclo de 4):
+     0 losa plana · 1 pretil · 2 caseta de cubierta · 3 cornisa. */
+  var roofKind = ni % 4;
+  if (roofKind === 3){
+    var band = new THREE.Mesh(new THREE.BoxGeometry(d.w + 0.9, 0.25, d.d + 0.9), mat(0x8A7D63));
+    band.position.y = d.h + 0.05; g.add(band);
+    var cor = new THREE.Mesh(new THREE.BoxGeometry(d.w + 0.9, 0.35, d.d + 0.9), mat(COL.neighborSlab));
+    cor.position.y = d.h + 0.3; g.add(cor);
+  } else {
+    var roof = new THREE.Mesh(new THREE.BoxGeometry(d.w + 0.3, 0.4, d.d + 0.3), mat(COL.neighborSlab));
+    roof.position.y = d.h + 0.2; g.add(roof);
+    if (roofKind === 1){
+      var rimH = 0.55, rimT = 0.18;
+      [[0, d.d/2, d.w + 0.3, rimT], [0, -d.d/2, d.w + 0.3, rimT]].forEach(function(r){
+        var w1 = new THREE.Mesh(new THREE.BoxGeometry(r[2], rimH, r[3]), mat(COL.neighborSlab));
+        w1.position.set(r[0], d.h + 0.4 + rimH/2, r[1]); g.add(w1);
+      });
+      [[d.w/2, 0, rimT, d.d + 0.3], [-d.w/2, 0, rimT, d.d + 0.3]].forEach(function(r){
+        var w2 = new THREE.Mesh(new THREE.BoxGeometry(r[2], rimH, r[3]), mat(COL.neighborSlab));
+        w2.position.set(r[0], d.h + 0.4 + rimH/2, r[1]); g.add(w2);
+      });
+    } else if (roofKind === 2){
+      var hut = new THREE.Mesh(new THREE.BoxGeometry(d.w * 0.35, 1.4, d.d * 0.35),
+        mat(NEIGHBOR_TINTS[(ni + 3) % NEIGHBOR_TINTS.length]));
+      hut.position.y = d.h + 0.4 + 0.7; g.add(hut);
+      var hutTop = new THREE.Mesh(new THREE.BoxGeometry(d.w * 0.35 + 0.3, 0.25, d.d * 0.35 + 0.3),
+        mat(COL.neighborSlab));
+      hutTop.position.y = d.h + 0.4 + 1.4 + 0.12; g.add(hutTop);
+    }
+  }
   var sh = contactShadow(d.w*1.8, d.d*1.8, 0.55); sh.position.y = 0.05; g.add(sh);
   g.position.set(d.x, 0, d.z);
   g.scale.y = 0.001;
@@ -81466,12 +81527,15 @@ for (var li = 0; li < 4; li++){
   var bulb = new THREE.Mesh(new THREE.SphereGeometry(0.28, 12, 10),
     new THREE.MeshBasicMaterial({color:0xFFE9B0, toneMapped:false}));
   bulb.position.y = 4.5; lamp.add(bulb);
-  lamp.position.set([-30, -16, 18, 32][li], 0, 12.6); /* el de x=10 cruzaba la excavadora en el encuadre de PB */
+  lamp.position.set([-10, -5, 5, 10][li], 0, 12.6); /* N-m2 ronda 3: antes en
+    x=-30/-16/18/32 quedaban cortadas en los bordes laterales; ahora dentro
+    del encuadre (la farola de la derecha caía en x≈1271). Siguen en la
+    acera cercana (z=12.6), delante de la calle desplazada. */
   lamp.scale.setScalar(0.001);
   lamp.userData = {appearStart:0.40 + li*0.02, appearDur:0.06};
   cityProps.add(lamp); lamps.push(lamp);
 }
-[[-16,24],[20,24],[-30,-18],[32,-20]].forEach(function(p, ti){
+[[-16,31],[20,31],[-30,-18],[32,-20]].forEach(function(p, ti){
   var tree = new THREE.Group();
   var trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.2, 1.6, 8), mat(0x7A5C3E));
   trunk.position.y = 0.8; tree.add(trunk);
@@ -81483,7 +81547,7 @@ for (var li = 0; li < 4; li++){
   tree.userData = {appearStart:0.48 + ti*0.02, appearDur:0.06};
   cityProps.add(tree); trees.push(tree);
 });
-[[-40,16.5,'#B8452E'],[28,16.5,'#3E5E8C']].forEach(function(c, ci){
+[[-40,22.5,'#B8452E'],[28,22.5,'#3E5E8C']].forEach(function(c, ci){
   var car = new THREE.Group();
   var body = new THREE.Mesh(new THREE.BoxGeometry(3.4, 0.9, 1.7),
     mat(new THREE.Color(c[2]), {roughness:0.4, metalness:0.3}));
@@ -81495,111 +81559,6 @@ for (var li = 0; li < 4; li++){
   car.userData = {appearStart:0.58 + ci*0.04, appearDur:0.06};
   cityProps.add(car); cars.push(car);
 });
-
-/* ---------------- La excavadora (planta baja; se desarma en código) ---------------- */
-/* Pose de trabajo (paso 0, del build E2): pluma 35°, brazo 50° respecto a la
-   pluma, cucharón 30° respecto al brazo. El despiece separa 12 piezas en
-   6 pasos; attach() conserva la pose al independizar cada pieza. */
-var excavator = new THREE.Group(); scene.add(excavator);
-var exParts = []; /* {obj, base:Vector3, dir:Vector3, dist:number, step:number} */
-var exBucketPivot = null; /* ancla de la etiqueta técnica de PB (ref. 8) */
-function exPart(obj, dir, dist, step){
-  obj.userData.base = obj.position.clone();
-  obj.userData.dir = dir; obj.userData.dist = dist; obj.userData.step = step;
-  exParts.push(obj); return obj;
-}
-(function buildExcavator(){
-  var yel = mat(COL.yellow, {roughness:0.5, metalness:0.15});
-  var yelD = mat(0xE8A90C, {roughness:0.55, metalness:0.15});
-  var dark = mat(COL.dark, {roughness:0.9});
-  var steel = mat(COL.steel, {roughness:0.35, metalness:0.6});
-  var glass = glassMat(0x2E3A40, 0.85);
-
-  /* Orugas */
-  [-0.95, 0.95].forEach(function(z){
-    var tr = new THREE.Group();
-    tr.add(new THREE.Mesh(new THREE.BoxGeometry(3.4, 0.75, 0.85), dark));
-    [-1.2, 0, 1.2].forEach(function(x){
-      var w = new THREE.Mesh(new THREE.CylinderGeometry(0.34, 0.34, 0.9, 14), steel);
-      w.rotation.x = Math.PI/2; w.position.set(x, 0, 0); tr.add(w);
-    });
-    tr.position.set(0, 0.38, z);
-    excavator.add(tr);
-    exPart(tr, new THREE.Vector3(0, -1, z > 0 ? 1.6 : -1.6), 1.0, 5);
-  });
-  /* Bastidor + anillo de giro */
-  var frame = new THREE.Mesh(new THREE.BoxGeometry(2.6, 0.4, 1.7), dark);
-  frame.position.set(0, 0.95, 0); excavator.add(frame);
-  exPart(frame, new THREE.Vector3(0, -0.6, 0), 0.8, 5);
-  var ring = new THREE.Mesh(new THREE.CylinderGeometry(0.95, 1.05, 0.28, 20), steel);
-  ring.position.set(0, 1.28, 0); excavator.add(ring);
-  exPart(ring, new THREE.Vector3(0, -0.4, 0), 0.7, 5);
-  /* Plataforma */
-  var plat = new THREE.Mesh(new THREE.BoxGeometry(2.9, 0.5, 2.0), yel);
-  plat.position.set(0, 1.65, 0); excavator.add(plat);
-  exPart(plat, new THREE.Vector3(0, 1, 0), 0.9, 4);
-  /* Contrapeso (atrás) */
-  var cw = new THREE.Mesh(new THREE.BoxGeometry(0.85, 1.25, 1.9), yelD);
-  cw.position.set(-1.35, 2.2, 0); excavator.add(cw);
-  exPart(cw, new THREE.Vector3(-1.6, 0.4, 0), 1.1, 4);
-  /* Capó / motor */
-  var hood = new THREE.Mesh(new THREE.BoxGeometry(1.5, 0.95, 1.5), yel);
-  hood.position.set(-0.45, 2.35, -0.15); excavator.add(hood);
-  exPart(hood, new THREE.Vector3(-0.7, 1.2, 0), 1.2, 3);
-  /* Cabina */
-  var cab = new THREE.Group();
-  cab.add(new THREE.Mesh(new THREE.BoxGeometry(1.15, 1.25, 1.15), yel));
-  var cabGlass = new THREE.Mesh(new THREE.BoxGeometry(1.0, 0.85, 1.0), glass);
-  cabGlass.position.set(0.12, 0.15, 0); cab.add(cabGlass);
-  var cabRoof = new THREE.Mesh(new THREE.BoxGeometry(1.25, 0.12, 1.25), dark);
-  cabRoof.position.y = 0.68; cab.add(cabRoof);
-  cab.position.set(0.75, 2.5, 0.45); excavator.add(cab);
-  exPart(cab, new THREE.Vector3(0.5, 1.4, 0.9), 1.3, 3);
-  /* Pluma: pivote en la plataforma, 35° sobre la horizontal */
-  var boomPivot = new THREE.Group(); boomPivot.position.set(1.35, 2.0, 0);
-  var boom = new THREE.Mesh(new THREE.BoxGeometry(3.6, 0.55, 0.55), yel);
-  boom.position.set(1.8, 0, 0); boomPivot.add(boom);
-  var boomCyl = new THREE.Mesh(new THREE.CylinderGeometry(0.13, 0.13, 2.4, 10), steel);
-  boomCyl.rotation.z = Math.PI/2 - 0.5; boomCyl.position.set(1.1, 0.55, 0);
-  boomPivot.add(boomCyl);
-  boomPivot.rotation.z = 0.61; /* 35° */
-  excavator.add(boomPivot);
-  exPart(boomPivot, new THREE.Vector3(0.7, 1.6, 0), 1.2, 2); /* dist 1.6->1.2: al 100 % la pluma se salía del cuadro */
-  /* Brazo: hijo de la pluma, 50° respecto a ella (cae hacia el suelo) */
-  var stickPivot = new THREE.Group();
-  stickPivot.position.set(3.6, 0, 0); boomPivot.add(stickPivot);
-  var stick = new THREE.Mesh(new THREE.BoxGeometry(2.7, 0.42, 0.42), yel);
-  stick.position.set(1.35, 0, 0); stickPivot.add(stick);
-  var stickCyl = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.11, 1.9, 10), steel);
-  stickCyl.rotation.z = Math.PI/2 - 0.35; stickCyl.position.set(0.8, 0.45, 0);
-  stickPivot.add(stickCyl);
-  stickPivot.rotation.z = -1.35; /* -50° */
-  /* Cucharón: hijo del brazo, 30° respecto a él */
-  var bucketPivot = new THREE.Group();
-  bucketPivot.position.set(2.7, 0, 0); stickPivot.add(bucketPivot);
-  var bucket = new THREE.Mesh(new THREE.BoxGeometry(1.05, 0.85, 0.95), yelD);
-  bucket.position.set(0.45, -0.25, 0); bucketPivot.add(bucket);
-  [-0.35, 0, 0.35].forEach(function(z){
-    var tooth = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.16, 0.12), steel);
-    tooth.position.set(0.95, -0.62, z); bucketPivot.add(tooth);
-  });
-  bucketPivot.rotation.z = -0.52; /* -30° */
-  /* Independizar brazo, cucharón y cilindros conservando la pose (attach). */
-  excavator.attach(stickPivot);
-  excavator.attach(bucketPivot);
-  exBucketPivot = bucketPivot; /* la etiqueta sigue al cucharón al desarmar */
-  excavator.attach(boomCyl);
-  excavator.attach(stickCyl);
-  exPart(stickPivot, new THREE.Vector3(1.4, 0.7, 0), 1.1, 1); /* dist 1.5->1.1: idem */
-  exPart(bucketPivot, new THREE.Vector3(1.8, -0.5, 0), 1.2, 0); /* dist 1.7->1.2: idem */
-  exPart(boomCyl, new THREE.Vector3(0.4, 1.8, 0), 0.8, 0);
-  exPart(stickCyl, new THREE.Vector3(0.9, 1.2, 0), 0.8, 0);
-
-  var exShadow = contactShadow(9, 7, 0.85); exShadow.position.set(1.2, 0.03, 0);
-  excavator.add(exShadow);
-  excavator.position.set(9.5, 0, 8.5);
-  excavator.rotation.y = -0.5;
-})();
 
 /* ---------------- Utilidades ---------------- */
 function clamp(v, a, b){ return Math.max(a, Math.min(b, v)); }
@@ -81618,32 +81577,7 @@ function fadeable(group){
 }
 floorGroups.forEach(fadeable); fadeable(plinthGroup); fadeable(crownGroup);
 floorGroups.forEach(function(g, i){ g.traverse(function(o){ o.userData.floorIndex = i; }); });
-plinthGroup.traverse(function(o){ o.userData.floorIndex = 'PB'; });
-excavator.traverse(function(o){ o.userData.floorIndex = 'PB'; });
 lotFrame.material.transparent = true;
-
-/* ---------------- Etiquetas de piso (HTML sobre el canvas) ---------------- */
-var labelEls = {};
-function makeLabel(key, text){
-  var el = document.createElement('div');
-  el.className = 'floor-lbl';
-  el.innerHTML = '<b>' + key + '</b><span>' + text + '</span>';
-  el.addEventListener('click', function(ev){
-    ev.stopPropagation();
-    if (key === 'PB') select('PB'); else select(parseInt(key, 10) - 1);
-  });
-  $('labels').appendChild(el);
-  labelEls[key] = el;
-}
-['06','05','04','03','02','01'].forEach(function(k, idx){
-  makeLabel(k, LEVELS[parseInt(k, 10) - 1].name.split('·')[0].trim());
-});
-makeLabel('PB', 'Planta baja');
-var labelAnchors = {
-  '06':[ -5.4, 1.6, 0 ], '05':[ -5.4, 1.6, 0 ], '04':[ -5.4, 1.6, 0 ],
-  '03':[ -5.4, 1.6, 0 ], '02':[ -5.4, 1.6, 0 ], '01':[ -5.4, 1.6, 0 ],
-  'PB':[ -6.4, 0.9, 0 ]
-};
 
 /* ---------------- Chips (explorar) ---------------- */
 var chipsBox = $('chips');
@@ -81653,23 +81587,14 @@ var chipsBox = $('chips');
   b.className = 'chip'; b.type = 'button'; b.textContent = c[1];
   b.dataset.key = c[0];
   b.addEventListener('click', function(){
-    if (c[0] === 'PB') select('PB'); else select(parseInt(c[0], 10) - 1);
+    goTo(c[0]);
   });
   chipsBox.appendChild(b);
 });
 
 /* ---------------- Estado ---------------- */
 var progress = 1; /* la torre nace completa: el armado por scroll vive SOLO en la portada */
-var hoverIndex = -1, selectedIndex = -1; /* -1 ninguno; 0..6 piso; 'PB' planta baja */
-var explodeT = 0, explodeTarget = 0, explodeStep = 0;
-var EX_STEPS = [
-  {t:0.00, name:'Armada · lista para trabajar'},
-  {t:0.20, name:'Paso 1 · Cucharón y cilindros fuera'},
-  {t:0.40, name:'Paso 2 · Brazo separado'},
-  {t:0.60, name:'Paso 3 · Pluma fuera'},
-  {t:0.80, name:'Paso 4 · Cabina y capó fuera'},
-  {t:1.00, name:'Paso 5 · Plataforma y orugas'}
-];
+var hoverIndex = -1; /* -1 ninguno; 0..5 piso; 'PB' planta baja */
 
 /* ---------------- Estado completo (sin secuencia: la torre nace armada) ---------------- */
 function applyComplete(){
@@ -81680,7 +81605,7 @@ function applyComplete(){
     var u = g.userData;
     u.appearOffset = 0;
     g.position.y = u.baseY + u.hoverOffset;
-    floorMats[i].forEach(function(m, mi){ m.opacity = mi === 1 ? 0.38 : 1; });
+    floorMats[i].forEach(function(m, mi){ m.opacity = mi === 1 ? 0.80 : 1; });
     g.visible = true;
   });
   crownGroup.position.y = crownGroup.userData.baseY;
@@ -81699,7 +81624,7 @@ function applyComplete(){
   hemi.intensity = 1.05;
   var dist = CAM_END.dist * distScale();
   camera.position.set(Math.sin(CAM_END.az) * dist, CAM_END.height, Math.cos(CAM_END.az) * dist);
-  camera.lookAt(0, CAM_END.targetY, 0);
+  camera.lookAt(CAM_END.targetX || 0, CAM_END.targetY, 0);
 }
 
 function distScale(){
@@ -81718,7 +81643,7 @@ function pickFloor(clientX, clientY){
   pointer.x = ((clientX - r.left) / r.width) * 2 - 1;
   pointer.y = -((clientY - r.top) / r.height) * 2 + 1;
   raycaster.setFromCamera(pointer, camera);
-  var hits = raycaster.intersectObjects(tower.children.concat([excavator]), true);
+  var hits = raycaster.intersectObjects(tower.children, true);
   for (var i = 0; i < hits.length; i++){
     var o = hits[i].object, idx = o.userData.floorIndex;
     if (idx !== undefined) return idx;
@@ -81729,7 +81654,6 @@ function pickFloor(clientX, clientY){
 }
 function setHover(idx){
   if (idx === null || idx === undefined) idx = -1; /* pickFloor devuelve null al apuntar al vacío: no es un piso */
-  if (selectedIndex !== -1 && idx !== -1) return; /* con ficha abierta no se separa; el reset (-1) siempre pasa */
   hoverIndex = idx;
   floorGroups.forEach(function(g, i){
     g.userData.hoverTarget = (idx !== -1 && idx !== 'PB' && i >= idx) ? 1.9 : 0;
@@ -81741,12 +81665,8 @@ function setHover(idx){
   } else {
     lightLine.material.opacity = 0;
   }
-  Object.keys(labelEls).forEach(function(k){
-    labelEls[k].classList.toggle('on', (k === 'PB' && idx === 'PB') || (parseInt(k, 10) - 1 === idx));
-  });
 }
 canvas.addEventListener('pointermove', function(ev){
-  if (selectedIndex !== -1) return;
   setHover(pickFloor(ev.clientX, ev.clientY));
 });
 canvas.addEventListener('pointerleave', function(){ setHover(-1); });
@@ -81757,84 +81677,33 @@ canvas.addEventListener('pointerdown', function(ev){ downX = ev.clientX; downY =
 canvas.addEventListener('pointerup', function(ev){
   if (Math.hypot(ev.clientX - downX, ev.clientY - downY) > 6) return;
   var idx = pickFloor(ev.clientX, ev.clientY);
-  if (idx === null || idx === undefined) deselect();
-  else select(idx);
+  if (idx !== null && idx !== undefined) goTo(idx);
 });
 
-function panelHTML(d){
-  var h = '';
-  if (d.offices){
-    h += d.offices.map(function(o){
-      return '<div class="p-office"><b>' + o[0] + ' — ' + o[1] + '</b><span>' + o[2] + '</span></div>';
-    }).join('');
-  } else {
-    h += '<ul>' + d.body.map(function(b){ return '<li>' + b + '</li>'; }).join('') + '</ul>';
+/* ---------------- Navegación a las páginas de piso ---------------- */
+/* Cada piso tiene SU propia página (como ficha de producto): el clic, el chip
+   y el botón de la tarjeta del tour NAVEGAN; no abren panel. */
+var PAGE_URL = {
+  'PB': 'pisos/pb-operaciones.html',
+  0: 'pisos/p01-complementarios.html',
+  1: 'pisos/p02-peru-cat-exterior.html',
+  2: 'pisos/p03-servicios-compartidos.html',
+  3: 'pisos/p04-gerencias-corporativas.html',
+  4: 'pisos/p05-gerencia-general.html',
+  5: 'pisos/p06-directorio.html',
+  'RES': 'pisos/resultados-2024.html'
+};
+function goTo(target){
+  var url = null;
+  if (typeof target === 'number') url = PAGE_URL[target];
+  else if (typeof target === 'string'){
+    if (PAGE_URL[target]) url = PAGE_URL[target];
+    else { var n = parseInt(target, 10); if (!isNaN(n) && n >= 1 && n <= 6) url = PAGE_URL[n - 1]; }
   }
-  return h;
+  if (url) location.href = url;
 }
-function openPanel(d, numLabel){
-  $('pNum').innerHTML = numLabel;
-  $('pName').textContent = d.name;
-  $('pSub').textContent = d.role + '. ' + d.sub;
-  $('pBody').innerHTML = panelHTML(d);
-  $('pHard').innerHTML = '<b>' + d.hard + '</b>' + d.hardText;
-  $('pSrc').textContent = d.src;
-  var ctaBox = $('pCta');
-  if (ctaBox){
-    ctaBox.innerHTML = d.cta ? '<button type="button" id="pCtaBtn">' + d.cta + '</button>' : '';
-    var ctaBtn = $('pCtaBtn');
-    if (ctaBtn) ctaBtn.addEventListener('click', function(){
-      deselect();
-      var m = document.getElementById('maquinaria');
-      if (m) m.scrollIntoView({behavior:'smooth'});
-    });
-  }
-  $('panel').hidden = false;
-  $('exploreBar').style.visibility = 'hidden'; /* los chips no quedan tapados por el panel */
-}
-function select(idx){
-  var isPB = idx === 'PB';
-  var fi = isPB ? -1 : idx;
-  selectedIndex = idx;
-  if (tourCard) tourCard.hidden = true; /* la ficha manda: el tour espera */
-  setHover(-1);
-  floorGroups.forEach(function(g, i){
-    var on = isPB ? false : (i === fi);
-    g.traverse(function(o){ if (o.material) o.material.opacity = on ? 1 : (isPB ? 0.25 : 0.07); });
-    if (!isPB) g.userData.selX = on ? -3.5 : 0;
-  });
-  if (isPB){
-    openPanel(PB, 'PB');
-    $('pbControls').hidden = false;
-  } else {
-    openPanel(LEVELS[fi], LEVELS[fi].num);
-    $('pbControls').hidden = true;
-  }
-  lightLine.material.opacity = isPB ? 0 : 0.95;
-  if (!isPB) lightLine.position.y = floorGroups[fi].position.y + 1.6;
-  document.querySelectorAll('.chip').forEach(function(c){
-    c.classList.toggle('on', (isPB && c.dataset.key === 'PB') || (!isPB && parseInt(c.dataset.key, 10) - 1 === fi));
-  });
-  if (window.innerWidth <= 900) $('panel').scrollIntoView({behavior:'smooth', block:'nearest'});
-}
-function deselect(){
-  selectedIndex = -1;
-  tourStop = -2; /* fuerza que el bucle re-aplique la parada del scroll al cerrar la ficha */
-  floorGroups.forEach(function(g, i){
-    g.traverse(function(o){ if (o.material) o.material.opacity = o.material === floorMats[i][1] ? 0.38 : 1; });
-    g.userData.selX = 0;
-  });
-  $('panel').hidden = true;
-  $('pbControls').hidden = true;
-  $('exploreBar').style.visibility = '';
-  lightLine.material.opacity = 0;
-  document.querySelectorAll('.chip').forEach(function(c){ c.classList.remove('on'); });
-}
-$('panelClose').addEventListener('click', deselect);
 $('btnResultados').addEventListener('click', function(){
-  deselect();
-  selectedIndex = 'RES';
-  openPanel(RESULTADOS, '$');
+  goTo('RES');
 });
 
 /* ---------------- Recorrido AURUM por scroll (solo si la página trae #tourTrack) ---------------- */
@@ -81848,28 +81717,29 @@ var tourStop = -1; /* -1 fuera del recorrido; -2 fuerza re-aplicar */
 var tourGoTarget = null;
 var TOUR_DATA = {
   'TOWER': {k:'LA TORRE', n:'La torre, completa.', d:'7 niveles del organigrama, de la planta baja al directorio.', c:''},
-  'PB': {k:'PB · PLANTA BAJA', n:'Planta baja · Operaciones', d:'Más de 40 sucursales · 2 CRC de clase mundial · ~1 700 técnicos residentes.', c:'Desarmar la excavadora'},
-  0: {k:'PISO 01', n:'Subsidiarias · Complementarios', d:'9 % · S/ 699 M — cayó 2,0 % en 2024.', c:'Ver ficha completa'},
-  1: {k:'PISO 02', n:'Subsidiarias · Perú CAT + Exterior', d:'82 % · S/ 6 251 M en el Perú · 8 % · S/ 639 M fuera.', c:'Ver ficha completa'},
-  2: {k:'PISO 03', n:'Centro de Servicios Compartidos', d:'98,8 % de colaboradores con objetivos alineados.', c:'Ver ficha completa'},
-  3: {k:'PISO 04', n:'Gerencias Corporativas', d:'Una planta, 9 oficinas — todas cuelgan de la Gerencia General.', c:'Ver ficha completa'},
-  4: {k:'PISO 05', n:'Gerencia General', d:'Mariela García Figari de Fabbri — gerente general desde 2008.', c:'Ver ficha completa'},
-  5: {k:'PISO 06', n:'Directorio', d:'9 miembros · 5 de 9 independientes · 6 997 accionistas.', c:'Ver ficha completa'}
+  'PB': {k:'PB · PLANTA BAJA', n:'Planta baja · Operaciones', d:'Más de 40 sucursales · 2 CRC de clase mundial · ~1 700 técnicos residentes.', c:'Visitar la planta baja'},
+  0: {k:'PISO 01', n:'Subsidiarias · Complementarios', d:'9 % · S/ 699 M — cayó 2,0 % en 2024.', c:'Visitar su página'},
+  1: {k:'PISO 02', n:'Subsidiarias · Perú CAT + Exterior', d:'82 % · S/ 6 251 M en el Perú · 8 % · S/ 639 M fuera.', c:'Visitar su página'},
+  2: {k:'PISO 03', n:'Centro de Servicios Compartidos', d:'98,8 % de colaboradores con objetivos alineados.', c:'Visitar su página'},
+  3: {k:'PISO 04', n:'Gerencias Corporativas', d:'Una planta, 9 oficinas — todas cuelgan de la Gerencia General.', c:'Visitar su página'},
+  4: {k:'PISO 05', n:'Gerencia General', d:'Mariela García Figari de Fabbri — gerente general desde 2008.', c:'Visitar su página'},
+  5: {k:'PISO 06', n:'Directorio', d:'9 miembros · 5 de 9 independientes · 6 997 accionistas.', c:'Visitar su página'}
 };
 function applyTourStop(pos){
   tourStop = pos;
   if (!tourCard) return;
-  if (selectedIndex !== -1){ tourCard.hidden = true; return; } /* ficha abierta: el tour espera */
   var stop = pos < 0 ? null : TOUR_STOPS[pos];
   setHover(-1);
-  /* Opacidades: como select()/deselect(), sin abrir panel. */
+  /* Opacidades: el piso de la parada queda opaco; los demas, fantasma.
+     N-G1 ronda 3: fantasma 0.30 (antes 0.07, la torre DESAPARECÍA) para que
+     el edificio siga existiendo como contexto mientras el piso destaca. */
   floorGroups.forEach(function(g, i){
     var on = (stop !== null && stop !== 'PB' && stop !== 'TOWER' && i === stop);
     var ghost = (stop !== null && stop !== 'TOWER');
     g.traverse(function(o){
-      if (!o.material) return;
-      o.material.opacity = ghost ? (on ? 1 : (stop === 'PB' ? 0.25 : 0.07))
-        : (o.material === floorMats[i][1] ? 0.38 : 1);
+      if (!o.material || o.userData.noGhost) return;
+      o.material.opacity = ghost ? (on ? 1 : 0.30)
+        : (o.material === floorMats[i][1] ? 0.80 : 1);
     });
   });
   /* Línea de luz + etiqueta + chip de la parada. */
@@ -81880,16 +81750,14 @@ function applyTourStop(pos){
   } else {
     lightLine.material.opacity = 0;
   }
-  Object.keys(labelEls).forEach(function(k){
-    labelEls[k].classList.toggle('on', stop !== null && stop !== 'PB' && stop !== 'TOWER' && (parseInt(k, 10) - 1 === stop));
-  });
   document.querySelectorAll('.chip').forEach(function(c){
     c.classList.toggle('on', stop !== null && stop !== 'TOWER' &&
       ((stop === 'PB' && c.dataset.key === 'PB') || (stop !== 'PB' && parseInt(c.dataset.key, 10) - 1 === stop)));
   });
-  $('pbControls').hidden = true; /* el despiece vive en la ficha de PB, no en el tour */
   /* En móvil la tarjeta del tour ocupa la parte baja: los chips esperan. */
   if (window.innerWidth <= 900){ $('exploreBar').style.visibility = stop === null ? '' : 'hidden'; }
+  var replayEnd = $('btnReplayEnd');
+  if (replayEnd) replayEnd.hidden = (pos !== TOUR_STOPS.length - 1);
   if (stop === null){ tourCard.hidden = true; tourGoTarget = null; return; }
   var d = TOUR_DATA[stop];
   $('tourKicker').textContent = d.k + ' · ' + (pos + 1) + '/' + TOUR_STOPS.length;
@@ -81902,11 +81770,11 @@ function applyTourStop(pos){
 }
 if (tourCard){
   $('tourGo').addEventListener('click', function(){
-    if (tourGoTarget !== null && tourGoTarget !== undefined) select(tourGoTarget);
+    if (tourGoTarget !== null && tourGoTarget !== undefined) goTo(tourGoTarget);
   });
 }
 function tourUpdateFromScroll(){
-  if (!tourTrack || selectedIndex !== -1) return;
+  if (!tourTrack) return;
   var r = tourTrack.getBoundingClientRect();
   var vh = window.innerHeight;
   var active = (r.top <= 0 && r.bottom >= vh);
@@ -81916,100 +81784,6 @@ function tourUpdateFromScroll(){
     stop = Math.min(TOUR_STOPS.length - 1, Math.floor(p * TOUR_STOPS.length));
   }
   if (stop !== tourStop) applyTourStop(stop);
-}
-
-/* ---------------- Despiece de la excavadora ---------------- */
-var range = $('explodeRange');
-function applyExplode(t){
-  /* exParts guarda los objetos mismos; base/dir/dist/step viven en userData. */
-  exParts.forEach(function(o){
-    var u = o.userData, b = u.base, d = u.dir;
-    o.position.set(
-      b.x + d.x * u.dist * t,
-      b.y + d.y * u.dist * t,
-      b.z + d.z * u.dist * t);
-    var hot = (u.step === explodeStep) && t > 0.02;
-    o.traverse(function(c){
-      if (c.material && c.material.emissive){
-        c.material.emissive.setHex(hot ? 0xE85A24 : 0x000000);
-        c.material.emissiveIntensity = hot ? 0.35 : 0;
-      }
-    });
-  });
-}
-range.addEventListener('input', function(){
-  explodeTarget = range.value / 100;
-  explodeStep = nearestStep(explodeTarget);
-  $('pbStepName').textContent = EX_STEPS[explodeStep].name;
-  markStepButtons();
-});
-function nearestStep(t){
-  var best = 0, bd = 9;
-  EX_STEPS.forEach(function(s, i){ var d = Math.abs(s.t - t); if (d < bd){ bd = d; best = i; } });
-  return best;
-}
-var stepsBox = $('pbSteps');
-EX_STEPS.forEach(function(s, i){
-  var b = document.createElement('button');
-  b.className = 'pb-step'; b.type = 'button';
-  b.textContent = i === 0 ? 'Armada' : 'Paso ' + i;
-  b.addEventListener('click', function(){
-    range.value = Math.round(s.t * 100);
-    explodeTarget = s.t; explodeStep = i;
-    $('pbStepName').textContent = s.name;
-    markStepButtons();
-  });
-  stepsBox.appendChild(b);
-});
-function markStepButtons(){
-  Array.prototype.forEach.call(stepsBox.children, function(b, i){
-    b.classList.toggle('on', i === explodeStep);
-  });
-}
-markStepButtons();
-
-/* ---------------- Etiquetas: proyección a pantalla ---------------- */
-var v3 = new THREE.Vector3();
-function updateLabels(){
-  var r = canvas.getBoundingClientRect();
-  function place(key, world){
-    var el = labelEls[key]; if (!el) return;
-    v3.copy(world).project(camera);
-    if (v3.z > 1){ el.style.display = 'none'; return; }
-    el.style.display = '';
-    el.style.left = ((v3.x * 0.5 + 0.5) * r.width) + 'px';
-    el.style.top = ((-v3.y * 0.5 + 0.5) * r.height) + 'px';
-  }
-  floorGroups.forEach(function(g, i){
-    var key = LEVELS[i].num;
-    var el = labelEls[key];
-    if (selectedIndex !== -1 && selectedIndex !== i){ el.style.display = 'none'; return; }
-    var a = labelAnchors[key];
-    place(key, new THREE.Vector3(g.position.x + a[0], g.position.y + a[1], a[2]));
-  });
-  var pbEl = labelEls['PB'];
-  if (selectedIndex !== -1 && selectedIndex !== 'PB'){ pbEl.style.display = 'none'; }
-  else place('PB', new THREE.Vector3(-6.4, 1.0, 0));
-  /* Etiqueta técnica de la máquina (ref. 8): sigue al cucharón, solo en PB. */
-  var pbTag = $('pbTag');
-  if (pbTag){
-    var showTag = (selectedIndex === 'PB') ||
-      (selectedIndex === -1 && tourStop >= 0 && TOUR_STOPS[tourStop] === 'PB');
-    if (showTag && exBucketPivot){
-      exBucketPivot.getWorldPosition(v3); v3.y += 0.9;
-      v3.project(camera);
-      if (v3.z > 1){ pbTag.hidden = true; }
-      else {
-        /* La etiqueta nunca se recorta: se sujeta dentro del lienzo. */
-        var tw = pbTag.offsetWidth || 140, th = pbTag.offsetHeight || 44;
-        var tx = Math.max(tw / 2 + 8, Math.min(r.width - tw / 2 - 8, (v3.x * 0.5 + 0.5) * r.width));
-        var ty = Math.max(th / 2 + 8, Math.min(r.height - th / 2 - 8, (-v3.y * 0.5 + 0.5) * r.height));
-        pbTag.hidden = false;
-        pbTag.style.left = tx + 'px';
-        pbTag.style.top = ty + 'px';
-      }
-    } else { pbTag.hidden = true; }
-  }
 }
 
 /* ---------------- Resize + bucle ---------------- */
@@ -82029,55 +81803,29 @@ applyComplete();
 
 var lastT = 0;
 var frameCount = 0;
-var camLookCur = new THREE.Vector3(0, CAM_END.targetY, 0);
-var EX_POS = new THREE.Vector3(9.5, 2.0, 8.5); /* centro de la excavadora */
-var EX_LOOK = new THREE.Vector3(11.0, 2.0, 8.5); /* mirada 1,5 u a la derecha: el despiece no se mete bajo el panel */
+var camLookCur = new THREE.Vector3(CAM_END.targetX || 0, CAM_END.targetY, 0);
+var camPosT = new THREE.Vector3(), camLookT = new THREE.Vector3();
 function animate(t){
   requestAnimationFrame(animate);
   frameCount++;
   var dt = Math.min(0.1, (t - lastT) / 1000 || 0.016); lastT = t;
   var k = 1 - Math.pow(0.001, dt);
-  var narrow = window.innerWidth <= 900;
   /* Hover: acercar los offsets a su objetivo y APLICARLOS a la posición. */
   floorGroups.forEach(function(g){
     var u = g.userData;
     u.hoverOffset = lerp(u.hoverOffset, u.hoverTarget || 0, k);
     g.position.y = u.baseY + u.hoverOffset;
-    /* En móvil el panel es hoja inferior: el piso NO se desplaza a la izquierda. */
-    var selX = (!narrow && selectedIndex !== -1 && selectedIndex !== 'PB')
-      ? (u.index === selectedIndex ? -3.5 : 0) : 0;
-    g.position.x = lerp(g.position.x, selX, 1 - Math.pow(0.0005, dt));
+    /* G-2: la sombra bajo la planta crece con su separación. */
+    if (u.floorShadow) u.floorShadow.material.opacity = 0.5 * (u.hoverOffset / 1.9);
   });
-  /* Despiece: acercar al objetivo */
-  explodeT = lerp(explodeT, explodeTarget, k);
-  if (Math.abs(explodeT - explodeTarget) > 0.0005 || explodeT > 0.001) applyExplode(explodeT);
-  /* Cámara: encuadre según la selección (PB = la excavadora al centro;
-     también en la parada PB del recorrido). */
-  var desPos = new THREE.Vector3(), desLook = new THREE.Vector3();
-  var focusPB = (selectedIndex === 'PB') ||
-    (selectedIndex === -1 && tourStop >= 0 && TOUR_STOPS[tourStop] === 'PB');
-  if (focusPB){
-    /* Macro (ref. 8): armada, la máquina llena el cuadro (14 u escritorio / 18 u móvil);
-       al desarmar, la cámara retrocede hasta 20/24 u y las piezas caben en cuadro. */
-    var d = ((window.innerWidth / Math.max(1, window.innerHeight) < 0.8) ? 20 : 14) + 6 * explodeT;
-    desPos.set(EX_POS.x + Math.sin(CAM_END.az) * d, 7.5, EX_POS.z + Math.cos(CAM_END.az) * d);
-    desLook.copy(EX_LOOK);
-    desLook.y += 1.5 * explodeT; /* la cámara sube con el despiece: la pluma no se sale por arriba */
-    var rShift = 3.2 * explodeT; /* y se corre a la derecha (vector right de la cámara): el brazo/cucharón no se meten bajo el panel */
-    desLook.x += Math.cos(CAM_END.az) * rShift;
-    desLook.z += -Math.sin(CAM_END.az) * rShift;
-  } else {
-    var dist = CAM_END.dist * distScale();
-    desPos.set(Math.sin(CAM_END.az) * dist, CAM_END.height, Math.cos(CAM_END.az) * dist);
-    desLook.set(0, CAM_END.targetY, 0);
-  }
-  camera.position.lerp(desPos, k);
-  camLookCur.lerp(desLook, k);
+  /* Cámara FIJA en CAM_END: el tour ya no la mueve a la excavadora. */
+  var dist = CAM_END.dist * distScale();
+  camPosT.set(Math.sin(CAM_END.az) * dist, CAM_END.height, Math.cos(CAM_END.az) * dist);
+  camLookT.set(CAM_END.targetX || 0, CAM_END.targetY, 0);
+  camera.position.lerp(camPosT, k);
+  camLookCur.lerp(camLookT, k);
   camera.lookAt(camLookCur);
-  /* Luz de cine: sube solo en planta baja (ficha abierta o parada del tour). */
-  movieLight.intensity = lerp(movieLight.intensity, focusPB ? 0.85 : 0, k);
   tourUpdateFromScroll();
-  updateLabels();
   renderer.render(scene, camera);
 }
 requestAnimationFrame(animate);
@@ -82087,18 +81835,11 @@ window.__edificio = {
   setProgress:function(p){ window.scrollTo(0, 0); },
   progress:function(){ return progress; },
   hover:function(i){ setHover(i); },
-  select:function(i){ select(i); },
-  deselect:deselect,
-  explode:function(v){
-    explodeTarget = clamp(v, 0, 1);
-    range.value = Math.round(explodeTarget * 100);
-    explodeStep = nearestStep(explodeTarget);
-    $('pbStepName').textContent = EX_STEPS[explodeStep].name;
-    markStepButtons();
-  },
+  select:function(i){ goTo(i); },
+  goTo:goTo,
   state:function(){
-    return {progress:progress, selected:selectedIndex, hover:hoverIndex,
-      floors:floorsVisible(), explode:explodeT,
+    return {progress:progress, selected:null, hover:hoverIndex,
+      floors:floorsVisible(),
       cam:[+camera.position.x.toFixed(2), +camera.position.y.toFixed(2), +camera.position.z.toFixed(2)],
       look:[+camLookCur.x.toFixed(2), +camLookCur.y.toFixed(2), +camLookCur.z.toFixed(2)],
       floorY:floorGroups.map(function(g){ return +g.position.y.toFixed(2); }),
@@ -82106,20 +81847,7 @@ window.__edificio = {
       tour:tourStop,
       frames:frameCount,
       draw:{calls:renderer.info.render.calls, tris:renderer.info.render.triangles},
-      tourCard:tourCard && !tourCard.hidden ? $('tourName').textContent : null,
-      movie:+movieLight.intensity.toFixed(2),
-      pbTag:(function(){ var t = document.getElementById('pbTag'); return t ? !t.hidden : null; })()};
-  },
-  /* Depuración: posición en pantalla (px) del centro de cada pieza del despiece. */
-  dbgParts:function(){
-    var r = canvas.getBoundingClientRect();
-    return exParts.map(function(o, i){
-      var v = new THREE.Vector3();
-      o.getWorldPosition(v); v.project(camera);
-      return {i:i, step:o.userData.step,
-        x:Math.round((v.x * 0.5 + 0.5) * r.width),
-        y:Math.round((-v.y * 0.5 + 0.5) * r.height)};
-    });
+      tourCard:tourCard && !tourCard.hidden ? $('tourName').textContent : null};
   }
 };
 function floorsVisible(){
