@@ -1,0 +1,65 @@
+/* Páginas de piso — Ferreycorp. Claro >=85 %, naranja #E85A24, Georgia + Helvetica. */
+:root{--cream:#FAF7ED;--ink:#1B1A17;--ink-soft:#5D574D;--orange:#E85A24;
+  --orange-dark:#C74312;--band:#E85A24;--tint:#FAF7ED}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--tint);color:var(--ink);
+  font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+/* m-3: franja superior a sangre — 100vw, 6 px — aunque el contenido sea 860 px. */
+.piso{max-width:860px;margin:0 auto;padding:0 28px 64px}
+.piso::before{content:'';display:block;width:100vw;height:6px;background:var(--band);
+  margin-left:calc(50% - 50vw)}
+.topnav{display:flex;justify-content:space-between;align-items:center;gap:16px;
+  padding:20px 0 8px;flex-wrap:wrap}
+.back{font-size:13.5px;font-weight:600;text-decoration:none;color:var(--ink-soft);
+  border:1px solid rgba(27,26,23,.25);border-radius:999px;padding:8px 14px;background:rgba(255,253,248,.85)}
+.back:hover{color:var(--ink);border-color:var(--ink)}
+.crumb{font-size:12px;font-weight:700;letter-spacing:.22em;color:var(--orange);text-transform:uppercase}
+.pnum{font-family:Georgia,'Times New Roman',serif;font-size:clamp(110px,22vw,200px);
+  line-height:.9;color:var(--band);opacity:.9;margin:26px 0 0}
+h1{font-family:Georgia,'Times New Roman',serif;font-weight:400;
+  font-size:clamp(38px,5.4vw,64px);line-height:1.06;margin:10px 0 0}
+.role{margin-top:14px;font-size:19px;font-weight:700;color:var(--ink)}
+.sub{margin-top:8px;font-size:16.5px;line-height:1.55;color:var(--ink-soft);max-width:640px}
+.rule{border:none;border-top:2px solid var(--orange);width:44px;margin:26px 0}
+.body{list-style:none;margin:0;padding:0}
+.body li{padding:16px 0;border-top:1px solid rgba(27,26,23,.12);
+  font-size:16px;line-height:1.6}
+.body li:first-child{border-top:none}
+.office{padding:14px 0;border-top:1px solid rgba(27,26,23,.12)}
+.office:first-of-type{border-top:none}
+.office b{font-size:15.5px}
+.office span{display:block;font-size:14px;color:var(--ink-soft);margin-top:3px;line-height:1.5}
+.hard{margin-top:28px;background:#FFFDF8;border-left:3px solid var(--orange);
+  padding:16px 18px;font-size:15.5px;line-height:1.55}
+.hard b{display:block;font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink-soft);margin-bottom:5px}
+.fig{margin-top:28px;background:#FFFDF8;border:1px solid rgba(27,26,23,.10);
+  border-radius:14px;padding:18px}
+.fig img{width:100%;height:auto;display:block;border-radius:8px}
+.fig.tall img{max-width:520px;margin:0 auto}
+.fig figcaption{margin-top:12px;font-size:13px;line-height:1.55;color:var(--ink-soft)}
+.fig figcaption b{color:var(--ink)}
+.maq-card{margin-top:28px;background:#171310;color:#FAF7ED;border-radius:14px;
+  padding:26px 28px;border-left:4px solid var(--orange)}
+.maq-card h2{font-family:Georgia,serif;font-weight:400;font-size:24px;margin:0}
+.maq-card p{margin:10px 0 0;font-size:15px;line-height:1.6;color:#E8DCC8}
+.maq-card .btn{display:inline-block;margin-top:18px;background:var(--orange);color:#fff;
+  border-radius:999px;padding:12px 22px;font-size:14.5px;font-weight:600;text-decoration:none}
+.maq-card .btn:hover{background:var(--orange-dark)}
+.src{margin-top:24px;font-size:12.5px;line-height:1.6;color:var(--ink-soft)}
+.foot{margin-top:14px;font-size:13px;line-height:1.6;color:#6B655A;
+  border-top:1px solid rgba(27,26,23,.12);padding-top:14px}
+.pagenav{display:flex;justify-content:space-between;gap:12px;margin-top:36px;flex-wrap:wrap}
+.pagenav a{font-size:14.5px;font-weight:600;text-decoration:none;
+  border:1px solid rgba(27,26,23,.3);border-radius:999px;padding:11px 18px;background:#FFFDF8}
+.pagenav a:hover{border-color:var(--ink)}
+.pagenav a.next{background:var(--orange);border-color:var(--orange);color:#fff}
+.pagenav a.next:hover{background:var(--orange-dark)}
+footer{margin-top:44px;font-size:12px;line-height:1.7;color:var(--ink-soft);text-align:center}
+@media (max-width:640px){
+  .piso{padding:0 20px 48px}
+  .pnum{font-size:96px}
+  .maq-card{padding:20px}
+}
