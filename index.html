@@ -261,28 +261,188 @@ footer .up{display:inline-block;margin-top:14px;font-size:13px;font-weight:600;c
   </div>
 </section>
 
-<!-- (2) EL EDIFICIO INTEGRADO: torre 3D real sobre el fondo del entorno (lote de esquina) -->
+<!-- (2) LA EMPRESA POR DENTRO: 7 cuadros traslúcidos tipo dashboard (sin edificio 3D) -->
 <style>
-  #edificio #stage{background:url('fondo_entorno_esquina.jpg') center/cover no-repeat;}
-  #edificio #tourTrack{height:100vh;}
-  #towerFrame{position:absolute;inset:0;width:100%;height:100%;border:0;background:transparent;display:block;}
+  /* Fondo crema + brillos cálidos detrás del vidrio (el traslúcido cubre todo) */
+  #edificio{position:relative;
+    background:
+      radial-gradient(circle 420px at 18% 18%, rgba(232,90,36,.30), transparent 68%),
+      radial-gradient(circle 520px at 82% 85%, rgba(232,90,36,.22), transparent 68%),
+      radial-gradient(circle 380px at 62% 38%, rgba(255,255,255,.95), transparent 68%),
+      radial-gradient(circle 300px at 30% 75%, rgba(232,90,36,.14), transparent 68%),
+      linear-gradient(180deg,#FAF7ED,#F1EBDC);}
+  .edificio-glass{background:rgba(250,247,237,.34);
+    backdrop-filter:blur(24px) saturate(1.15);-webkit-backdrop-filter:blur(24px) saturate(1.15);
+    padding:26px 28px 56px}
+  .edificio-inner{max-width:1240px;margin:0 auto}
+  #edificio .topbar{position:static;display:flex;align-items:center;gap:18px;padding:0 0 8px}
+  #edificio .topbar .back{background:rgba(255,255,255,.9);border:1px solid rgba(27,26,23,.15);
+    border-radius:999px;padding:8px 16px}
+  #edificio h2{font-family:Georgia,'Times New Roman',serif;font-weight:400;
+    font-size:clamp(34px,4.2vw,54px);line-height:1.05;margin-top:14px}
+  #edificio h2 em{color:var(--orange);font-style:normal}
+  #edificio .lead{margin-top:12px;font-size:16px;line-height:1.6;color:var(--ink-soft);max-width:660px}
+  .pisos-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:30px}
+  .piso-tile{position:relative;display:block;border-radius:20px;overflow:hidden;
+    text-decoration:none;color:var(--ink);min-height:400px;
+    box-shadow:0 10px 28px rgba(27,26,23,.14);
+    transition:transform .15s ease, box-shadow .15s ease}
+  .piso-tile:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(27,26,23,.2)}
+  .piso-tile img.ph{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+  .piso-tile .glass{position:absolute;left:0;right:0;bottom:0;z-index:2;
+    background:rgba(255,255,255,.62);
+    backdrop-filter:blur(18px) saturate(1.2);-webkit-backdrop-filter:blur(18px) saturate(1.2);
+    border-top:1px solid rgba(255,255,255,.75);
+    box-shadow:0 -8px 24px rgba(27,26,23,.12);
+    padding:14px 18px 16px}
+  .piso-tile .num{font-size:11px;font-weight:700;letter-spacing:.18em;color:var(--orange)}
+  .piso-tile .big{font-family:Georgia,serif;font-size:30px;line-height:1;margin-top:4px}
+  .piso-tile .big small{font-size:16px}
+  .piso-tile h3{font-family:Georgia,serif;font-weight:400;font-size:19px;line-height:1.2;margin-top:4px}
+  .piso-tile p{margin-top:4px;font-size:12.5px;line-height:1.45;color:#3D3A35}
+  .piso-tile .bar{margin-top:8px;height:6px;border-radius:3px;background:rgba(27,26,23,.14);overflow:hidden}
+  .piso-tile .bar i{display:block;height:100%;width:0;background:var(--orange);border-radius:3px;
+    transition:width 1s ease}
+  .piso-tile .go{display:inline-block;margin-top:8px;font-size:13px;font-weight:700;color:var(--orange)}
+  .piso-tile.hot .glass{background:rgba(232,90,36,.82);border-top-color:rgba(255,255,255,.5)}
+  .piso-tile.hot .num{color:rgba(255,255,255,.9)}
+  .piso-tile.hot .big{color:#fff}
+  .piso-tile.hot h3{color:#fff}
+  .piso-tile.hot p{color:rgba(255,255,255,.92)}
+  .piso-tile.hot .bar{background:rgba(255,255,255,.3)}
+  .piso-tile.hot .bar i{background:#fff}
+  .piso-tile.hot .go{color:#fff}
+  @media (max-width:1000px){.pisos-grid{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:560px){.pisos-grid{grid-template-columns:1fr}}
 </style>
 <section id="edificio">
-  <div id="tourTrack">
-    <div class="sticky-stage">
-      <div id="stage">
-        <iframe id="towerFrame" src="torre_integrada.html" title="Torre 3D Ferreycorp — clic en un piso para ver su ficha" allowtransparency="true"></iframe>
-        <header class="topbar">
-          <a class="back" href="#coverTrack">← Portada</a>
-          <div class="brand">FERREYCORP &nbsp;·&nbsp; AA1</div>
-          <div class="spacer"></div>
-          <button class="btn-res" id="btnResultados" type="button">Resultados 2024</button>
-          <button class="btn-res btn-replay" id="btnReplay" type="button">↺ Ver el edificio de nuevo</button>
-        </header>
+  <div class="edificio-glass">
+    <div class="edificio-inner">
+      <header class="topbar">
+        <a class="back" href="#coverTrack">← Portada</a>
+        <div class="brand">FERREYCORP &nbsp;·&nbsp; AA1</div>
+        <div class="spacer"></div>
+        <button class="btn-res" id="btnResultados" type="button">Resultados 2024</button>
+      </header>
+      <p class="kicker">La empresa por dentro</p>
+      <h2>7 niveles, <em>una empresa.</em></h2>
+      <p class="lead">Sin edificio 3D: los 7 puntos de la empresa van en cuadros, cada uno con su foto y su nombre. Clic en cada cuadro para entrar a su página.</p>
+      <div class="pisos-grid">
+        <a class="piso-tile" href="pisos/p06-directorio.html">
+          <img class="ph" src="pisos/directorio_sesion.jpg" alt="Directorio en sesión">
+          <div class="glass">
+            <div class="num">PISO 06</div>
+            <div class="big"><span data-count="9">0</span></div>
+            <h3>Directorio</h3>
+            <p>Miembros · 5 de 9 independientes · 6 997 accionistas</p>
+            <div class="bar"><i data-w="56"></i></div>
+            <span class="go">Conocer más →</span>
+          </div>
+        </a>
+        <a class="piso-tile" href="pisos/p05-gerencia-general.html">
+          <img class="ph" src="pisos/p05_gerencia.jpg" alt="Gerencia General">
+          <div class="glass">
+            <div class="num">PISO 05</div>
+            <div class="big"><span data-count="36">0</span> <small>años</small></div>
+            <h3>Gerencia General</h3>
+            <p>Mariela García Figari de Fabbri · desde 2008 · 9 gerencias a su cargo</p>
+            <div class="bar"><i data-w="80"></i></div>
+            <span class="go">Conocer más →</span>
+          </div>
+        </a>
+        <a class="piso-tile" href="pisos/p04-gerencias-corporativas.html">
+          <img class="ph" src="pisos/p04_gerencias.jpg" alt="Gerencias Corporativas">
+          <div class="glass">
+            <div class="num">PISO 04</div>
+            <div class="big"><span data-count="9">0</span></div>
+            <h3>Gerencias Corporativas</h3>
+            <p>9 gerencias en un solo nivel · deuda neta / EBITDA 1,90</p>
+            <div class="bar"><i data-w="62"></i></div>
+            <span class="go">Conocer más →</span>
+          </div>
+        </a>
+        <a class="piso-tile" href="pisos/p03-servicios-compartidos.html">
+          <img class="ph" src="pisos/p03_servicios.jpg" alt="Centro de Servicios Compartidos">
+          <div class="glass">
+            <div class="num">PISO 03</div>
+            <div class="big"><span data-target="98.8" data-decimals="1">0</span><small>%</small></div>
+            <h3>Centro de Servicios Compartidos</h3>
+            <p>Un solo grupo para todas las subsidiarias</p>
+            <div class="bar"><i data-w="99"></i></div>
+            <span class="go">Conocer más →</span>
+          </div>
+        </a>
+        <a class="piso-tile hot" href="pisos/p02-peru-cat-exterior.html">
+          <img class="ph" src="pisos/p02_peru_cat.jpg" alt="Subsidiarias Perú CAT y Exterior">
+          <div class="glass">
+            <div class="num">PISO 02 · EL NÚCLEO</div>
+            <div class="big"><span data-count="82">0</span><small>%</small></div>
+            <h3>Subsidiarias Perú CAT y Exterior</h3>
+            <p>82% Perú · S/ 6 251 M · 8% exterior · S/ 639 M</p>
+            <div class="bar"><i data-w="82"></i></div>
+            <span class="go">Conocer más →</span>
+          </div>
+        </a>
+        <a class="piso-tile" href="pisos/p01-complementarios.html">
+          <img class="ph" src="pisos/p01_complementarios.jpg" alt="Subsidiarias Complementarios">
+          <div class="glass">
+            <div class="num">PISO 01</div>
+            <div class="big"><span data-count="9">0</span><small>%</small></div>
+            <h3>Subsidiarias Complementarios</h3>
+            <p>9% de las ventas · S/ 699 M · la pata débil del grupo</p>
+            <div class="bar"><i data-w="18"></i></div>
+            <span class="go">Conocer más →</span>
+          </div>
+        </a>
+        <a class="piso-tile" href="pisos/pb-operaciones.html">
+          <img class="ph" src="pisos/pb_operaciones.jpg" alt="Operaciones">
+          <div class="glass">
+            <div class="num">PLANTA BAJA</div>
+            <div class="big"><span data-count="65">0</span><small>%</small></div>
+            <h3>Operaciones</h3>
+            <p>&gt;40 sucursales · 2 CRC · 15 talleres · ~1 700 técnicos · &gt;6 500 máquinas</p>
+            <div class="bar"><i data-w="65"></i></div>
+            <span class="go">Conocer más →</span>
+          </div>
+        </a>
       </div>
     </div>
   </div>
 </section>
+<script>
+// Contadores + barras de los 7 cuadros: animan cuando la sección entra en vista.
+(function(){
+  var grid = document.querySelector('.pisos-grid');
+  if (!grid) return;
+  var done = false;
+  function animate(){
+    if (done) return; done = true;
+    document.querySelectorAll('.piso-tile [data-count], .piso-tile [data-target]').forEach(function(el){
+      var target = parseFloat(el.dataset.target || el.dataset.count);
+      var dec = parseInt(el.dataset.decimals || '0', 10);
+      var start = null, dur = 1100;
+      function fmt(v){ return dec ? v.toFixed(dec).replace('.', ',') : Math.round(v).toString(); }
+      function step(ts){
+        if(!start) start = ts;
+        var p = Math.min((ts - start) / dur, 1);
+        var v = target * (1 - Math.pow(1 - p, 3));
+        el.textContent = fmt(v);
+        if(p < 1) requestAnimationFrame(step);
+        else el.textContent = fmt(target);
+      }
+      requestAnimationFrame(step);
+    });
+    document.querySelectorAll('.piso-tile .bar i').forEach(function(bar){
+      requestAnimationFrame(function(){ bar.style.width = bar.dataset.w + '%'; });
+    });
+  }
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function(entries, obs){
+      entries.forEach(function(e){ if (e.isIntersecting) { animate(); obs.disconnect(); } });
+    }, {threshold: 0.2}).observe(grid);
+  } else { animate(); }
+})();
+</script>
 
 <!-- (3) INTRO: titular, 77 % integrado, números y entrada a la maquinaria -->
 <section id="intro">
@@ -308,7 +468,7 @@ footer .up{display:inline-block;margin-top:14px;font-size:13px;font-weight:600;c
   <p class="intro-lead">Una empresa se entiende por <b>cómo está organizada por dentro</b>.
     Este es el análisis organizacional de Ferreycorp S.A.A. como consultores junior,
     con fuentes públicas: su estructura, sus áreas, sus recursos, su diagnóstico y su plan.
-    El edificio de arriba es la empresa: cada piso, un nivel del organigrama — y cada piso tiene su propia página.</p>
+    Los 7 cuadros de arriba son la empresa: cada cuadro, un nivel del organigrama — y cada cuadro tiene su propia página.</p>
   <a class="btn-solid" href="#maquinaria">Ver la maquinaria ↓</a>
 </section>
 
