@@ -12,41 +12,44 @@
   html, body { background: var(--paper); }
   body { font-family: 'Albert Sans', system-ui, sans-serif; color: var(--ink); overflow-x: hidden; }
 
-  /* ============ EDIFICIO: la torre ENTERA en una pantalla ============
-     La pagina mide 100svh y no se desplaza: la torre cabe completa (su caja
-     es 3:2 como la imagen, sin recorte) y la tira va debajo, en la misma
-     pantalla. Las zonas son % de la torre = % de la imagen: exactas sin JS. */
-  #edificio { height: 100vh; height: 100svh; display: flex; flex-direction: column; background: var(--paper); }
-  #stage { flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-  #tower { position: relative; aspect-ratio: 3 / 2; width: min(100%, calc((100vh - 64px) * 1.5)); width: min(100%, calc((100svh - 64px) * 1.5)); max-height: 100%; transform-origin: 0 0; transition: transform .9s cubic-bezier(.22,.61,.21,1); will-change: transform; }
+  /* ============ EDIFICIO: la imagen 16:9 COMPLETA en la pantalla ============
+     La torre es 16:9 como la pantalla: la imagen llena el cuadro sin
+     recorte ni franjas. La tira flota sobre la parte baja (la calle, bajo
+     el piso 1) para no quitarle altura a la imagen. Las zonas son % de la
+     imagen, medidas por programa sobre la torre 16:9. */
+  #edificio { position: relative; height: 100vh; height: 100svh; background: var(--paper); overflow: hidden; }
+  #stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; perspective: 1400px; }
+  #tower-orbit { position: relative; aspect-ratio: 16 / 9; width: min(100%, calc(100vh * 16 / 9)); width: min(100%, calc(100svh * 16 / 9)); max-height: 100%; will-change: transform; }
+  #tower { position: absolute; inset: 0; transform-origin: 0 0; transition: transform .9s cubic-bezier(.22,.61,.21,1); will-change: transform; }
   #tower img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
-  .floor { position: absolute; left: 45%; width: 48.5%; display: block; outline: 2px solid transparent; outline-offset: -2px; transition: outline-color .15s ease; cursor: pointer; }
+  .floor { position: absolute; left: 57.5%; width: 29%; display: block; outline: 2px solid transparent; outline-offset: -2px; transition: outline-color .15s ease; cursor: pointer; }
   .floor .tag { position: absolute; left: 12px; bottom: 4px; background: var(--ink); color: #fff; font-weight: 700; font-size: 15px; letter-spacing: .02em; padding: 7px 12px; border-radius: 999px; opacity: 0; transition: opacity .15s ease; pointer-events: none; white-space: nowrap; }
   .floor .tag b { color: #fff; font-weight: 700; }
   .floor:hover .tag, .floor:focus-visible .tag { opacity: 1; }
   .floor:hover, .floor:focus-visible { outline-color: var(--orange); }
   .floor:focus-visible { outline-offset: 2px; }
-  /* Posiciones % de la imagen (medidas por programa sobre la v12). */
-  .f10 { top: 3.9%;  height: 14.85%; }
-  .f09 { top: 18.75%; height: 6.25%; }
-  .f08 { top: 25.0%;  height: 8.6%; }
-  .f07 { top: 33.6%;  height: 8.6%; }
-  .f06 { top: 42.2%;  height: 8.6%; }
-  .f05 { top: 50.8%;  height: 8.6%; }
-  .f04 { top: 59.4%;  height: 8.6%; }
-  .f03 { top: 68.0%;  height: 8.2%; }
-  .f02 { top: 76.2%;  height: 8.2%; }
-  .f01 { top: 84.4%;  height: 5.4%; }
+  /* Posiciones % de la imagen 16:9 (losas medidas por programa; el borde
+     derecho real de la fachada es 84-87 % según la altura, por eso el
+     ancho es 29 % y no 33 %: la zona termina en 86,5 %, sobre la fachada. */
+  .f10 { top: 4.5%;  height: 8.3%; }
+  .f09 { top: 12.8%; height: 6.3%; }
+  .f08 { top: 19.1%; height: 5.7%; }
+  .f07 { top: 24.8%; height: 8.1%; }
+  .f06 { top: 32.9%; height: 10.1%; }
+  .f05 { top: 43.0%; height: 6.6%; }
+  .f04 { top: 49.6%; height: 8.4%; }
+  .f03 { top: 58.0%; height: 8.5%; }
+  .f02 { top: 66.5%; height: 8.8%; }
+  .f01 { top: 75.3%; height: 13.7%; }
   #edificio.zooming .floor { pointer-events: none; }
   #edificio.zooming .floor .tag { opacity: 0 !important; }
   #edificio.zooming .floor.chosen { outline-color: var(--orange); }
   #zooming-note { position: fixed; left: 50%; top: 50%; transform: translate(-50%,-50%); background: rgba(17,19,21,.88); color: #fff; font-weight: 700; font-size: 16px; padding: 12px 20px; border-radius: 999px; opacity: 0; pointer-events: none; transition: opacity .2s ease; white-space: nowrap; z-index: 6; }
   #zooming-note.on { opacity: 1; }
   .hint { position: absolute; top: 16px; left: 16px; z-index: 4; background: rgba(17,19,21,.85); color: #fff; font-size: 13px; font-weight: 700; letter-spacing: .02em; padding: 9px 14px; border-radius: 999px; pointer-events: none; }
-  /* El piso SE ABRE: un panel de papel crece desde el piso hasta tapar la
-     pantalla y la pagina del capitulo continua en ese mismo papel. */
-  #open-panel { position: fixed; background: var(--paper); z-index: 10; pointer-events: none; visibility: hidden; }
-  nav#chapters { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; padding: 12px 14px; background: var(--paper); border-top: 1px solid #d6dad8; }
+  /* La camara ENTRA al piso: el papel (el interior) aparece sobre la imagen. */
+  #open-panel { position: fixed; inset: 0; background: var(--paper); z-index: 10; pointer-events: none; opacity: 0; }
+  nav#chapters { position: absolute; left: 0; right: 0; bottom: 0; z-index: 4; display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; padding: 12px 14px; background: var(--paper); border-top: 1px solid #d6dad8; }
   nav#chapters button { flex: 0 0 auto; font: inherit; font-size: 13px; font-weight: 700; color: var(--ink); background: #fff; border: 1px solid #c9cecb; border-radius: 999px; padding: 7px 11px; cursor: pointer; }
   nav#chapters button:hover, nav#chapters button:focus-visible { border-color: var(--orange); outline: 2px solid var(--orange); outline-offset: 1px; }
   nav#chapters button b { color: var(--orange); }
@@ -58,21 +61,23 @@
 </head>
 <body>
 
-<!-- EDIFICIO: la torre, 10 pisos clicables -->
+<!-- EDIFICIO: la torre 16:9, 10 pisos clicables -->
 <section id="edificio" aria-label="Edificio Ferreycorp, 10 pisos">
   <div id="stage">
-    <div id="tower">
-      <img src="assets/torre_v12.webp" alt="Torre Ferreycorp de día, con las letras FERREYCORP sostenidas por una grúa a la izquierda" width="1920" height="1280">
-      <a class="floor f10" data-piso="10" href="capitulo-10.html" aria-label="Piso 10, Conducta resiliente"><span class="tag"><b>10</b> · Conducta resiliente</span></a>
-      <a class="floor f09" data-piso="9" href="capitulo-09.html" aria-label="Piso 9, Reflexión individual"><span class="tag"><b>09</b> · Reflexión individual</span></a>
-      <a class="floor f08" data-piso="8" href="capitulo-08.html" aria-label="Piso 8, Conclusiones"><span class="tag"><b>08</b> · Conclusiones</span></a>
-      <a class="floor f07" data-piso="7" href="capitulo-07.html" aria-label="Piso 7, Análisis crítico"><span class="tag"><b>07</b> · Análisis crítico</span></a>
-      <a class="floor f06" data-piso="6" href="capitulo-06.html" aria-label="Piso 6, Mejoras M1–M7"><span class="tag"><b>06</b> · Mejoras M1–M7</span></a>
-      <a class="floor f05" data-piso="5" href="capitulo-05.html" aria-label="Piso 5, Control"><span class="tag"><b>05</b> · Control</span></a>
-      <a class="floor f04" data-piso="4" href="capitulo-04.html" aria-label="Piso 4, Dirección"><span class="tag"><b>04</b> · Dirección</span></a>
-      <a class="floor f03" data-piso="3" href="capitulo-03.html" aria-label="Piso 3, Organización"><span class="tag"><b>03</b> · Organización</span></a>
-      <a class="floor f02" data-piso="2" href="capitulo-02.html" aria-label="Piso 2, Planeación"><span class="tag"><b>02</b> · Planeación</span></a>
-      <a class="floor f01" data-piso="1" href="capitulo-01.html" aria-label="Piso 1, Apertura"><span class="tag"><b>01</b> · Apertura</span></a>
+    <div id="tower-orbit">
+      <div id="tower">
+        <img src="assets/torre_v12_16x9.webp" alt="Torre Ferreycorp de día, con las letras FERREYCORP sostenidas por una grúa a la izquierda" width="2048" height="1152">
+        <a class="floor f10" data-piso="10" href="capitulo-10.html" aria-label="Piso 10, Conducta resiliente"><span class="tag"><b>10</b> · Conducta resiliente</span></a>
+        <a class="floor f09" data-piso="9" href="capitulo-09.html" aria-label="Piso 9, Reflexión individual"><span class="tag"><b>09</b> · Reflexión individual</span></a>
+        <a class="floor f08" data-piso="8" href="capitulo-08.html" aria-label="Piso 8, Conclusiones"><span class="tag"><b>08</b> · Conclusiones</span></a>
+        <a class="floor f07" data-piso="7" href="capitulo-07.html" aria-label="Piso 7, Análisis crítico"><span class="tag"><b>07</b> · Análisis crítico</span></a>
+        <a class="floor f06" data-piso="6" href="capitulo-06.html" aria-label="Piso 6, Mejoras M1–M7"><span class="tag"><b>06</b> · Mejoras M1–M7</span></a>
+        <a class="floor f05" data-piso="5" href="capitulo-05.html" aria-label="Piso 5, Control"><span class="tag"><b>05</b> · Control</span></a>
+        <a class="floor f04" data-piso="4" href="capitulo-04.html" aria-label="Piso 4, Dirección"><span class="tag"><b>04</b> · Dirección</span></a>
+        <a class="floor f03" data-piso="3" href="capitulo-03.html" aria-label="Piso 3, Organización"><span class="tag"><b>03</b> · Organización</span></a>
+        <a class="floor f02" data-piso="2" href="capitulo-02.html" aria-label="Piso 2, Planeación"><span class="tag"><b>02</b> · Planeación</span></a>
+        <a class="floor f01" data-piso="1" href="capitulo-01.html" aria-label="Piso 1, Apertura"><span class="tag"><b>01</b> · Apertura</span></a>
+      </div>
     </div>
     <div class="hint">Toca un piso para entrar a su capítulo</div>
     <div id="zooming-note" role="status" aria-live="polite"></div>
@@ -92,14 +97,11 @@
 </section>
 <div id="open-panel" aria-hidden="true"></div>
 
-<noscript>
-  <p style="padding:16px 20px;font-weight:700">Sin JavaScript, los pisos siguen siendo enlaces: cada uno abre su capítulo.</p>
-</noscript>
-
 <script>
 (function () {
-  var SCALE = 2.4, FLY_MS = 1600, OPEN_MS = 350;
+  var SCALE = 2.4, FLY_MS = 1800, PANEL_MS = 300;
   var tower = document.getElementById('tower');
+  var orbit = document.getElementById('tower-orbit');
   var edificio = document.getElementById('edificio');
   var note = document.getElementById('zooming-note');
   var panel = document.getElementById('open-panel');
@@ -108,11 +110,13 @@
 
   function pad(n) { return (n < 10 ? '0' : '') + n; }
   function tf(tx, ty, s, r) { return 'translate(' + tx + 'px,' + ty + 'px) scale(' + s + ') rotate(' + r + 'deg)'; }
-  /* Vuelo de dron, no un zoom recto: la camara se eleva y se inclina (el
-     encuadre se ladea como un dron que vira), barre en una curva en S hacia
-     el piso y se nivela al llegar, con un leve sobrepaso de estabilizacion.
-     Al llegar, el piso SE ABRE: un panel de papel crece desde el piso hasta
-     tapar la pantalla y la pagina del capitulo continua en ese papel. */
+  /* Acercamiento como el de la referencia: la camara NO hace zoom sobre una
+     foto plana, VUELA. Orbita alrededor de la torre (la perspectiva cambia:
+     la torre se ladea en 3D y se ve su esquina), se acerca en dolly, se
+     nivela sobre el piso y ATRAVIESA el cristal: la imagen se pasa de
+     escala y el papel del interior aparece encima. Dos capas separadas: la
+     orbita gira el marco entero en 3D y el dolly acerca la torre dentro de
+     el, como una camara que se mueve por el espacio. */
   function droneFly(piso, el) {
     var zone = el || tower.querySelector('.f' + pad(piso));
     if (!zone) { window.location.href = 'capitulo-' + pad(piso) + '.html'; return; }
@@ -127,48 +131,50 @@
     note.textContent = 'Entrando al Piso ' + piso + ' · ' + TITLES[piso] + '…';
     note.classList.add('on');
     var finalTf = tf(tx, ty, SCALE, 0);
-    function openFloor() {
-      var r = zone.getBoundingClientRect();
-      panel.style.visibility = 'visible';
-      panel.style.left = r.left + 'px';
-      panel.style.top = r.top + 'px';
-      panel.style.width = r.width + 'px';
-      panel.style.height = r.height + 'px';
-      panel.style.transformOrigin = 'center center';
-      var sx = window.innerWidth / Math.max(r.width, 1);
-      var sy = window.innerHeight / Math.max(r.height, 1);
+    function enterFloor() {
       if (panel.animate) {
-        var a = panel.animate(
-          [{ transform: 'scale(1, 1)' }, { transform: 'scale(' + sx + ', ' + sy + ')' }],
-          { duration: OPEN_MS, easing: 'cubic-bezier(.22,.61,.21,1)', fill: 'forwards' });
-        a.onfinish = function () { window.location.href = 'capitulo-' + pad(piso) + '.html'; };
-        setTimeout(function () { window.location.href = 'capitulo-' + pad(piso) + '.html'; }, OPEN_MS + 150);
+        var pa = panel.animate([{ opacity: 0 }, { opacity: 1 }],
+          { duration: PANEL_MS, delay: 0, easing: 'ease-out', fill: 'forwards' });
+        pa.onfinish = function () { window.location.href = 'capitulo-' + pad(piso) + '.html'; };
       } else {
-        panel.style.transform = 'scale(' + sx + ', ' + sy + ')';
-        setTimeout(function () { window.location.href = 'capitulo-' + pad(piso) + '.html'; }, OPEN_MS + 150);
+        panel.style.opacity = 1;
       }
+      setTimeout(function () { window.location.href = 'capitulo-' + pad(piso) + '.html'; }, PANEL_MS + 200);
     }
-    function arrive() {
-      tower.style.transform = finalTf;
-      openFloor();
-    }
-    if (tower.animate) {
-      var anim = tower.animate([
+    if (tower.animate && orbit.animate) {
+      var dolly = tower.animate([
         { transform: tf(0, 0, 1, 0), offset: 0 },
-        { transform: tf(tx * 0.18, ty * 0.18 - 60, 1.12, -1.6), offset: 0.30 },
-        { transform: tf(tx * 0.55, ty * 0.55 + 20, 1.55, 0.8), offset: 0.60 },
-        { transform: tf(tx * 1.02, ty * 1.02, SCALE * 1.02, 0), offset: 0.88 },
-        { transform: finalTf, offset: 1 }
+        { transform: tf(tx * 0.12, ty * 0.12 - 30, 1.15, -0.8), offset: 0.25 },
+        { transform: tf(tx * 0.45, ty * 0.45 + 10, 1.6, 0.5), offset: 0.50 },
+        { transform: tf(tx * 0.85, ty * 0.85, 2.2, 0), offset: 0.70 },
+        { transform: tf(tx, ty, SCALE, 0), offset: 0.78 },
+        { transform: tf(tx, ty, SCALE, 0), offset: 0.94 },
+        { transform: tf(tx * 1.02, ty * 1.02, 2.7, 0), offset: 1 }
       ], { duration: FLY_MS, easing: 'cubic-bezier(.65,0,.35,1)', fill: 'forwards' });
-      anim.onfinish = function () {
-        tower.style.transform = finalTf;
-        anim.cancel();
-        arrive();
-      };
+      var orb = orbit.animate([
+        { transform: 'rotateY(0deg)', offset: 0 },
+        { transform: 'rotateY(-6deg)', offset: 0.25 },
+        { transform: 'rotateY(-11deg)', offset: 0.50 },
+        { transform: 'rotateY(-5deg)', offset: 0.70 },
+        { transform: 'rotateY(0deg)', offset: 0.78 },
+        { transform: 'rotateY(0deg)', offset: 0.94 },
+        { transform: 'rotateY(0deg)', offset: 1 }
+      ], { duration: FLY_MS, easing: 'cubic-bezier(.65,0,.35,1)', fill: 'forwards' });
+      var done = 0;
+      function finishOne() {
+        if (++done < 2) return;
+        tower.style.transform = tf(tx * 1.02, ty * 1.02, 2.7, 0);
+        orbit.style.transform = 'rotateY(0deg)';
+        dolly.cancel(); orb.cancel();
+        enterFloor();
+      }
+      dolly.onfinish = finishOne;
+      orb.onfinish = finishOne;
     } else {
       /* Respaldo sin Web Animations: el CSS transition hace el zoom recto. */
       tower.style.transform = finalTf;
-      setTimeout(arrive, 950);
+      setTimeout(function () { panel.style.opacity = 1; }, 950);
+      setTimeout(function () { window.location.href = 'capitulo-' + pad(piso) + '.html'; }, 1400);
     }
   }
   tower.addEventListener('click', function (ev) {
