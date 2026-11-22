@@ -12,8 +12,10 @@
   html, body { background: #04060D; }
   body { font-family: 'Albert Sans', system-ui, sans-serif; color: var(--ink); overflow-x: hidden; }
 
-  /* ============ HERO: video de entrada ============ */
-  #hero { position: relative; height: 100vh; height: 100svh; overflow: hidden; background: #04060D; }
+  /* ============ HERO: video de entrada (fijo: el edificio sube sobre el) ============
+     El scroll ES la transicion: el video queda fijo arriba y la torre sube
+     cubriendolo de abajo arriba, como una cortina. Sin costura entre bloques. */
+  #hero { position: sticky; top: 0; z-index: 0; height: 100vh; height: 100svh; overflow: hidden; background: #04060D; }
   #hero video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
   #hero .veil { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(4,6,13,.45) 0%, rgba(4,6,13,0) 35%, rgba(4,6,13,0) 60%, rgba(4,6,13,.72) 100%); pointer-events: none; }
   #hero .copy { position: absolute; left: 0; right: 0; bottom: 0; padding: 0 5vw 7vh; color: #fff; }
@@ -26,7 +28,7 @@
   /* ============ EDIFICIO: una sola pagina en scroll (sin pantallas) ============
      La torre es una imagen ancha en flujo continuo: su alto sale de su
      proporción 3:2, no de la pantalla. Al bajar, el video se va y entra la torre. */
-  #edificio { position: relative; background: var(--paper); }
+  #edificio { position: relative; z-index: 1; background: var(--paper); }
   #stage { position: relative; width: 100%; aspect-ratio: 3 / 2; overflow: hidden; }
   #tower { position: absolute; inset: 0; transform-origin: 0 0; transition: transform .9s cubic-bezier(.22,.61,.21,1); will-change: transform; }
   #tower img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
