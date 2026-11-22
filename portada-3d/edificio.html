@@ -12,7 +12,7 @@
   html, body { background: #04060D; }
   body { font-family: 'Albert Sans', system-ui, sans-serif; color: var(--ink); overflow-x: hidden; }
 
-  /* ============ HERO: video de entrada a pantalla completa ============ */
+  /* ============ HERO: video de entrada ============ */
   #hero { position: relative; height: 100vh; height: 100svh; overflow: hidden; background: #04060D; }
   #hero video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
   #hero .veil { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(4,6,13,.45) 0%, rgba(4,6,13,0) 35%, rgba(4,6,13,0) 60%, rgba(4,6,13,.72) 100%); pointer-events: none; }
@@ -23,15 +23,17 @@
   #hero .down .arrow { display: inline-block; animation: bob 1.6s ease-in-out infinite; }
   @keyframes bob { 0%,100% { transform: translateY(-2px); } 50% { transform: translateY(3px); } }
 
-  /* ============ EDIFICIO: imagen a pantalla completa ============ */
-  #edificio { position: relative; height: 100vh; height: 100svh; display: flex; flex-direction: column; background: var(--paper); }
-  #stage { position: relative; flex: 1 1 auto; overflow: hidden; }
+  /* ============ EDIFICIO: una sola pagina en scroll (sin pantallas) ============
+     La torre es una imagen ancha en flujo continuo: su alto sale de su
+     proporción 3:2, no de la pantalla. Al bajar, el video se va y entra la torre. */
+  #edificio { position: relative; background: var(--paper); }
+  #stage { position: relative; width: 100%; aspect-ratio: 3 / 2; overflow: hidden; }
   #tower { position: absolute; inset: 0; transform-origin: 0 0; transition: transform .9s cubic-bezier(.22,.61,.21,1); will-change: transform; }
   #tower img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
   /* Zonas: el JS las posiciona en px exactos (geometria cover); el CSS es el
      respaldo sin JS (posiciones % de la imagen, como antes). */
   .floor { position: absolute; left: 45%; width: 48.5%; display: block; outline: 2px solid transparent; outline-offset: -2px; transition: outline-color .15s ease; cursor: pointer; }
-  .floor .tag { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); background: var(--ink); color: #fff; font-weight: 700; font-size: 15px; letter-spacing: .02em; padding: 7px 12px; border-radius: 999px; opacity: 0; transition: opacity .15s ease; pointer-events: none; white-space: nowrap; }
+  .floor .tag { position: absolute; left: 12px; bottom: 4px; background: var(--ink); color: #fff; font-weight: 700; font-size: 15px; letter-spacing: .02em; padding: 7px 12px; border-radius: 999px; opacity: 0; transition: opacity .15s ease; pointer-events: none; white-space: nowrap; }
   .floor .tag b { color: #fff; font-weight: 700; }
   .floor:hover .tag, .floor:focus-visible .tag { opacity: 1; }
   .floor:hover, .floor:focus-visible { outline-color: var(--orange); }
@@ -50,19 +52,15 @@
   #edificio.zooming .floor { pointer-events: none; }
   #edificio.zooming .floor .tag { opacity: 0 !important; }
   #edificio.zooming .floor.chosen { outline-color: var(--orange); }
-  #zooming-note { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); background: rgba(17,19,21,.88); color: #fff; font-weight: 700; font-size: 16px; padding: 12px 20px; border-radius: 999px; opacity: 0; pointer-events: none; transition: opacity .2s ease; white-space: nowrap; z-index: 5; }
+  #zooming-note { position: fixed; left: 50%; top: 50%; transform: translate(-50%,-50%); background: rgba(17,19,21,.88); color: #fff; font-weight: 700; font-size: 16px; padding: 12px 20px; border-radius: 999px; opacity: 0; pointer-events: none; transition: opacity .2s ease; white-space: nowrap; z-index: 5; }
   #zooming-note.on { opacity: 1; }
-  header { position: absolute; top: 0; left: 0; right: 0; z-index: 4; display: flex; align-items: baseline; justify-content: space-between; gap: 24px; padding: 20px 28px 34px; background: linear-gradient(180deg, rgba(237,240,238,.94) 0%, rgba(237,240,238,.75) 55%, rgba(237,240,238,0) 100%); pointer-events: none; }
-  header h2 { font-family: 'Alumni Sans', system-ui, sans-serif; font-weight: 900; font-size: clamp(22px, 2.6vw, 34px); letter-spacing: .01em; }
-  header h2 .dot { color: var(--orange); }
-  header p { color: var(--muted); font-size: clamp(13px, 1.4vw, 16px); font-weight: 700; text-align: right; }
-  nav#chapters { flex: 0 0 auto; display: flex; gap: 8px; padding: 10px 14px; overflow-x: auto; background: var(--paper); border-top: 1px solid #d6dad8; scrollbar-width: thin; }
-  nav#chapters button { flex: 0 0 auto; font: inherit; font-size: 14px; font-weight: 700; color: var(--ink); background: #fff; border: 1px solid #c9cecb; border-radius: 999px; padding: 8px 14px; cursor: pointer; }
+  .hint { position: absolute; top: 16px; left: 16px; z-index: 4; background: rgba(17,19,21,.85); color: #fff; font-size: 13px; font-weight: 700; letter-spacing: .02em; padding: 9px 14px; border-radius: 999px; pointer-events: none; }
+  nav#chapters { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; padding: 12px 14px; background: var(--paper); border-top: 1px solid #d6dad8; }
+  nav#chapters button { flex: 0 0 auto; font: inherit; font-size: 13px; font-weight: 700; color: var(--ink); background: #fff; border: 1px solid #c9cecb; border-radius: 999px; padding: 7px 11px; cursor: pointer; }
   nav#chapters button:hover, nav#chapters button:focus-visible { border-color: var(--orange); outline: 2px solid var(--orange); outline-offset: 1px; }
   nav#chapters button b { color: var(--orange); }
   @media (max-width: 700px) {
-    header { padding: 14px 16px 26px; }
-    header p { display: none; }
+    .hint { font-size: 12px; top: 10px; left: 10px; }
     .floor .tag { font-size: 13px; }
   }
 </style>
@@ -80,7 +78,7 @@
   </div>
 </section>
 
-<!-- EDIFICIO: imagen a pantalla completa, 10 pisos clicables -->
+<!-- EDIFICIO: la torre en el mismo scroll, 10 pisos clicables -->
 <section id="edificio" aria-label="Edificio Ferreycorp, 10 pisos">
   <div id="stage">
     <div id="tower">
@@ -96,10 +94,7 @@
       <a class="floor f02" data-piso="2" data-x1="45" data-x2="93.5" data-y1="76.2" data-y2="84.4" href="capitulo-02.html" aria-label="Piso 2, Planeación"><span class="tag"><b>02</b> · Planeación</span></a>
       <a class="floor f01" data-piso="1" data-x1="45" data-x2="93.5" data-y1="84.4" data-y2="89.8" href="capitulo-01.html" aria-label="Piso 1, Apertura"><span class="tag"><b>01</b> · Apertura</span></a>
     </div>
-    <header>
-      <h2>FERREYCORP <span class="dot">·</span> EL EDIFICIO</h2>
-      <p>Haz clic en un piso para entrar a su capítulo</p>
-    </header>
+    <div class="hint">Toca un piso para entrar a su capítulo</div>
     <div id="zooming-note" role="status" aria-live="polite"></div>
   </div>
   <nav id="chapters" aria-label="Capítulos">
@@ -155,9 +150,14 @@
     if (!zone) { window.location.href = 'capitulo-' + pad(piso) + '.html'; return; }
     var zr = zone.getBoundingClientRect();
     var sr = stage.getBoundingClientRect();
-    var cx = zr.left + zr.width / 2, cy = zr.top + zr.height / 2;
-    var sx = sr.left + sr.width / 2, sy = sr.top + sr.height / 2;
-    var tx = sx - cx * SCALE, ty = sy - cy * SCALE;
+    /* Centro del piso en coords locales del escenario (el transform se aplica
+       en locales: usar coords de viewport aquí descentraba el zoom al bajar). */
+    var cx = zr.left - sr.left + zr.width / 2;
+    var cy = zr.top - sr.top + zr.height / 2;
+    /* El piso queda centrado en la VENTANA (no en el escenario, que puede
+       ser más alto que la pantalla). */
+    var tx = window.innerWidth / 2 - sr.left - cx * SCALE;
+    var ty = window.innerHeight / 2 - sr.top - cy * SCALE;
     edificio.classList.add('zooming');
     zone.classList.add('chosen');
     note.textContent = 'Entrando al Piso ' + piso + ' · ' + TITLES[piso] + '…';
