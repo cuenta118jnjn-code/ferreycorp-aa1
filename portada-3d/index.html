@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FERREYCORP — Portada 3D · AA2 Administración de Negocios</title>
+<style>
+  @font-face {
+    font-family: 'Alumni Sans';
+    src: url('fonts/AlumniSans.ttf') format('truetype');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Albert Sans';
+    src: url('fonts/AlbertSans.ttf') format('truetype');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; background: #04060d; }
+  body {
+    font-family: 'Albert Sans', sans-serif;
+    color: #fff;
+    overflow-x: hidden;
+  }
+  /* La página mide 400 vh: el scroll ES la cámara */
+  #scroll-space { height: 400vh; }
+  #scene {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    display: block;
+  }
+  /* Velo oscuro arriba y abajo para que el HUD siempre contraste */
+  .scrim-top, .scrim-bottom {
+    position: fixed; left: 0; width: 100vw; z-index: 5;
+    pointer-events: none;
+  }
+  .scrim-top { top: 0; height: 22vh; background: linear-gradient(to bottom, rgba(2,4,10,0.72), rgba(2,4,10,0)); }
+  .scrim-bottom { bottom: 0; height: 26vh; background: linear-gradient(to top, rgba(2,4,10,0.78), rgba(2,4,10,0)); }
+  .hud {
+    position: fixed; z-index: 10;
+    pointer-events: none;
+    color: #ffffff;
+  }
+  .hud-academic {
+    top: 26px; left: 40px;
+    font-size: 15px; line-height: 1.55; letter-spacing: 0.04em;
+    color: rgba(255,255,255,0.92);
+  }
+  .hud-academic b { font-weight: 600; }
+  .hud-progress {
+    top: 28px; right: 40px;
+    font-family: 'Alumni Sans', sans-serif;
+    font-weight: 800; font-size: 22px; letter-spacing: 0.14em;
+    color: #ffffff;
+  }
+  .hud-progress span { color: #2dff8f; }
+  .hud-subtitle {
+    left: 40px; bottom: 88px;
+    font-family: 'Alumni Sans', sans-serif;
+    font-weight: 800; font-size: 34px; letter-spacing: 0.02em;
+    color: #ffffff;
+  }
+  .hud-cue {
+    right: 40px; bottom: 88px;
+    text-align: right;
+    font-size: 14px; letter-spacing: 0.28em;
+    color: rgba(255,255,255,0.85);
+  }
+  .hud-cue .bar {
+    width: 180px; height: 3px; margin-top: 12px; margin-left: auto;
+    background: rgba(255,255,255,0.22);
+  }
+  .hud-cue .bar i {
+    display: block; height: 100%; width: 0%;
+    background: #2dff8f;
+  }
+  .hud-hint {
+    left: 50%; bottom: 30px; transform: translateX(-50%);
+    font-size: 13px; letter-spacing: 0.22em;
+    color: rgba(255,255,255,0.95);
+    background: rgba(2,4,10,0.85);
+    padding: 8px 16px; border-radius: 4px;
+  }
+  #fallback {
+    position: fixed; inset: 0; z-index: 20; display: none;
+    align-items: center; justify-content: center; text-align: center;
+    background: #04060d; color: #fff; padding: 40px;
+    font-size: 18px; line-height: 1.6;
+  }
+  #noscript-fallback {
+    position: fixed; inset: 0; z-index: 30;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 16px; text-align: center;
+    background: #04060d; color: #fff; padding: 40px;
+  }
+  #noscript-fallback h1 {
+    font-family: 'Alumni Sans', sans-serif; font-weight: 900;
+    font-size: 72px; letter-spacing: 0.04em; color: #2dff8f;
+  }
+  #noscript-fallback .sub {
+    font-family: 'Alumni Sans', sans-serif; font-weight: 800; font-size: 30px;
+  }
+  #noscript-fallback ul { list-style: none; font-size: 20px; line-height: 1.9; }
+  #noscript-fallback ul b { color: #2dff8f; font-weight: 700; }
+  #noscript-fallback .note { font-size: 15px; color: rgba(255,255,255,0.85); }
+</style>
+</head>
+<body>
+  <div id="scroll-space"></div>
+  <canvas id="scene"></canvas>
+  <div class="scrim-top"></div>
+  <div class="scrim-bottom"></div>
+
+  <div class="hud hud-academic">
+    <b>Instituto Certus · Administración de Negocios</b><br>
+    Docente Mauryn Avalos Palomino · Integrante Jerzon Sergio Huamán Rivera · 26 de noviembre de 2026
+  </div>
+  <div class="hud hud-progress"><span>01 / 01</span> · PORTADA</div>
+  <div class="hud hud-subtitle" id="hud-subtitle">Análisis de la gestión administrativa</div>
+  <div class="hud hud-cue">BAJA PARA VOLAR<div class="bar"><i id="progress-bar"></i></div></div>
+  <div class="hud hud-hint">SCROLL — LA CÁMARA ERES TÚ</div>
+  <div id="fallback"><div>Tu navegador no pudo iniciar WebGL.<br>Abre esta página en Chrome o Edge.</div></div>
+  <noscript>
+    <div id="noscript-fallback">
+      <h1>FERREYCORP</h1>
+      <div class="sub">Análisis de la gestión administrativa</div>
+      <p>Instituto Certus · Administración de Negocios<br>
+      Docente Mauryn Avalos Palomino · Integrante Jerzon Sergio Huamán Rivera · 26 de noviembre de 2026</p>
+      <ul>
+        <li><b>S/ 7 590 M</b> — ventas 2024</li>
+        <li><b>102</b> — años</li>
+        <li><b>7 978</b> — colaboradores</li>
+        <li><b>10</b> — países</li>
+      </ul>
+      <p class="note">Activa JavaScript para ver la portada 3D.</p>
+    </div>
+  </noscript>
+
+  <script src="vendor/three.min.js"></script>
+  <script src="vendor/FontLoader.js"></script>
+  <script src="vendor/TextGeometry.js"></script>
+  <script src="vendor/font_alumni_black.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
