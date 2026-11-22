@@ -200,16 +200,16 @@
     <div id="tower">
       <img src="assets/torre_v12.webp" alt="Torre Ferreycorp de día, 10 pisos, con la grúa sosteniendo las letras FERREYCORP a la izquierda">
       <!-- Pisos: de arriba (10) a abajo (1). Cada uno es un enlace real; el JS solo añade el zoom antes de navegar. -->
-      <a class="floor f10" href="capitulo.html?piso=10" data-piso="10" aria-label="Piso 10: Capítulo 10, Conducta resiliente"><span class="tag"><b>10</b> · Conducta resiliente</span></a>
-      <a class="floor f09" href="capitulo.html?piso=9" data-piso="9" aria-label="Piso 9: Capítulo 9, Reflexión individual"><span class="tag"><b>09</b> · Reflexión individual</span></a>
-      <a class="floor f08" href="capitulo.html?piso=8" data-piso="8" aria-label="Piso 8: Capítulo 8, Conclusiones"><span class="tag"><b>08</b> · Conclusiones</span></a>
-      <a class="floor f07" href="capitulo.html?piso=7" data-piso="7" aria-label="Piso 7: Capítulo 7, Análisis crítico"><span class="tag"><b>07</b> · Análisis crítico</span></a>
-      <a class="floor f06" href="capitulo.html?piso=6" data-piso="6" aria-label="Piso 6: Capítulo 6, Mejoras M1–M7"><span class="tag"><b>06</b> · Mejoras M1–M7</span></a>
-      <a class="floor f05" href="capitulo.html?piso=5" data-piso="5" aria-label="Piso 5: Capítulo 5, Control"><span class="tag"><b>05</b> · Control</span></a>
-      <a class="floor f04" href="capitulo.html?piso=4" data-piso="4" aria-label="Piso 4: Capítulo 4, Dirección"><span class="tag"><b>04</b> · Dirección</span></a>
-      <a class="floor f03" href="capitulo.html?piso=3" data-piso="3" aria-label="Piso 3: Capítulo 3, Organización"><span class="tag"><b>03</b> · Organización</span></a>
-      <a class="floor f02" href="capitulo.html?piso=2" data-piso="2" aria-label="Piso 2: Capítulo 2, Planeación"><span class="tag"><b>02</b> · Planeación</span></a>
-      <a class="floor f01" href="capitulo.html?piso=1" data-piso="1" aria-label="Piso 1: Capítulo 1, Apertura"><span class="tag"><b>01</b> · Apertura</span></a>
+      <a class="floor f10" href="capitulo-10.html" data-piso="10" aria-label="Piso 10: Capítulo 10, Conducta resiliente"><span class="tag"><b>10</b> · Conducta resiliente</span></a>
+      <a class="floor f09" href="capitulo-09.html" data-piso="9" aria-label="Piso 9: Capítulo 9, Reflexión individual"><span class="tag"><b>09</b> · Reflexión individual</span></a>
+      <a class="floor f08" href="capitulo-08.html" data-piso="8" aria-label="Piso 8: Capítulo 8, Conclusiones"><span class="tag"><b>08</b> · Conclusiones</span></a>
+      <a class="floor f07" href="capitulo-07.html" data-piso="7" aria-label="Piso 7: Capítulo 7, Análisis crítico"><span class="tag"><b>07</b> · Análisis crítico</span></a>
+      <a class="floor f06" href="capitulo-06.html" data-piso="6" aria-label="Piso 6: Capítulo 6, Mejoras M1–M7"><span class="tag"><b>06</b> · Mejoras M1–M7</span></a>
+      <a class="floor f05" href="capitulo-05.html" data-piso="5" aria-label="Piso 5: Capítulo 5, Control"><span class="tag"><b>05</b> · Control</span></a>
+      <a class="floor f04" href="capitulo-04.html" data-piso="4" aria-label="Piso 4: Capítulo 4, Dirección"><span class="tag"><b>04</b> · Dirección</span></a>
+      <a class="floor f03" href="capitulo-03.html" data-piso="3" aria-label="Piso 3: Capítulo 3, Organización"><span class="tag"><b>03</b> · Organización</span></a>
+      <a class="floor f02" href="capitulo-02.html" data-piso="2" aria-label="Piso 2: Capítulo 2, Planeación"><span class="tag"><b>02</b> · Planeación</span></a>
+      <a class="floor f01" href="capitulo-01.html" data-piso="1" aria-label="Piso 1: Capítulo 1, Apertura"><span class="tag"><b>01</b> · Apertura</span></a>
     </div>
     <div id="zooming-note" role="status"></div>
   </main>
@@ -265,7 +265,7 @@
         tower.style.transform = 'translate(' + (sx - cx).toFixed(1) + 'px,' + (sy - cy).toFixed(1) + 'px) scale(' + scale + ')';
       }
       setTimeout(function () {
-        window.location.href = 'capitulo.html?piso=' + piso;
+        window.location.href = 'capitulo-' + String(piso).padStart(2, '0') + '.html';
       }, 1000);
     }
 

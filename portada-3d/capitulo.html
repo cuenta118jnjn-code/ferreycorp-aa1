@@ -116,7 +116,7 @@
     </div>
   </main>
 
-  <footer id="chap-foot">Piso 1 de 10 · Haz clic en otro piso del edificio para cambiar de capítulo.</footer>
+  <footer id="chap-foot">Piso 1 de 10 · Vuelve al edificio para cambiar de capítulo.</footer>
 
 <script>
   (function () {
@@ -131,7 +131,7 @@
     document.getElementById('chap-num').textContent = 'CAPÍTULO ' + String(piso).padStart(2, '0');
     document.getElementById('chap-title').textContent = chapters[piso];
     document.getElementById('chap-foot').textContent =
-      'Piso ' + piso + ' de 10 · Haz clic en otro piso del edificio para cambiar de capítulo.';
+      'Piso ' + piso + ' de 10 · Vuelve al edificio para cambiar de capítulo.';
     document.title = 'Capítulo ' + String(piso).padStart(2, '0') + ' · ' + chapters[piso] + ' — FERREYCORP';
   })();
 </script>

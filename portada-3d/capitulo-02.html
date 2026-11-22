@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Capítulo 02 · Planeación — FERREYCORP</title>
+<style>
+  @font-face {
+    font-family: 'Alumni Sans';
+    src: url('assets/AlumniSans.ttf') format('truetype');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Albert Sans';
+    src: url('assets/AlbertSans.ttf') format('truetype');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    font-family: 'Albert Sans', sans-serif;
+    background: #EDF0EE;
+    color: #111315;
+    display: flex;
+    flex-direction: column;
+  }
+  header {
+    flex: 0 0 auto;
+    padding: 16px 24px 0;
+  }
+  header a.back {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 700;
+    color: #111315;
+    text-decoration: none;
+    border: 1px solid #C9CDCF;
+    background: #fff;
+    border-radius: 999px;
+    padding: 8px 16px;
+  }
+  header a.back:hover, header a.back:focus-visible {
+    border-color: #E85A24;
+    outline: none;
+  }
+  main {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 18px;
+    padding: 24px;
+    max-width: 980px;
+    width: 100%;
+    margin: 0 auto;
+  }
+  .kicker {
+    font-family: 'Albert Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    color: #E85A24;
+  }
+  h1 {
+    font-family: 'Alumni Sans', sans-serif;
+    font-weight: 800;
+    font-size: clamp(48px, 9vw, 110px);
+    line-height: 0.95;
+    letter-spacing: 0.01em;
+  }
+  h1 .num {
+    display: block;
+    font-size: clamp(20px, 3vw, 30px);
+    font-weight: 800;
+    color: #474D52;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+  }
+  .blank {
+    width: 100%;
+    border: 2px dashed #C9CDCF;
+    border-radius: 16px;
+    padding: 40px 28px;
+    color: #474D52;
+    font-size: 17px;
+    line-height: 1.5;
+  }
+  .blank b { color: #111315; }
+  footer {
+    flex: 0 0 auto;
+    padding: 0 24px 18px;
+    font-size: 13px;
+    color: #474D52;
+    max-width: 980px;
+    width: 100%;
+    margin: 0 auto;
+  }
+</style>
+</head>
+<body>
+  <header>
+    <a class="back" href="edificio.html">← Volver al edificio</a>
+  </header>
+
+  <main>
+    <p class="kicker">FERREYCORP · ADMINISTRACIÓN DE NEGOCIOS · AA2</p>
+    <h1><span class="num" id="chap-num">CAPÍTULO 02</span><span id="chap-title">Planeación</span></h1>
+    <div class="blank">
+      <b>Contenido por definir.</b><br>
+      Este apartado está en blanco: Jerzon decidirá qué va en este capítulo.
+    </div>
+  </main>
+
+  <footer id="chap-foot">Piso 2 de 10 · Vuelve al edificio para cambiar de capítulo.</footer>
+
+</body>
+</html>
