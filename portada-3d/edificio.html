@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FERREYCORP — El edificio · AA2 Administración de Negocios</title>
+<style>
+  @font-face {
+    font-family: 'Alumni Sans';
+    src: url('assets/AlumniSans.ttf') format('truetype');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Albert Sans';
+    src: url('assets/AlbertSans.ttf') format('truetype');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    font-family: 'Albert Sans', sans-serif;
+    background: #EDF0EE;
+    color: #111315;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* --- Encabezado --- */
+  header {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 20px 10px;
+  }
+  header h1 {
+    font-family: 'Alumni Sans', sans-serif;
+    font-weight: 800;
+    font-size: 30px;
+    letter-spacing: 0.04em;
+    line-height: 1;
+  }
+  header h1 span { color: #E85A24; }
+  header p {
+    font-size: 14px;
+    color: #474D52;
+    text-align: right;
+  }
+
+  /* --- Escenario: la torre --- */
+  #stage {
+    flex: 1 1 auto;
+    min-height: 0;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #tower {
+    position: relative;
+    aspect-ratio: 3 / 2;
+    max-width: 100%;
+    max-height: 100%;
+    transition: transform 900ms cubic-bezier(.22, .9, .28, 1);
+    will-change: transform;
+  }
+  #tower img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+
+  /* --- Zonas clicables (un botón por piso) --- */
+  .floor {
+    position: absolute;
+    left: 45%;
+    width: 48.5%;
+    display: block;
+    border: none;
+    background: rgba(232, 90, 36, 0);
+    cursor: pointer;
+    padding: 0;
+    text-decoration: none;
+    outline-offset: -2px;
+    transition: background 180ms ease, box-shadow 180ms ease;
+  }
+  .floor:hover, .floor:focus-visible {
+    background: rgba(232, 90, 36, 0.14);
+    box-shadow: inset 0 0 0 2px #E85A24;
+    outline: none;
+  }
+  .floor .tag {
+    position: absolute;
+    left: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    white-space: nowrap;
+    background: #111315;
+    color: #fff;
+    font-family: 'Albert Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 5px 9px;
+    border-radius: 999px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 180ms ease;
+  }
+  .floor:hover .tag, .floor:focus-visible .tag { opacity: 1; }
+  .floor .tag b { color: #FF8A50; font-weight: 800; }
+
+  /* Posición de cada piso (medida sobre la imagen v12, % de la altura) */
+  .f10 { top: 3.9%;  height: 14.85%; }
+  .f09 { top: 18.75%; height: 6.25%; }
+  .f08 { top: 25.0%;  height: 8.6%; }
+  .f07 { top: 33.6%;  height: 8.6%; }
+  .f06 { top: 42.2%;  height: 8.6%; }
+  .f05 { top: 50.8%;  height: 8.6%; }
+  .f04 { top: 59.4%;  height: 8.6%; }
+  .f03 { top: 68.0%;  height: 8.2%; }
+  .f02 { top: 76.2%;  height: 8.2%; }
+  .f01 { top: 84.4%;  height: 5.4%; }
+
+  /* --- Tira de capítulos --- */
+  nav#chapters {
+    flex: 0 0 auto;
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 10px 20px 14px;
+    scrollbar-width: thin;
+  }
+  nav#chapters button {
+    flex: 0 0 auto;
+    font-family: 'Albert Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: #111315;
+    background: #fff;
+    border: 1px solid #C9CDCF;
+    border-radius: 999px;
+    padding: 7px 13px;
+    cursor: pointer;
+    transition: border-color 150ms ease, background 150ms ease;
+  }
+  nav#chapters button:hover, nav#chapters button:focus-visible {
+    border-color: #E85A24;
+    background: #FFF1EA;
+    outline: none;
+  }
+  nav#chapters button b { color: #E85A24; }
+
+  #zooming-note {
+    position: absolute;
+    left: 50%;
+    bottom: 18px;
+    transform: translateX(-50%);
+    background: rgba(17, 19, 21, 0.88);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 8px 16px;
+    border-radius: 999px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 250ms ease;
+    z-index: 5;
+    white-space: nowrap;
+  }
+  #zooming-note.on { opacity: 1; }
+
+  /* Durante el zoom: se apagan las etiquetas y el hover de los demás pisos;
+     solo queda el contorno del piso elegido. */
+  #tower.zooming .floor .tag { opacity: 0 !important; }
+  #tower.zooming .floor:not(.active) { background: transparent !important; box-shadow: none !important; }
+  #tower.zooming .floor.active { background: rgba(232, 90, 36, 0.14); box-shadow: inset 0 0 0 2px #E85A24; }
+</style>
+<noscript><style>
+  .floor { background: rgba(232, 90, 36, 0.10); box-shadow: inset 0 0 0 2px rgba(232,90,36,.55); }
+  .floor .tag { opacity: 1; }
+</style></noscript>
+</head>
+<body>
+  <header>
+    <h1>FERREYCORP <span>·</span> EL EDIFICIO</h1>
+    <p>Haz clic en un piso para entrar a su capítulo</p>
+  </header>
+
+  <main id="stage">
+    <div id="tower">
+      <img src="assets/torre_v12.webp" alt="Torre Ferreycorp de día, 10 pisos, con la grúa sosteniendo las letras FERREYCORP a la izquierda">
+      <!-- Pisos: de arriba (10) a abajo (1). Cada uno es un enlace real; el JS solo añade el zoom antes de navegar. -->
+      <a class="floor f10" href="capitulo.html?piso=10" data-piso="10" aria-label="Piso 10: Capítulo 10, Conducta resiliente"><span class="tag"><b>10</b> · Conducta resiliente</span></a>
+      <a class="floor f09" href="capitulo.html?piso=9" data-piso="9" aria-label="Piso 9: Capítulo 9, Reflexión individual"><span class="tag"><b>09</b> · Reflexión individual</span></a>
+      <a class="floor f08" href="capitulo.html?piso=8" data-piso="8" aria-label="Piso 8: Capítulo 8, Conclusiones"><span class="tag"><b>08</b> · Conclusiones</span></a>
+      <a class="floor f07" href="capitulo.html?piso=7" data-piso="7" aria-label="Piso 7: Capítulo 7, Análisis crítico"><span class="tag"><b>07</b> · Análisis crítico</span></a>
+      <a class="floor f06" href="capitulo.html?piso=6" data-piso="6" aria-label="Piso 6: Capítulo 6, Mejoras M1–M7"><span class="tag"><b>06</b> · Mejoras M1–M7</span></a>
+      <a class="floor f05" href="capitulo.html?piso=5" data-piso="5" aria-label="Piso 5: Capítulo 5, Control"><span class="tag"><b>05</b> · Control</span></a>
+      <a class="floor f04" href="capitulo.html?piso=4" data-piso="4" aria-label="Piso 4: Capítulo 4, Dirección"><span class="tag"><b>04</b> · Dirección</span></a>
+      <a class="floor f03" href="capitulo.html?piso=3" data-piso="3" aria-label="Piso 3: Capítulo 3, Organización"><span class="tag"><b>03</b> · Organización</span></a>
+      <a class="floor f02" href="capitulo.html?piso=2" data-piso="2" aria-label="Piso 2: Capítulo 2, Planeación"><span class="tag"><b>02</b> · Planeación</span></a>
+      <a class="floor f01" href="capitulo.html?piso=1" data-piso="1" aria-label="Piso 1: Capítulo 1, Apertura"><span class="tag"><b>01</b> · Apertura</span></a>
+    </div>
+    <div id="zooming-note" role="status"></div>
+  </main>
+
+  <nav id="chapters" aria-label="Capítulos">
+    <button type="button" data-piso="1"><b>01</b> Apertura</button>
+    <button type="button" data-piso="2"><b>02</b> Planeación</button>
+    <button type="button" data-piso="3"><b>03</b> Organización</button>
+    <button type="button" data-piso="4"><b>04</b> Dirección</button>
+    <button type="button" data-piso="5"><b>05</b> Control</button>
+    <button type="button" data-piso="6"><b>06</b> Mejoras M1–M7</button>
+    <button type="button" data-piso="7"><b>07</b> Análisis crítico</button>
+    <button type="button" data-piso="8"><b>08</b> Conclusiones</button>
+    <button type="button" data-piso="9"><b>09</b> Reflexión individual</button>
+    <button type="button" data-piso="10"><b>10</b> Conducta resiliente</button>
+  </nav>
+
+<script>
+  (function () {
+    var tower = document.getElementById('tower');
+    var stage = document.getElementById('stage');
+    var note = document.getElementById('zooming-note');
+    var titles = {
+      1: 'Apertura', 2: 'Planeación', 3: 'Organización', 4: 'Dirección', 5: 'Control',
+      6: 'Mejoras M1–M7', 7: 'Análisis crítico', 8: 'Conclusiones',
+      9: 'Reflexión individual', 10: 'Conducta resiliente'
+    };
+    var zoomed = false;
+
+    function go(piso) {
+      if (zoomed) return;
+      zoomed = true;
+      var zone = tower.querySelector('.f' + String(piso).padStart(2, '0'));
+      var label = 'Piso ' + piso + ' · ' + titles[piso];
+      note.textContent = 'Entrando al ' + label + '…';
+      note.classList.add('on');
+      tower.classList.add('zooming');
+      if (zone) zone.classList.add('active');
+      if (zone) {
+        // Centro del piso en coordenadas de pantalla
+        var r = zone.getBoundingClientRect();
+        var s = stage.getBoundingClientRect();
+        var cx = r.left + r.width / 2;
+        var cy = r.top + r.height / 2;
+        // Centro del escenario
+        var sx = s.left + s.width / 2;
+        var sy = s.top + s.height / 2;
+        // Escala con origen en el centro del piso; luego se traslada ese punto al centro del escenario
+        var scale = 2.4;
+        var ox = ((cx - tower.getBoundingClientRect().left) / tower.getBoundingClientRect().width) * 100;
+        var oy = ((cy - tower.getBoundingClientRect().top) / tower.getBoundingClientRect().height) * 100;
+        tower.style.transformOrigin = ox.toFixed(2) + '% ' + oy.toFixed(2) + '%';
+        tower.style.transform = 'translate(' + (sx - cx).toFixed(1) + 'px,' + (sy - cy).toFixed(1) + 'px) scale(' + scale + ')';
+      }
+      setTimeout(function () {
+        window.location.href = 'capitulo.html?piso=' + piso;
+      }, 1000);
+    }
+
+    tower.querySelectorAll('.floor').forEach(function (a) {
+      a.addEventListener('click', function (ev) {
+        ev.preventDefault();
+        go(parseInt(a.getAttribute('data-piso'), 10));
+      });
+    });
+    document.querySelectorAll('#chapters button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        go(parseInt(b.getAttribute('data-piso'), 10));
+      });
+    });
+  })();
+</script>
+</body>
+</html>
