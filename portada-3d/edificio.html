@@ -51,9 +51,13 @@
   .f01 { top: 77.2%; height: 13.6%; }
   .hint { position: absolute; top: 16px; left: 16px; z-index: 4; background: rgba(17,19,21,.85); color: #fff; font-size: 13px; font-weight: 700; letter-spacing: .02em; padding: 9px 14px; border-radius: 999px; pointer-events: none; }
   /* El video del piso cubre toda la pantalla (2,1:1, mismo ratio que la
-     panorámica; en 16:9 recorta los lados con cover, como la foto). */
+     panorámica; en 16:9 recorta los lados con cover, como la foto).
+     El poster es la misma foto de la torre, así que mientras el video
+     carga se ve la torre (no un negro) y el comienzo no se nota cortado:
+     la entrada es un fundido de 0,35 s desde la foto. */
   #floor-video { position: fixed; inset: 0; width: 100vw; height: 100vh; height: 100svh; object-fit: cover; background: #000; z-index: 20; display: none; cursor: pointer; }
-  #floor-video.on { display: block; }
+  #floor-video.on { display: block; animation: videoIn .35s ease; }
+  @keyframes videoIn { from { opacity: 0; } to { opacity: 1; } }
   #video-note { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: rgba(17,19,21,.88); color: #fff; font-weight: 700; font-size: 16px; padding: 12px 20px; border-radius: 999px; opacity: 0; pointer-events: none; transition: opacity .2s ease; white-space: nowrap; z-index: 21; }
   #video-note.on { opacity: 1; }
   nav#chapters { position: absolute; left: 0; right: 0; bottom: 0; z-index: 4; display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; padding: 12px 14px; background: var(--paper); border-top: 1px solid #d6dad8; }
@@ -102,7 +106,7 @@
     <a href="capitulo-10.html" data-piso="10"><b>10</b> Conducta resiliente</a>
   </nav>
 </section>
-<video id="floor-video" muted playsinline preload="none" aria-label="Video de acercamiento al piso"></video>
+<video id="floor-video" muted playsinline preload="metadata" poster="assets/torre_v12_pano.webp" aria-label="Video de acercamiento al piso"></video>
 <div id="video-note" role="status" aria-live="polite"></div>
 
 <noscript>
@@ -154,10 +158,20 @@
   window.addEventListener('resize', layoutZones);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(layoutZones);
 
-  /* v9: al hacer clic en un piso corre su VIDEO de acercamiento (10 s,
-     mudo) a pantalla completa y al terminar abre el capítulo. Tocar el
-     video salta directo al capítulo. Si el video no carga o no
-     reproduce, se abre el capítulo sin video (nunca se queda trabado). */
+  /* v9.1 (corrección de Jerzon, 2026-11-23 08:27): dos fallos de la v9.
+     (1) «Se nota el recorte del comienzo del video»: el video cargaba
+     en el clic (preload="none") y empezaba a trompicones; ahora el
+     poster es la misma foto de la torre (no hay negro), el video del
+     piso se precarga al pasar el mouse/enfocar la zona, y al reproducir
+     se espera a que esté listo (canplay) y entra con un fundido de
+     0,35 s, así el paso de la foto al video no se nota.
+     (2) «Al retroceder y volver a clickear ya no funciona»: al volver
+     con el botón atrás el navegador restaura la página del caché
+     (bfcache) con el video terminado y el estado viejo (navigated=true,
+     la capa del video tapando las zonas), así el clic no hacía nada.
+     Ahora pageshow (bfcache) y pagehide resetean el video por completo:
+     se pausa, se esconde la capa, se limpia el estado y la página
+     vuelve a su estado original lista para otro clic. */
   var target = null, fallbackTimer = null, navigated = false;
   function goToChapter() {
     if (navigated || !target) return;
@@ -165,18 +179,53 @@
     if (fallbackTimer) clearTimeout(fallbackTimer);
     window.location.href = target;
   }
+  /* Deja el video y la página en su estado original, listo para otro
+     clic. Se usa al volver con el botón atrás y antes de cada video. */
+  function resetVideo() {
+    if (fallbackTimer) { clearTimeout(fallbackTimer); fallbackTimer = null; }
+    video.pause();
+    video.removeAttribute('src');
+    video.removeAttribute('data-preloaded');
+    video.load();
+    video.classList.remove('on');
+    note.classList.remove('on');
+    navigated = false;
+    target = null;
+  }
+  window.addEventListener('pageshow', function (ev) {
+    if (ev.persisted) resetVideo();
+  });
+  window.addEventListener('pagehide', function () { video.pause(); });
+  /* Precarga el video del piso al pasar el mouse o enfocarlo, para que
+     el clic arranque al instante desde el fotograma 0. */
+  function preloadFloor(piso) {
+    var src = 'assets/video_piso_' + pad(piso) + '.mp4';
+    if (video.getAttribute('data-preloaded') === src) return;
+    video.setAttribute('data-preloaded', src);
+    video.src = src;
+    video.load();
+  }
   function playFloorVideo(piso) {
     target = 'capitulo-' + pad(piso) + '.html';
     navigated = false;
     note.textContent = 'Entrando al Piso ' + piso + ' · ' + TITLES[piso] + '… (toca para saltar)';
-    video.src = 'assets/video_piso_' + pad(piso) + '.mp4';
+    var src = 'assets/video_piso_' + pad(piso) + '.mp4';
     video.classList.add('on');
     note.classList.add('on');
-    video.load();
-    var p = video.play();
-    if (p && p.catch) p.catch(function () { goToChapter(); });
-    /* Respaldo: si 'ended' no se dispara, navegar a los 12 s. */
-    fallbackTimer = setTimeout(goToChapter, 12000);
+    function start() {
+      video.currentTime = 0;
+      var p = video.play();
+      if (p && p.catch) p.catch(function () { goToChapter(); });
+      /* Respaldo: si 'ended' no se dispara, navegar a los 12 s. */
+      fallbackTimer = setTimeout(goToChapter, 12000);
+    }
+    if (video.getAttribute('src') !== src) {
+      video.src = src;
+      video.setAttribute('data-preloaded', src);
+      video.load();
+    }
+    if (video.readyState >= 2) { start(); }
+    else { video.addEventListener('canplay', start, { once: true }); }
   }
   video.addEventListener('ended', goToChapter);
   video.addEventListener('click', goToChapter);
@@ -193,6 +242,15 @@
     ev.preventDefault();
     playFloorVideo(parseInt(b.getAttribute('data-piso'), 10));
   });
+  /* Precarga al pasar el mouse o enfocar (torre y tira de capítulos). */
+  var zones = document.querySelectorAll('.floor, #chapters a[data-piso]');
+  for (var i = 0; i < zones.length; i++) {
+    (function (el) {
+      var piso = parseInt(el.getAttribute('data-piso'), 10);
+      el.addEventListener('mouseenter', function () { preloadFloor(piso); });
+      el.addEventListener('focus', function () { preloadFloor(piso); });
+    })(zones[i]);
+  }
 })();
 </script>
 </body>
