@@ -205,15 +205,26 @@
     video.src = src;
     video.load();
   }
+  /* v9.2 (corrección de Jerzon, 2026-11-23 08:33): «cuando le doy click
+     hay como un seg de pantalla negra». Causa: la v9.1 mostraba el
+     video (display: block) en el clic, ANTES de que tuviera datos; el
+     poster desaparece al cargar los metadatos pero el primer fotograma
+     aún no está listo, así que se ve el fondo negro del elemento ~1 s.
+     (El video NO empieza en negro: sus primeros fotogramas miden
+     brillo medio ~135, la torre de día.) Arreglo: el video NO se
+     muestra hasta que está listo para reproducir (canplay /
+     readyState >= 3); mientras tanto sigue visible la foto estática
+     de la torre, que es idéntica al primer fotograma, y el video entra
+     con el fundido de 0,35 s. La nota sí aparece de inmediato. */
   function playFloorVideo(piso) {
     target = 'capitulo-' + pad(piso) + '.html';
     navigated = false;
     note.textContent = 'Entrando al Piso ' + piso + ' · ' + TITLES[piso] + '… (toca para saltar)';
     var src = 'assets/video_piso_' + pad(piso) + '.mp4';
-    video.classList.add('on');
     note.classList.add('on');
     function start() {
       video.currentTime = 0;
+      video.classList.add('on'); /* solo se muestra cuando ya puede reproducir */
       var p = video.play();
       if (p && p.catch) p.catch(function () { goToChapter(); });
       /* Respaldo: si 'ended' no se dispara, navegar a los 12 s. */
@@ -224,7 +235,7 @@
       video.setAttribute('data-preloaded', src);
       video.load();
     }
-    if (video.readyState >= 2) { start(); }
+    if (video.readyState >= 3) { start(); }
     else { video.addEventListener('canplay', start, { once: true }); }
   }
   video.addEventListener('ended', goToChapter);
