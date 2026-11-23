@@ -12,61 +12,72 @@
   html, body { background: var(--paper); }
   body { font-family: 'Albert Sans', system-ui, sans-serif; color: var(--ink); overflow-x: hidden; }
 
-  /* ============ EDIFICIO: la imagen 16:9 COMPLETA en la pantalla ============
-     La torre es 16:9 como la pantalla: la imagen llena el cuadro sin
-     recorte ni franjas. La tira flota sobre la parte baja (la calle, bajo
-     el piso 1) para no quitarle altura a la imagen. Las zonas son % de la
-     imagen, medidas por programa sobre la torre 16:9. */
+  /* ============ EDIFICIO v8: panorámica 2.1:1, cover, sin blanco nunca ====
+     La imagen es panorámica (2.103:1, más ancha que la pantalla de Jerzon,
+     2.09:1) y llena el cuadro con object-fit: cover: en cualquier
+     pantalla la foto cubre todo el escenario, sin franjas blancas. En
+     16:9 (proyector) se recortan ~8 % de cielo/ciudad por lado; la torre
+     y las letras FERREYCORP quedan siempre dentro del cuadro. Las zonas
+     se colocan por JS desde la geometría real del cover (ver layoutZones);
+     el % CSS es el respaldo (exacto cuando la pantalla es 2.1:1). */
   #edificio { position: relative; height: 100vh; height: 100svh; background: var(--paper); overflow: hidden; }
-  #stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; perspective: 1400px; }
-  #tower-orbit { position: relative; aspect-ratio: 16 / 9; width: min(100%, calc(100vh * 16 / 9)); width: min(100%, calc(100svh * 16 / 9)); max-height: 100%; will-change: transform; }
+  #stage { position: absolute; inset: 0; overflow: hidden; perspective: 1400px; }
+  #tower-orbit { position: absolute; inset: 0; will-change: transform; }
   #tower { position: absolute; inset: 0; transform-origin: 0 0; transition: transform .9s cubic-bezier(.22,.61,.21,1); will-change: transform; }
   #tower img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
-  .floor { position: absolute; left: 57.5%; width: 29%; display: block; outline: 2px solid transparent; outline-offset: -2px; transition: outline-color .15s ease; cursor: pointer; }
+  .floor { position: absolute; left: 48%; width: 41%; display: block; outline: 2px solid transparent; outline-offset: -2px; transition: outline-color .15s ease; cursor: pointer; }
   .floor .tag { position: absolute; left: 12px; bottom: 4px; background: var(--ink); color: #fff; font-weight: 700; font-size: 15px; letter-spacing: .02em; padding: 7px 12px; border-radius: 999px; opacity: 0; transition: opacity .15s ease; pointer-events: none; white-space: nowrap; }
   .floor .tag b { color: #fff; font-weight: 700; }
   .floor:hover .tag, .floor:focus-visible .tag { opacity: 1; }
   .floor:hover, .floor:focus-visible { outline-color: var(--orange); }
   .floor:focus-visible { outline-offset: 2px; }
-  /* Posiciones % de la imagen 16:9 (losas medidas por programa; el borde
-     derecho real de la fachada es 84-87 % según la altura, por eso el
-     ancho es 29 % y no 33 %: la zona termina en 86,5 %, sobre la fachada. */
-  .f10 { top: 4.5%;  height: 8.3%; }
-  .f09 { top: 12.8%; height: 6.3%; }
-  .f08 { top: 19.1%; height: 5.7%; }
-  .f07 { top: 24.8%; height: 8.1%; }
-  .f06 { top: 32.9%; height: 10.1%; }
-  .f05 { top: 43.0%; height: 6.6%; }
-  .f04 { top: 49.6%; height: 8.4%; }
-  .f03 { top: 58.0%; height: 8.5%; }
-  .f02 { top: 66.5%; height: 8.8%; }
-  .f01 { top: 75.3%; height: 13.7%; }
+  /* Posiciones % de la imagen panorámica (losas medidas por programa:
+     bordes horizontales en y 63, 110, 196, 290, 378, 470, 561, 653, 745,
+     840, 925, 988 de 1088 px; P10 incluye la corona, P1 es la entrada
+     alta de cristal. La fachada va de ~50 % a 89 % (medido por el
+     crítico v8 en el recorte del borde: el cristal empieza en x~1140
+     de 2288); la zona arranca en 48 % para cubrirla entera con un
+     margen de ~25 px de cielo a la izquierda. */
+  .f10 { top: 4.1%;  height: 6.0%; }
+  .f09 { top: 10.1%; height: 7.9%; }
+  .f08 { top: 18.0%; height: 8.7%; }
+  .f07 { top: 26.7%; height: 8.0%; }
+  .f06 { top: 34.7%; height: 8.5%; }
+  .f05 { top: 43.2%; height: 8.4%; }
+  .f04 { top: 51.6%; height: 8.4%; }
+  .f03 { top: 60.0%; height: 8.5%; }
+  .f02 { top: 68.5%; height: 8.7%; }
+  .f01 { top: 77.2%; height: 13.6%; }
   #edificio.zooming .floor { pointer-events: none; }
   #edificio.zooming .floor .tag { opacity: 0 !important; }
   #edificio.zooming .floor.chosen { outline-color: var(--orange); }
   #zooming-note { position: fixed; left: 50%; top: 50%; transform: translate(-50%,-50%); background: rgba(17,19,21,.88); color: #fff; font-weight: 700; font-size: 16px; padding: 12px 20px; border-radius: 999px; opacity: 0; pointer-events: none; transition: opacity .2s ease; white-space: nowrap; z-index: 6; }
   #zooming-note.on { opacity: 1; }
   .hint { position: absolute; top: 16px; left: 16px; z-index: 4; background: rgba(17,19,21,.85); color: #fff; font-size: 13px; font-weight: 700; letter-spacing: .02em; padding: 9px 14px; border-radius: 999px; pointer-events: none; }
-  /* La camara ENTRA al piso: el papel (el interior) aparece sobre la imagen. */
-  #open-panel { position: fixed; inset: 0; background: var(--paper); z-index: 10; pointer-events: none; opacity: 0; }
+  /* La camara ENTRA al piso: el papel (el interior) CRECE desde el rect
+     del piso (la puerta se abre) hasta cubrir la pantalla. */
+  #open-panel { position: fixed; left: 0; top: 0; width: 100vw; height: 100vh; background: var(--paper); z-index: 10; pointer-events: none; opacity: 0; }
   nav#chapters { position: absolute; left: 0; right: 0; bottom: 0; z-index: 4; display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; padding: 12px 14px; background: var(--paper); border-top: 1px solid #d6dad8; }
-  nav#chapters button { flex: 0 0 auto; font: inherit; font-size: 13px; font-weight: 700; color: var(--ink); background: #fff; border: 1px solid #c9cecb; border-radius: 999px; padding: 7px 11px; cursor: pointer; }
-  nav#chapters button:hover, nav#chapters button:focus-visible { border-color: var(--orange); outline: 2px solid var(--orange); outline-offset: 1px; }
-  nav#chapters button b { color: var(--orange); }
+  nav#chapters a { flex: 0 0 auto; font: inherit; font-size: 13px; font-weight: 700; color: var(--ink); background: #fff; border: 1px solid #c9cecb; border-radius: 999px; padding: 7px 11px; cursor: pointer; text-decoration: none; }
+  nav#chapters a:hover, nav#chapters a:focus-visible { border-color: var(--orange); outline: 2px solid var(--orange); outline-offset: 1px; }
+  nav#chapters a b { color: var(--orange); }
   @media (max-width: 700px) {
     .hint { font-size: 12px; top: 10px; left: 10px; }
     .floor .tag { font-size: 13px; }
+    /* La tira en móvil es una sola fila con scroll horizontal: si se
+       apila en 4 filas tapa la mitad baja del piso 1 (C2 del crítico v8). */
+    nav#chapters { flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start; }
   }
 </style>
 </head>
 <body>
 
-<!-- EDIFICIO: la torre 16:9, 10 pisos clicables -->
+<!-- EDIFICIO v8: torre panorámica, 10 pisos clicables, sin franjas -->
 <section id="edificio" aria-label="Edificio Ferreycorp, 10 pisos">
   <div id="stage">
     <div id="tower-orbit">
       <div id="tower">
-        <img src="assets/torre_v12_16x9.webp" alt="Torre Ferreycorp de día, con las letras FERREYCORP sostenidas por una grúa a la izquierda" width="2048" height="1152">
+        <img src="assets/torre_v12_pano.webp" alt="Torre Ferreycorp de día, con las letras FERREYCORP sostenidas por una grúa a la izquierda" width="2288" height="1088">
         <a class="floor f10" data-piso="10" href="capitulo-10.html" aria-label="Piso 10, Conducta resiliente"><span class="tag"><b>10</b> · Conducta resiliente</span></a>
         <a class="floor f09" data-piso="9" href="capitulo-09.html" aria-label="Piso 9, Reflexión individual"><span class="tag"><b>09</b> · Reflexión individual</span></a>
         <a class="floor f08" data-piso="8" href="capitulo-08.html" aria-label="Piso 8, Conclusiones"><span class="tag"><b>08</b> · Conclusiones</span></a>
@@ -83,43 +94,80 @@
     <div id="zooming-note" role="status" aria-live="polite"></div>
   </div>
   <nav id="chapters" aria-label="Capítulos">
-    <button type="button" data-piso="1"><b>01</b> Apertura</button>
-    <button type="button" data-piso="2"><b>02</b> Planeación</button>
-    <button type="button" data-piso="3"><b>03</b> Organización</button>
-    <button type="button" data-piso="4"><b>04</b> Dirección</button>
-    <button type="button" data-piso="5"><b>05</b> Control</button>
-    <button type="button" data-piso="6"><b>06</b> Mejoras M1–M7</button>
-    <button type="button" data-piso="7"><b>07</b> Análisis crítico</button>
-    <button type="button" data-piso="8"><b>08</b> Conclusiones</button>
-    <button type="button" data-piso="9"><b>09</b> Reflexión individual</button>
-    <button type="button" data-piso="10"><b>10</b> Conducta resiliente</button>
+    <a href="capitulo-01.html" data-piso="1"><b>01</b> Apertura</a>
+    <a href="capitulo-02.html" data-piso="2"><b>02</b> Planeación</a>
+    <a href="capitulo-03.html" data-piso="3"><b>03</b> Organización</a>
+    <a href="capitulo-04.html" data-piso="4"><b>04</b> Dirección</a>
+    <a href="capitulo-05.html" data-piso="5"><b>05</b> Control</a>
+    <a href="capitulo-06.html" data-piso="6"><b>06</b> Mejoras M1–M7</a>
+    <a href="capitulo-07.html" data-piso="7"><b>07</b> Análisis crítico</a>
+    <a href="capitulo-08.html" data-piso="8"><b>08</b> Conclusiones</a>
+    <a href="capitulo-09.html" data-piso="9"><b>09</b> Reflexión individual</a>
+    <a href="capitulo-10.html" data-piso="10"><b>10</b> Conducta resiliente</a>
   </nav>
 </section>
 <div id="open-panel" aria-hidden="true"></div>
 
 <script>
 (function () {
-  var SCALE = 2.4, FLY_MS = 1800, PANEL_MS = 300;
+  var SCALE = 2.4, FLY_MS = 2200, PANEL_MS = 450;
+  var IMG_W = 2288, IMG_H = 1088;
   var tower = document.getElementById('tower');
   var orbit = document.getElementById('tower-orbit');
+  var stage = document.getElementById('stage');
   var edificio = document.getElementById('edificio');
   var note = document.getElementById('zooming-note');
   var panel = document.getElementById('open-panel');
   var TITLES = { 1:'Apertura', 2:'Planeación', 3:'Organización', 4:'Dirección', 5:'Control',
     6:'Mejoras M1–M7', 7:'Análisis crítico', 8:'Conclusiones', 9:'Reflexión individual', 10:'Conducta resiliente' };
+  /* Zonas en coordenadas de la imagen (fracciones): x 0.48-0.89, y medidas
+     por programa sobre la panorámica (ver el CSS). */
+  var ZONES = {
+    10: [0.48, 0.041, 0.89, 0.101], 9: [0.48, 0.101, 0.89, 0.180],
+    8: [0.48, 0.180, 0.89, 0.267], 7: [0.48, 0.267, 0.89, 0.347],
+    6: [0.48, 0.347, 0.89, 0.432], 5: [0.48, 0.432, 0.89, 0.516],
+    4: [0.48, 0.516, 0.89, 0.600], 3: [0.48, 0.600, 0.89, 0.685],
+    2: [0.48, 0.685, 0.89, 0.772], 1: [0.48, 0.772, 0.89, 0.908]
+  };
 
   function pad(n) { return (n < 10 ? '0' : '') + n; }
+  /* La imagen llena el escenario con cover: el rect visible de la imagen
+     depende del aspecto de la pantalla. Las zonas se colocan en px sobre
+     ese rect, para que caigan siempre sobre la torre aunque el cover
+     recorte los lados (16:9) o arriba/abajo (pantallas más anchas). */
+  function layoutZones() {
+    var sw = stage.clientWidth, sh = stage.clientHeight;
+    if (!sw || !sh) return;
+    var scale = Math.max(sw / IMG_W, sh / IMG_H);
+    var dw = IMG_W * scale, dh = IMG_H * scale;
+    var ox = (sw - dw) / 2, oy = (sh - dh) / 2;
+    var floors = tower.querySelectorAll('.floor');
+    for (var i = 0; i < floors.length; i++) {
+      var f = floors[i];
+      var z = ZONES[parseInt(f.getAttribute('data-piso'), 10)];
+      if (!z) continue;
+      f.style.left = (ox + z[0] * dw) + 'px';
+      f.style.top = (oy + z[1] * dh) + 'px';
+      f.style.width = ((z[2] - z[0]) * dw) + 'px';
+      f.style.height = ((z[3] - z[1]) * dh) + 'px';
+    }
+  }
+  layoutZones();
+  window.addEventListener('resize', layoutZones);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(layoutZones);
+
   function tf(tx, ty, s, r) { return 'translate(' + tx + 'px,' + ty + 'px) scale(' + s + ') rotate(' + r + 'deg)'; }
-  /* Acercamiento como el de la referencia: la camara NO hace zoom sobre una
-     foto plana, VUELA. Orbita alrededor de la torre (la perspectiva cambia:
-     la torre se ladea en 3D y se ve su esquina), se acerca en dolly, se
-     nivela sobre el piso y ATRAVIESA el cristal: la imagen se pasa de
-     escala y el papel del interior aparece encima. Dos capas separadas: la
-     orbita gira el marco entero en 3D y el dolly acerca la torre dentro de
-     el, como una camara que se mueve por el espacio. */
+  /* Vuelo v8 (más fuerte que el v7, que Jerzon llamó «muy pobre»): la
+     cámara se echa atrás un poco, ORBITA de verdad (rotateY hasta -16° y
+     una inclinación rotateX, la torre se ladea y se ve su esquina), baja
+     en dolly en curva en S, se nivela sobre el piso, hace una pausa y el
+     piso SE ABRE: el panel crece desde el rect del piso hasta cubrir la
+     pantalla, como entrar por la puerta. Dos capas: la órbita gira el
+     marco entero en 3D y el dolly acerca la torre dentro de él. */
   function droneFly(piso, el) {
     var zone = el || tower.querySelector('.f' + pad(piso));
     if (!zone) { window.location.href = 'capitulo-' + pad(piso) + '.html'; return; }
+    layoutZones();
     var tr = tower.getBoundingClientRect();
     var zr = zone.getBoundingClientRect();
     var cx = zr.left - tr.left + zr.width / 2;
@@ -130,41 +178,49 @@
     zone.classList.add('chosen');
     note.textContent = 'Entrando al Piso ' + piso + ' · ' + TITLES[piso] + '…';
     note.classList.add('on');
-    var finalTf = tf(tx, ty, SCALE, 0);
     function enterFloor() {
+      /* El panel crece desde el rect del piso ya centrado y ampliado
+         (2.4x) hasta cubrir la pantalla. */
+      var pw = zr.width * SCALE, ph = zr.height * SCALE;
+      var px = window.innerWidth / 2 - pw / 2, py = window.innerHeight / 2 - ph / 2;
+      var target = 'capitulo-' + pad(piso) + '.html';
       if (panel.animate) {
-        var pa = panel.animate([{ opacity: 0 }, { opacity: 1 }],
-          { duration: PANEL_MS, delay: 0, easing: 'ease-out', fill: 'forwards' });
-        pa.onfinish = function () { window.location.href = 'capitulo-' + pad(piso) + '.html'; };
+        panel.style.left = px + 'px'; panel.style.top = py + 'px';
+        panel.style.width = pw + 'px'; panel.style.height = ph + 'px';
+        var pa = panel.animate([
+          { left: px + 'px', top: py + 'px', width: pw + 'px', height: ph + 'px', opacity: 0 },
+          { left: '0px', top: '0px', width: '100vw', height: '100vh', opacity: 1 }
+        ], { duration: PANEL_MS, easing: 'cubic-bezier(.22,.61,.21,1)', fill: 'forwards' });
+        pa.onfinish = function () { window.location.href = target; };
       } else {
         panel.style.opacity = 1;
       }
-      setTimeout(function () { window.location.href = 'capitulo-' + pad(piso) + '.html'; }, PANEL_MS + 200);
+      setTimeout(function () { window.location.href = target; }, PANEL_MS + 250);
     }
     if (tower.animate && orbit.animate) {
       var dolly = tower.animate([
         { transform: tf(0, 0, 1, 0), offset: 0 },
-        { transform: tf(tx * 0.12, ty * 0.12 - 30, 1.15, -0.8), offset: 0.25 },
-        { transform: tf(tx * 0.45, ty * 0.45 + 10, 1.6, 0.5), offset: 0.50 },
-        { transform: tf(tx * 0.85, ty * 0.85, 2.2, 0), offset: 0.70 },
-        { transform: tf(tx, ty, SCALE, 0), offset: 0.78 },
-        { transform: tf(tx, ty, SCALE, 0), offset: 0.94 },
-        { transform: tf(tx * 1.02, ty * 1.02, 2.7, 0), offset: 1 }
+        { transform: tf(tx * 0.05, ty * 0.05 - 18, 0.94, -0.6), offset: 0.18 },
+        { transform: tf(tx * 0.22, ty * 0.22 + 14, 1.25, 0.9), offset: 0.38 },
+        { transform: tf(tx * 0.55, ty * 0.55 - 8, 1.75, -0.4), offset: 0.58 },
+        { transform: tf(tx * 0.88, ty * 0.88, 2.25, 0), offset: 0.72 },
+        { transform: tf(tx, ty, SCALE, 0), offset: 0.80 },
+        { transform: tf(tx, ty, SCALE, 0), offset: 1 }
       ], { duration: FLY_MS, easing: 'cubic-bezier(.65,0,.35,1)', fill: 'forwards' });
       var orb = orbit.animate([
-        { transform: 'rotateY(0deg)', offset: 0 },
-        { transform: 'rotateY(-6deg)', offset: 0.25 },
-        { transform: 'rotateY(-11deg)', offset: 0.50 },
-        { transform: 'rotateY(-5deg)', offset: 0.70 },
-        { transform: 'rotateY(0deg)', offset: 0.78 },
-        { transform: 'rotateY(0deg)', offset: 0.94 },
-        { transform: 'rotateY(0deg)', offset: 1 }
+        { transform: 'rotateY(0deg) rotateX(0deg)', offset: 0 },
+        { transform: 'rotateY(-10deg) rotateX(-2deg)', offset: 0.18 },
+        { transform: 'rotateY(-16deg) rotateX(-2deg)', offset: 0.38 },
+        { transform: 'rotateY(-11deg) rotateX(-1deg)', offset: 0.58 },
+        { transform: 'rotateY(-4deg) rotateX(0deg)', offset: 0.72 },
+        { transform: 'rotateY(0deg) rotateX(0deg)', offset: 0.80 },
+        { transform: 'rotateY(0deg) rotateX(0deg)', offset: 1 }
       ], { duration: FLY_MS, easing: 'cubic-bezier(.65,0,.35,1)', fill: 'forwards' });
       var done = 0;
       function finishOne() {
         if (++done < 2) return;
-        tower.style.transform = tf(tx * 1.02, ty * 1.02, 2.7, 0);
-        orbit.style.transform = 'rotateY(0deg)';
+        tower.style.transform = tf(tx, ty, SCALE, 0);
+        orbit.style.transform = 'rotateY(0deg) rotateX(0deg)';
         dolly.cancel(); orb.cancel();
         enterFloor();
       }
@@ -172,7 +228,7 @@
       orb.onfinish = finishOne;
     } else {
       /* Respaldo sin Web Animations: el CSS transition hace el zoom recto. */
-      tower.style.transform = finalTf;
+      tower.style.transform = tf(tx, ty, SCALE, 0);
       setTimeout(function () { panel.style.opacity = 1; }, 950);
       setTimeout(function () { window.location.href = 'capitulo-' + pad(piso) + '.html'; }, 1400);
     }
@@ -184,8 +240,9 @@
     droneFly(parseInt(a.getAttribute('data-piso'), 10), a);
   });
   document.getElementById('chapters').addEventListener('click', function (ev) {
-    var b = ev.target.closest ? ev.target.closest('button[data-piso]') : null;
+    var b = ev.target.closest ? ev.target.closest('a[data-piso]') : null;
     if (!b) return;
+    ev.preventDefault();
     droneFly(parseInt(b.getAttribute('data-piso'), 10), null);
   });
 })();
