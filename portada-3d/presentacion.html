@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ferreycorp · Proceso Administrativo — AA2</title>
+<style>
+  @font-face { font-family:'Alumni Sans'; src:url('assets/AlumniSans.ttf') format('truetype'); font-weight:100 900; font-display:swap; }
+  @font-face { font-family:'Albert Sans'; src:url('assets/AlbertSans.ttf') format('truetype'); font-weight:100 900; font-display:swap; }
+  :root{
+    --bg:#F6F1E9; --bg2:#EFE7D9; --ink:#171310; --mut:#6B6157; --line:#D8CDBB;
+    --accent:#D9541E; --accent-d:#B03E12; --card:#FFFDF8;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:'Albert Sans',sans-serif;background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+  /* nav */
+  nav{position:sticky;top:0;z-index:50;background:rgba(246,241,233,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:62px}
+  .brand{font-family:'Alumni Sans',sans-serif;font-weight:800;font-size:24px;letter-spacing:.06em}
+  .brand span{color:var(--accent)}
+  .navlinks{display:flex;gap:22px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+  .navlinks a{color:inherit;text-decoration:none}
+  .navlinks a:hover{color:var(--accent)}
+  @media(max-width:820px){.navlinks{display:none}}
+  /* hero */
+  .hero{padding:84px 0 64px;border-bottom:1px solid var(--line)}
+  .kicker{font-size:13px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:var(--accent)}
+  h1{font-family:'Alumni Sans',sans-serif;font-weight:800;text-transform:uppercase;line-height:.92;letter-spacing:.005em;font-size:clamp(52px,9vw,118px);margin:18px 0 8px}
+  h1 .thin{display:block;color:var(--mut);font-weight:600}
+  .lead{font-size:clamp(18px,2.4vw,24px);color:#3A332B;max-width:760px;margin-top:20px}
+  .lead b{color:var(--ink)}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:48px;border-top:2px solid var(--ink)}
+  .stat{padding:22px 18px 6px 0;border-right:1px solid var(--line)}
+  .stat:last-child{border-right:0}
+  .stat .n{font-family:'Alumni Sans',sans-serif;font-weight:800;font-size:clamp(34px,4.6vw,54px);line-height:1;color:var(--ink)}
+  .stat .n em{font-style:normal;color:var(--accent)}
+  .stat .l{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);margin-top:8px}
+  @media(max-width:820px){.stats{grid-template-columns:repeat(2,1fr)}.stat{border-right:0;border-bottom:1px solid var(--line);padding-bottom:16px}}
+  .heroimg{margin-top:44px;border-radius:18px;overflow:hidden;border:1px solid var(--line);box-shadow:0 24px 50px rgba(60,40,15,.14)}
+  .heroimg img{display:block;width:100%;height:auto}
+  /* sections */
+  section{padding:76px 0;border-bottom:1px solid var(--line)}
+  .sec-head{display:flex;align-items:baseline;gap:22px;margin-bottom:30px}
+  .sec-num{font-family:'Alumni Sans',sans-serif;font-weight:800;font-size:20px;color:var(--accent);letter-spacing:.1em}
+  h2{font-family:'Alumni Sans',sans-serif;font-weight:800;text-transform:uppercase;line-height:.95;font-size:clamp(38px,5.6vw,68px);letter-spacing:.005em}
+  .sec-sub{font-size:clamp(17px,2vw,21px);color:#3A332B;max-width:820px;margin-bottom:8px}
+  .sec-sub b{color:var(--ink)}
+  .grid{display:grid;grid-template-columns:1.25fr .75fr;gap:44px;margin-top:26px;align-items:start}
+  @media(max-width:820px){.grid{grid-template-columns:1fr;gap:26px}}
+  ul.pts{list-style:none}
+  ul.pts li{padding:15px 0 15px 26px;border-top:1px solid var(--line);position:relative;font-size:17px;color:#2E2822}
+  ul.pts li:first-child{border-top:0}
+  ul.pts li::before{content:"";position:absolute;left:0;top:24px;width:9px;height:9px;border-radius:50%;background:var(--accent)}
+  ul.pts b{color:var(--ink)}
+  .figs{display:flex;flex-direction:column;gap:14px}
+  .fig{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px;box-shadow:0 10px 24px rgba(60,40,15,.07)}
+  .fig .n{font-family:'Alumni Sans',sans-serif;font-weight:800;font-size:40px;line-height:1;color:var(--accent-d)}
+  .fig .l{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);margin-top:6px}
+  /* mejoras */
+  .mejoras{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:26px}
+  @media(max-width:820px){.mejoras{grid-template-columns:1fr}}
+  .mej{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;box-shadow:0 10px 24px rgba(60,40,15,.07)}
+  .mej .tag{font-family:'Alumni Sans',sans-serif;font-weight:800;color:var(--accent);font-size:18px;letter-spacing:.08em}
+  .mej p{margin-top:6px;font-size:16px;color:#2E2822}
+  .mej p b{color:var(--ink)}
+  .mej .fn{margin-top:10px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}
+  /* cierre */
+  .cierre{background:var(--ink);color:#F6F1E9;border-bottom:0}
+  .cierre h2{color:#F6F1E9}
+  .cierre .sec-sub{color:#D9CFBE}
+  .cierre .sec-sub b{color:#fff}
+  .cierre .quote{font-family:'Alumni Sans',sans-serif;font-weight:700;font-size:clamp(28px,4vw,46px);line-height:1.08;text-transform:uppercase;max-width:900px}
+  .cierre .quote em{font-style:normal;color:var(--accent)}
+  footer{padding:34px 0 44px;font-size:13px;color:var(--mut)}
+  footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  /* reveal */
+  .rv{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
+  .rv.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion: reduce){.rv{opacity:1;transform:none;transition:none}}
+</style>
+</head>
+<body>
+
+<nav><div class="wrap">
+  <div class="brand">FERREY<span>CORP</span></div>
+  <div class="navlinks">
+    <a href="#s02">Planeación</a><a href="#s03">Organización</a><a href="#s04">Dirección</a>
+    <a href="#s05">Control</a><a href="#s06">Mejoras</a><a href="#s07">Análisis</a>
+  </div>
+</div></nav>
+
+<header class="hero"><div class="wrap">
+  <p class="kicker rv">Administración de Negocios · AA2 · Caso Ferreycorp</p>
+  <h1 class="rv">El proceso<span class="thin">administrativo</span>de Ferreycorp</h1>
+  <p class="lead rv">Actuamos como <b>consultores junior</b> y analizamos cómo Ferreycorp S.A.A. <b>planea, se organiza, dirige y controla</b>. Su propósito declarado: <b>«Juntos creamos desarrollo»</b>. Todo el análisis se construyó con fuentes públicas primarias: la Memoria Anual 2024 y los estados financieros consolidados auditados.</p>
+  <div class="stats rv">
+    <div class="stat"><div class="n">1922</div><div class="l">Fundación</div></div>
+    <div class="stat"><div class="n">1942</div><div class="l">Caterpillar en el Perú</div></div>
+    <div class="stat"><div class="n">S/ 7 590<em> M</em></div><div class="l">Ventas 2024 (récord)</div></div>
+    <div class="stat"><div class="n">7 978</div><div class="l">Colaboradores · 10 países</div></div>
+  </div>
+  <div class="heroimg rv"><img src="assets/torre_v12_16x9.webp" alt="Edificio corporativo Ferreycorp"></div>
+</div></header>
+
+<section id="s02"><div class="wrap">
+  <div class="sec-head rv"><span class="sec-num">01</span><h2>Planeación</h2></div>
+  <p class="sec-sub rv">La planeación fija el rumbo. En Ferreycorp es un <b>sistema real y medible</b>, no un formalismo.</p>
+  <div class="grid">
+    <ul class="pts rv">
+      <li><b>Direccionamiento definido:</b> propósito, misión, visión y valores.</li>
+      <li><b>Estrategia 2022-2026:</b> 3 pilares y 3 habilitadores, aprobada y supervisada por el Directorio.</li>
+      <li><b>Tres niveles:</b> planeación estratégica (corporación), táctica (subsidiarias) y operativa (día a día).</li>
+      <li><b>Objetivos evaluados con el criterio SMART:</b> específicos, medibles, alcanzables, relevantes y con plazo.</li>
+      <li>Contribuye al direccionamiento: da coherencia a la inversión y alinea a toda la organización.</li>
+    </ul>
+    <div class="figs rv">
+      <div class="fig"><div class="n">98,8 %</div><div class="l">Colaboradores con objetivos en cascada</div></div>
+      <div class="fig"><div class="n">S/ 1 131 M</div><div class="l">EBITDA 2024</div></div>
+      <div class="fig"><div class="n">S/ 489 M</div><div class="l">Utilidad neta 2024</div></div>
+    </div>
+  </div>
+</div></section>
+
+<section id="s03"><div class="wrap">
+  <div class="sec-head rv"><span class="sec-num">02</span><h2>Organización</h2></div>
+  <p class="sec-sub rv">La organización ordena los recursos y las funciones. El modelo es <b>«autonomía operativa con coherencia estratégica»</b>.</p>
+  <div class="grid">
+    <ul class="pts rv">
+      <li><b>Holding con estructura divisional</b> por productos-mercado.</li>
+      <li><b>Tres roles:</b> el holding fija el rumbo y asigna recursos; las subsidiarias operan con autonomía; el Centro de Servicios Compartidos estandariza el back office.</li>
+      <li><b>Cuatro niveles:</b> Junta de Accionistas → Directorio → Gerencia General y 9 gerencias corporativas → subsidiarias.</li>
+      <li>La coordinación se logra por <b>directorios cruzados</b>, comités y servicios compartidos.</li>
+    </ul>
+    <div class="figs rv">
+      <div class="fig"><div class="n">9</div><div class="l">Miembros del Directorio (5 independientes)</div></div>
+      <div class="fig"><div class="n">9</div><div class="l">Gerencias corporativas</div></div>
+      <div class="fig"><div class="n">6 997</div><div class="l">Accionistas (ninguno supera el 10 %)</div></div>
+    </div>
+  </div>
+</div></section>
+
+<section id="s04"><div class="wrap">
+  <div class="sec-head rv"><span class="sec-num">03</span><h2>Dirección</h2></div>
+  <p class="sec-sub rv">La dirección conduce a las personas para que el orden produzca resultados: <b>liderazgo, comunicación, motivación y toma de decisiones</b>.</p>
+  <div class="grid">
+    <ul class="pts rv">
+      <li><b>Liderazgo:</b> institucional y continuo —Gerencia General desde 2008—, medido por sus resultados.</li>
+      <li><b>Comunicación:</b> encuesta de clima anual (99 % de respuesta), Innovation Week y Sistema de Cumplimiento.</li>
+      <li><b>Motivación:</b> propuesta de valor al empleado y formación masiva (ThinkBIG, DreamBIG, aprendizaje dual).</li>
+      <li><b>Decisiones:</b> colegiadas en la cúpula (comités) con autonomía acotada en las subsidiarias.</li>
+    </ul>
+    <div class="figs rv">
+      <div class="fig"><div class="n">88 %</div><div class="l">Compromiso con la corporación</div></div>
+      <div class="fig"><div class="n">83 %</div><div class="l">Clima laboral favorable</div></div>
+      <div class="fig"><div class="n">286 913</div><div class="l">Horas de capacitación en 2024</div></div>
+    </div>
+  </div>
+</div></section>
+
+<section id="s05"><div class="wrap">
+  <div class="sec-head rv"><span class="sec-num">04</span><h2>Control</h2></div>
+  <p class="sec-sub rv">El control verifica si lo planeado se cumple y corrige el rumbo. En Ferreycorp es <b>integral, comparable y público</b>.</p>
+  <div class="grid">
+    <ul class="pts rv">
+      <li><b>16 indicadores en 4 dimensiones:</b> financiera, operativa, comercial y de personas.</li>
+      <li><b>Seguimiento:</b> Directorio y comités, Auditoría, Control de Gestión; evaluación de desempeño del 99,7 % de la planilla.</li>
+      <li><b>Acciones correctivas:</b> calce de monedas, negocio recurrente de repuestos y servicios, automatización del Centro de Distribución (65 % de extracciones).</li>
+      <li>El control detecta y corrige <b>en la dirección de la estrategia</b>.</li>
+    </ul>
+    <div class="figs rv">
+      <div class="fig"><div class="n">+18,9 %</div><div class="l">Crecimiento del EBITDA</div></div>
+      <div class="fig"><div class="n">2,25 → 1,90</div><div class="l">Deuda neta / EBITDA</div></div>
+      <div class="fig"><div class="n">59 → 52</div><div class="l">Días de cobranza</div></div>
+    </div>
+  </div>
+</div></section>
+
+<section id="s06"><div class="wrap">
+  <div class="sec-head rv"><span class="sec-num">05</span><h2>Mejoras M1–M7</h2></div>
+  <p class="sec-sub rv">Proponemos <b>7 mejoras</b> viables, pertinentes y sustentadas. Cada una fortalece <b>dos funciones</b> del proceso administrativo; juntas cubren las cuatro.</p>
+  <div class="mejoras rv">
+    <div class="mej"><div class="tag">M1</div><p><b>Metas fechadas y medibles</b> por pilar estratégico.</p><div class="fn">Planeación · Control</div></div>
+    <div class="mej"><div class="tag">M2</div><p><b>Tablero corporativo de venta cruzada</b> «one stop shop».</p><div class="fn">Planeación · Organización</div></div>
+    <div class="mej"><div class="tag">M3</div><p><b>Mapa de los canales cotidianos</b> de comunicación interna.</p><div class="fn">Dirección · Organización</div></div>
+    <div class="mej"><div class="tag">M4</div><p><b>Liderazgo y clima medidos por subsidiaria.</b></p><div class="fn">Dirección · Control</div></div>
+    <div class="mej"><div class="tag">M5</div><p><b>Cantera técnica ampliada:</b> ThinkBIG, DreamBIG, aprendizaje dual.</p><div class="fn">Dirección · Organización</div></div>
+    <div class="mej"><div class="tag">M6</div><p><b>Contratos de servicio recurrentes (CVA)</b> con indicador propio.</p><div class="fn">Control · Planeación</div></div>
+    <div class="mej"><div class="tag">M7</div><p><b>Blindaje financiero permanente</b> con cobertura extendida.</p><div class="fn">Control · Planeación</div></div>
+  </div>
+</div></section>
+
+<section id="s07"><div class="wrap">
+  <div class="sec-head rv"><span class="sec-num">06</span><h2>Análisis crítico</h2></div>
+  <p class="sec-sub rv">La mayor fortaleza y el mayor riesgo de Ferreycorp son <b>el mismo fenómeno visto desde dos ángulos</b>.</p>
+  <div class="grid">
+    <ul class="pts rv">
+      <li><b>Coherencia:</b> las cuatro funciones se refuerzan —la estrategia se convierte en objetivos en cascada hasta cada colaborador.</li>
+      <li><b>Fortalezas:</b> planeación real y medible; dirección que llega a toda la planilla; control integral y público.</li>
+      <li><b>Límites:</b> pilares menos SMART que las metas; comunicación cotidiana no documentada; control que detecta pero no siempre previene.</li>
+      <li><b>El reto central:</b> la doble concentración es liderazgo y especialización, pero también vulnerabilidad.</li>
+    </ul>
+    <div class="figs rv">
+      <div class="fig"><div class="n">77 %</div><div class="l">De las ventas = Caterpillar</div></div>
+      <div class="fig"><div class="n">58 %</div><div class="l">De las ventas = minería</div></div>
+      <div class="fig"><div class="n">−2,0 %</div><div class="l">Bloque complementario en 2024</div></div>
+    </div>
+  </div>
+</div></section>
+
+<section id="s08"><div class="wrap">
+  <div class="sec-head rv"><span class="sec-num">07</span><h2>Conclusiones</h2></div>
+  <p class="sec-sub rv">El proceso administrativo de Ferreycorp <b>funciona</b>, y su margen de mejora está identificado.</p>
+  <ul class="pts rv" style="max-width:900px">
+    <li>La planeación es un sistema real y medible, con resultados publicados favorables.</li>
+    <li>Organización y dirección se refuerzan: casi 8 000 personas en diez países se coordinan sin fragmentarse.</li>
+    <li>El control es integral, comparable y público, y corrige en la dirección de la estrategia.</li>
+    <li>La doble concentración es a la vez la mayor fortaleza y el mayor riesgo.</li>
+    <li>Las 7 mejoras son viables y, en conjunto, integran las cuatro funciones: cuando trabajan sobre el mismo plan, las mejoras dejan de ser intenciones y se convierten en gestión.</li>
+  </ul>
+</div></section>
+
+<section id="s09"><div class="wrap">
+  <div class="sec-head rv"><span class="sec-num">08</span><h2>Reflexión individual</h2></div>
+  <p class="sec-sub rv">Reflexión de <b>Jerzon Sergio Huamán Rivera</b> sobre la realización de esta actividad.</p>
+  <ul class="pts rv" style="max-width:900px">
+    <li><b>El momento de frustración:</b> el análisis ya estaba hecho, pero convertirlo en una exposición clara costó varios intentos de prueba y error.</li>
+    <li><b>Cómo seguí adelante:</b> por partes y versión por versión, apoyado en mi equipo —el cuartel— en lugar de querer que saliera perfecto de una vez.</li>
+    <li>La calma volvió al ver avances pequeños y recordar para qué era la presentación: mostrar el análisis ya realizado.</li>
+    <li><b>Lo que cambió:</b> un bloqueo ya no significa «algo está mal conmigo», sino «hay que cambiar de estrategia».</li>
+  </ul>
+</div></section>
+
+<section id="s10"><div class="wrap">
+  <div class="sec-head rv"><span class="sec-num">09</span><h2>Conducta resiliente</h2></div>
+  <p class="sec-sub rv">Gestionar las dificultades <b>identificando oportunidades y fortalezas</b>: así se trabajó este informe y así propone el plan mejorar a Ferreycorp.</p>
+  <ul class="pts rv" style="max-width:900px">
+    <li>Dividir el problema grande en partes y avanzar una por una.</li>
+    <li>Guardar lo que sirve y corregir solo lo que falla, en lugar de empezar de cero.</li>
+    <li>Apoyarse en el equipo en vez de abandonar cuando algo se bloquea.</li>
+    <li>Avanzar versión por versión hasta que funcione.</li>
+    <li>La misma lógica del plan de mejoras: <b>reducir la vulnerabilidad usando las fortalezas que ya se tienen</b>.</li>
+  </ul>
+</div></section>
+
+<section class="cierre"><div class="wrap">
+  <p class="kicker rv" style="color:var(--accent)">Cierre</p>
+  <p class="quote rv" style="margin-top:16px">Ferreycorp aplica el proceso administrativo de forma coherente. Su mayor reto: <em>diversificar sin perder su especialización.</em></p>
+  <p class="sec-sub rv" style="margin-top:22px">Fuentes públicas primarias: Memoria Anual 2024 de Ferreycorp S.A.A. y estados financieros consolidados auditados. <b>Gracias.</b></p>
+</div></section>
+
+<footer><div class="wrap">
+  <span>AA2 · Administración de Negocios · Instituto Certus</span>
+  <span>Jerzon Sergio Huamán Rivera</span>
+</div></footer>
+
+<script>
+  const io = new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{threshold:.12});
+  document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
