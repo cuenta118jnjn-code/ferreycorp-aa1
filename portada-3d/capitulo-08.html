@@ -28,10 +28,7 @@
     display: flex;
     flex-direction: column;
   }
-  header {
-    flex: 0 0 auto;
-    padding: 16px 24px 0;
-  }
+  header { flex: 0 0 auto; padding: 16px 24px 0; }
   header a.back {
     display: inline-block;
     font-size: 14px;
@@ -43,17 +40,14 @@
     border-radius: 999px;
     padding: 8px 16px;
   }
-  header a.back:hover, header a.back:focus-visible {
-    border-color: #E85A24;
-    outline: none;
-  }
+  header a.back:hover, header a.back:focus-visible { border-color: #E85A24; outline: none; }
   main {
     flex: 1 1 auto;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    gap: 18px;
+    gap: 20px;
     padding: 24px;
     max-width: 980px;
     width: 100%;
@@ -81,16 +75,31 @@
     letter-spacing: 0.1em;
     margin-bottom: 8px;
   }
-  .blank {
-    width: 100%;
-    border: 2px dashed #C9CDCF;
-    border-radius: 16px;
-    padding: 40px 28px;
-    color: #474D52;
-    font-size: 17px;
-    line-height: 1.5;
+  .lead { font-size: clamp(19px, 2.6vw, 26px); line-height: 1.4; color: #2A2E31; max-width: 46em; }
+  .lead b { color: #E85A24; }
+  .points { list-style: none; display: flex; flex-direction: column; gap: 12px; width: 100%; }
+  .points li {
+    background: #fff;
+    border: 1px solid #DCE0DE;
+    border-left: 5px solid #E85A24;
+    border-radius: 12px;
+    padding: 14px 18px;
+    font-size: clamp(16px, 2.2vw, 20px);
+    line-height: 1.45;
+    color: #2A2E31;
+    box-shadow: 0 4px 14px rgba(17,19,21,.06);
   }
-  .blank b { color: #111315; }
+  .points li b { color: #111315; }
+  .figures { display: flex; flex-wrap: wrap; gap: 14px; width: 100%; }
+  .fig {
+    flex: 1 1 180px;
+    background: #111315;
+    color: #EDF0EE;
+    border-radius: 14px;
+    padding: 16px 18px;
+  }
+  .fig .v { font-family: 'Alumni Sans', sans-serif; font-weight: 800; font-size: clamp(26px, 4vw, 40px); line-height: 1; color: #fff; }
+  .fig .k { font-size: 14px; color: #B9BFC2; margin-top: 6px; line-height: 1.35; }
   footer {
     flex: 0 0 auto;
     padding: 0 24px 18px;
@@ -109,14 +118,19 @@
 
   <main>
     <p class="kicker">FERREYCORP · ADMINISTRACIÓN DE NEGOCIOS · AA2</p>
-    <h1><span class="num" id="chap-num">CAPÍTULO 08</span><span id="chap-title">Conclusiones</span></h1>
-    <div class="blank">
-      <b>Contenido por definir.</b><br>
-      Este apartado está en blanco: Jerzon decidirá qué va en este capítulo.
-    </div>
+    <h1><span class="num">CAPÍTULO 08</span>Conclusiones</h1>
+    <p class="lead">El proceso administrativo de Ferreycorp <b>funciona</b>, y su margen de mejora está identificado.</p>
+    <ul class="points">
+      <li>La <b>planeación</b> es un sistema real y medible, con resultados publicados favorables.</li>
+      <li><b>Organización y dirección</b> se refuerzan: casi 8 000 personas en diez países se coordinan sin fragmentarse.</li>
+      <li>El <b>control</b> es integral, comparable y público, y corrige en la dirección de la estrategia.</li>
+      <li>La <b>doble concentración</b> es a la vez la mayor fortaleza y el mayor riesgo.</li>
+      <li>Las <b>7 mejoras</b> son viables y, en conjunto, integran las cuatro funciones: cuando trabajan sobre el mismo plan, las mejoras dejan de ser intenciones y se convierten en gestión.</li>
+    </ul>
+
   </main>
 
-  <footer id="chap-foot">Piso 8 de 10 · Vuelve al edificio para cambiar de capítulo.</footer>
+  <footer>Piso 8 de 10 · Vuelve al edificio para cambiar de capítulo.</footer>
 
 </body>
 </html>
